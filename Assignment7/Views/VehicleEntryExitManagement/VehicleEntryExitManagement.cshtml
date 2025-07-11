@@ -1,0 +1,2225 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheat Quality Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: #ff6b35;
+        }
+
+        .status-confirmed {
+            color: #28a745;
+        }
+
+        .status-rejected {
+            color: #dc3545;
+        }
+
+        .status-completed {
+            color: #6c757d;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge-category {
+            font-size: 0.9em;
+            padding: 0.5em 0.75em;
+        }
+
+        .dashboard-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .alert-custom {
+            border-left: 4px solid #28a745;
+        }
+
+        .decision-history {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .decision-card {
+            border-left: 3px solid #007bff;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fas fa-seedling"></i> Wheat Quality System</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">Welcome, <span id="currentUser">Admin</span></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="nav flex-column nav-pills mt-3">
+                    <button class="nav-link active" onclick="showModule('dashboard')">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </button>
+                    <button class="nav-link" onclick="showModule('vehicles')">
+                        <i class="fas fa-truck"></i> Vehicle Entry
+                    </button>
+                    <button class="nav-link" onclick="showModule('suppliers')">
+                        <i class="fas fa-building"></i> Supplier Management
+                    </button>
+                    <button class="nav-link" onclick="showModule('samples')">
+                        <i class="fas fa-flask"></i> Sample Entry
+                    </button>
+                    <button class="nav-link" onclick="showModule('tests')">
+                        <i class="fas fa-microscope"></i> Lab Testing
+                    </button>
+                    <button class="nav-link" onclick="showModule('confirmations')">
+                        <i class="fas fa-check-circle"></i> Owner Confirmation
+                    </button>
+                    <button class="nav-link" onclick="showModule('unloading')">
+                        <i class="fas fa-warehouse"></i> Unloading Entry
+                    </button>
+                    <button class="nav-link" onclick="showModule('claims')">
+                        <i class="fas fa-exclamation-triangle"></i> Quality Claims
+                    </button>
+                    <button class="nav-link" onclick="showModule('reports')">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </button>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <!-- Dashboard Module -->
+                <div id="dashboard" class="module">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-tachometer-alt"></i> Dashboard</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card dashboard-card">
+                                        <div class="card-body">
+                                            <h6>Total Vehicles</h6>
+                                            <h3 id="totalVehicles">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card dashboard-card">
+                                        <div class="card-body">
+                                            <h6>Pending Samples</h6>
+                                            <h3 id="pendingSamples">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card dashboard-card">
+                                        <div class="card-body">
+                                            <h6>Pending Tests</h6>
+                                            <h3 id="pendingTests">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card dashboard-card">
+                                        <div class="card-body">
+                                            <h6>Quality Claims</h6>
+                                            <h3 id="totalClaims">0</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle Entry Module -->
+                <div id="vehicles" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-truck"></i> Vehicle Entry</h5>
+                            <button class="btn btn-light btn-sm" onclick="openVehicleModal()">
+                                <i class="fas fa-plus"></i> Add Vehicle
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Vehicle No</th>
+                                            <th>Driver</th>
+                                            <th>Arrival Time</th>
+                                            <th>Supplier</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="vehicleTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supplier Management Module -->
+                <div id="suppliers" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-building"></i> Supplier Management</h5>
+                            <button class="btn btn-light btn-sm" onclick="openSupplierModal()">
+                                <i class="fas fa-plus"></i> Add Supplier
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Supplier Name</th>
+                                            <th>Contact Person</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="supplierTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Entry Module -->
+                <div id="samples" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-flask"></i> Sample Entry</h5>
+                            <button class="btn btn-light btn-sm" onclick="openSampleModal()">
+                                <i class="fas fa-plus"></i> Collect Sample
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Sample ID</th>
+                                            <th>Vehicle No</th>
+                                            <th>Supplier</th>
+                                            <th>Sampling Time</th>
+                                            <th>Bags Count</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sampleTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lab Testing Module -->
+                <div id="tests" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-microscope"></i> Lab Testing</h5>
+                            <button class="btn btn-light btn-sm" onclick="openTestModal()">
+                                <i class="fas fa-plus"></i> Add Test Result
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Sample ID</th>
+                                            <th>Vehicle No</th>
+                                            <th>Moisture %</th>
+                                            <th>Foreign Matter %</th>
+                                            <th>Color</th>
+                                            <th>Category</th>
+                                            <th>Test Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="testTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner Confirmation Module -->
+                <div id="confirmations" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-check-circle"></i> Owner Confirmation & Category Assignment</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Owner Controls:</strong> Review test results, assign final category, and approve unloading with storage area assignment.
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Vehicle No</th>
+                                            <th>Supplier</th>
+                                            <th>Test Results</th>
+                                            <th>Auto Category</th>
+                                            <th>Final Category</th>
+                                            <th>Storage Area</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="confirmationTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unloading Entry Module -->
+                <div id="unloading" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-warehouse"></i> Unloading Entry</h5>
+                            <button class="btn btn-light btn-sm" onclick="openUnloadingModal()">
+                                <i class="fas fa-plus"></i> Record Unloading
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Vehicle No</th>
+                                            <th>Supplier</th>
+                                            <th>Category</th>
+                                            <th>Storage Area</th>
+                                            <th>Unloading Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="unloadingTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality Claims Module -->
+                <div id="claims" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Quality Claims</h5>
+                            <button class="btn btn-light btn-sm" onclick="openClaimModal()">
+                                <i class="fas fa-plus"></i> Raise Claim
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Claim ID</th>
+                                            <th>Vehicle No</th>
+                                            <th>Supplier</th>
+                                            <th>Reason</th>
+                                            <th>Claim Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="claimTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Module -->
+                <div id="reports" class="module" style="display: none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-bar"></i> Reports & Analytics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6>Daily Summary</h6>
+                                            <div id="dailySummary"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6>Category Distribution</h6>
+                                            <div id="categoryDistribution"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6>Supplier Performance</h6>
+                                            <div id="supplierPerformance"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicle Modal -->
+    <div class="modal fade" id="vehicleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Vehicle Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="vehicleForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="vehicleEditIndex">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Vehicle Number</label>
+                                <input type="text" id="vehicleNumber" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Driver Name</label>
+                                <input type="text" id="driverName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Arrival Time</label>
+                                <input type="datetime-local" id="arrivalTime" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Supplier</label>
+                                <select id="supplierSelect" class="form-select" required>
+                                    <option value="">Select Supplier</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Delivery Bill (Optional)</label>
+                                <input type="file" id="deliveryBill" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Vehicle</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supplier Modal -->
+    <div class="modal fade" id="supplierModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Supplier Management</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="supplierForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="supplierEditIndex">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Supplier Name</label>
+                                <input type="text" id="supplierName" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contact Person</label>
+                                <input type="text" id="contactPerson" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" id="supplierPhone" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="supplierEmail" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Address</label>
+                                <textarea id="supplierAddress" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Status</label>
+                                <select id="supplierStatus" class="form-select" required>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Suspended">Suspended</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Supplier</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample Modal -->
+    <div class="modal fade" id="sampleModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sample Collection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="sampleForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="sampleEditIndex">
+                        <div class="mb-3">
+                            <label class="form-label">Vehicle</label>
+                            <select id="sampleVehicleSelect" class="form-select" required>
+                                <option value="">Select Vehicle</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Sampling Time</label>
+                            <input type="datetime-local" id="samplingTime" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Number of Bags Sampled</label>
+                            <input type="number" id="bagsCount" class="form-control" min="40" max="50" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea id="sampleNotes" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Sample</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div class="modal fade" id="testModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lab Test Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="testForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="testEditIndex">
+                        <div class="mb-3">
+                            <label class="form-label">Sample</label>
+                            <select id="testSampleSelect" class="form-select" required>
+                                <option value="">Select Sample</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Moisture %</label>
+                                <input type="number" id="moisturePercent" class="form-control" step="0.1" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Foreign Matter %</label>
+                                <input type="number" id="foreignMatterPercent" class="form-control" step="0.1" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Color</label>
+                                <select id="colorGrade" class="form-select" required>
+                                    <option value="">Select Color</option>
+                                    <option value="Excellent">Excellent</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Fair">Fair</option>
+                                    <option value="Poor">Poor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Category (Auto-determined)</label>
+                                <input type="text" id="categoryResult" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="form-label">Test Date</label>
+                            <input type="datetime-local" id="testDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Test Result</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Owner Confirmation Modal -->
+    <div class="modal fade" id="ownerConfirmationModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Owner Confirmation & Category Assignment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="ownerConfirmationForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="confirmationSampleId">
+                        <input type="hidden" id="confirmationVehicleId">
+                        <input type="hidden" id="confirmationEditIndex">
+
+                        <!-- Vehicle & Test Details -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <h6><i class="fas fa-truck"></i> Vehicle Details</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Vehicle No:</strong> <span id="confirmVehicleNo"></span></p>
+                                        <p><strong>Driver:</strong> <span id="confirmDriverName"></span></p>
+                                        <p><strong>Supplier:</strong> <span id="confirmSupplier"></span></p>
+                                        <p><strong>Arrival:</strong> <span id="confirmArrivalTime"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h6><i class="fas fa-flask"></i> Lab Test Results</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Moisture:</strong> <span id="confirmMoisture"></span>%</p>
+                                        <p><strong>Foreign Matter:</strong> <span id="confirmForeignMatter"></span>%</p>
+                                        <p><strong>Color Grade:</strong> <span id="confirmColor"></span></p>
+                                        <p><strong>Auto Category:</strong> <span id="confirmAutoCategory"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Decision History -->
+                        <div class="row mt-3" id="decisionHistoryRow" style="display: none;">
+                            <div class="col-md-12">
+                                <div class="card border-secondary">
+                                    <div class="card-header bg-secondary text-white">
+                                        <h6><i class="fas fa-history"></i> Decision History</h6>
+                                    </div>
+                                    <div class="card-body decision-history" id="decisionHistory">
+                                        <!-- Decision history will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Owner Controls -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h6><i class="fas fa-user-tie"></i> Owner Decision & Category Assignment</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label class="form-label"><strong>Final Category Assignment</strong></label>
+                                                <select id="ownerFinalCategory" class="form-select" required>
+                                                    <option value="">Select Final Category</option>
+                                                    <option value="Premium">Premium Quality</option>
+                                                    <option value="Mill">Mill Quality</option>
+                                                    <option value="Low Mill">Low Mill Quality</option>
+                                                    <option value="Rejected">Reject (Below Standard)</option>
+                                                </select>
+                                                <small class="text-muted">You can override the auto-determined category</small>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label"><strong>Storage Area Assignment</strong></label>
+                                                <select id="ownerStorageArea" class="form-select">
+                                                    <option value="">Auto-assign based on category</option>
+                                                    <option value="Area A - Premium Storage">Area A - Premium Storage</option>
+                                                    <option value="Area B - Mill Storage">Area B - Mill Storage</option>
+                                                    <option value="Area C - Low Mill Storage">Area C - Low Mill Storage</option>
+                                                    <option value="Area D - Quarantine">Area D - Quarantine</option>
+                                                    <option value="Area E - Special Storage">Area E - Special Storage</option>
+                                                </select>
+                                                <small class="text-muted">Override default storage assignment</small>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label"><strong>Unloading Permission</strong></label>
+                                                <select id="ownerUnloadingPermission" class="form-select" required>
+                                                    <option value="">Select Decision</option>
+                                                    <option value="Approved">✅ Approve Unloading</option>
+                                                    <option value="Conditional">⚠️ Conditional Approval</option>
+                                                    <option value="Rejected">❌ Reject Unloading</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label"><strong>Price Category (Optional)</strong></label>
+                                                <select id="ownerPriceCategory" class="form-select">
+                                                    <option value="">Standard Pricing</option>
+                                                    <option value="Premium Rate">Premium Rate (+10%)</option>
+                                                    <option value="Standard Rate">Standard Rate</option>
+                                                    <option value="Discounted Rate">Discounted Rate (-5%)</option>
+                                                    <option value="Penalty Rate">Penalty Rate (-15%)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label"><strong>Priority Level</strong></label>
+                                                <select id="ownerPriority" class="form-select">
+                                                    <option value="Normal">Normal Priority</option>
+                                                    <option value="High">High Priority</option>
+                                                    <option value="Urgent">Urgent</option>
+                                                    <option value="Low">Low Priority</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label"><strong>Owner Comments/Instructions</strong></label>
+                                                <textarea id="ownerComments" class="form-control" rows="3"
+                                                          placeholder="Add any special instructions, conditions, or comments for this consignment..."></textarea>
+                                            </div>
+                                        </div>
+
+                                        <!-- Conditional Fields -->
+                                        <div id="conditionalFields" style="display: none;">
+                                            <hr>
+                                            <h6 class="text-warning"><i class="fas fa-exclamation-triangle"></i> Conditional Approval Details</h6>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Conditions to be Met</label>
+                                                    <textarea id="ownerConditions" class="form-control" rows="2"
+                                                              placeholder="Specify conditions for approval..."></textarea>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Review Required By</label>
+                                                    <input type="datetime-local" id="reviewDeadline" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Rejection Fields -->
+                                        <div id="rejectionFields" style="display: none;">
+                                            <hr>
+                                            <h6 class="text-danger"><i class="fas fa-times-circle"></i> Rejection Details</h6>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Rejection Reason</label>
+                                                    <select id="rejectionReason" class="form-select">
+                                                        <option value="">Select Reason</option>
+                                                        <option value="High Moisture Content">High Moisture Content</option>
+                                                        <option value="Excessive Foreign Matter">Excessive Foreign Matter</option>
+                                                        <option value="Poor Color Quality">Poor Color Quality</option>
+                                                        <option value="Damaged Grains">Damaged Grains</option>
+                                                        <option value="Contamination">Contamination</option>
+                                                        <option value="Below Specification">Below Specification</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Return Instructions</label>
+                                                    <select id="returnInstructions" class="form-select">
+                                                        <option value="Immediate Return">Immediate Return</option>
+                                                        <option value="Process for Animal Feed">Process for Animal Feed</option>
+                                                        <option value="Re-cleaning Required">Re-cleaning Required</option>
+                                                        <option value="Dispose as Waste">Dispose as Waste</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-check"></i> Confirm Decision
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unloading Modal -->
+    <div class="modal fade" id="unloadingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Unloading Entry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="unloadingForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="unloadingEditIndex">
+                        <div class="mb-3">
+                            <label class="form-label">Vehicle</label>
+                            <select id="unloadingVehicleSelect" class="form-select" required>
+                                <option value="">Select Vehicle</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Storage Area</label>
+                            <select id="storageArea" class="form-select" required>
+                                <option value="">Select Storage Area</option>
+                                <option value="Area A - Premium">Area A - Premium</option>
+                                <option value="Area B - Mill">Area B - Mill</option>
+                                <option value="Area C - Low Mill">Area C - Low Mill</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Unloading Time</label>
+                            <input type="datetime-local" id="unloadingTime" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea id="unloadingNotes" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Unloading</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Claim Modal -->
+    <div class="modal fade" id="claimModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Quality Claim</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="claimForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="claimEditIndex">
+                        <div class="mb-3">
+                            <label class="form-label">Vehicle</label>
+                            <select id="claimVehicleSelect" class="form-select" required>
+                                <option value="">Select Vehicle</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Claim Reason</label>
+                            <select id="claimReason" class="form-select" required>
+                                <option value="">Select Reason</option>
+                                <option value="High Moisture Content">High Moisture Content</option>
+                                <option value="Excessive Foreign Matter">Excessive Foreign Matter</option>
+                                <option value="Poor Color Quality">Poor Color Quality</option>
+                                <option value="Damaged Grains">Damaged Grains</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Detailed Description</label>
+                            <textarea id="claimDescription" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Evidence Image</label>
+                            <input type="file" id="claimImage" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Raise Claim</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+        // Data Storage
+        let vehicles = [];
+        let suppliers = [];
+        let samples = [];
+        let tests = [];
+        let claims = [];
+        let unloadings = [];
+        let ownerDecisions = []; // New array to track owner decisions
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            populateSupplierDropdowns();
+            updateDashboard();
+            setCurrentDateTime();
+        });
+
+        // Load Data from localStorage
+        function loadData() {
+            vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
+            suppliers = JSON.parse(localStorage.getItem('suppliers')) || [];
+            samples = JSON.parse(localStorage.getItem('samples')) || [];
+            tests = JSON.parse(localStorage.getItem('tests')) || [];
+            claims = JSON.parse(localStorage.getItem('claims')) || [];
+            unloadings = JSON.parse(localStorage.getItem('unloadings')) || [];
+            ownerDecisions = JSON.parse(localStorage.getItem('ownerDecisions')) || [];
+
+            // Initialize with empty suppliers array - no hardcoded data
+            if (suppliers.length === 0) {
+                suppliers = [];
+                saveData();
+            }
+        }
+
+        // Save Data to localStorage
+        function saveData() {
+            localStorage.setItem('vehicles', JSON.stringify(vehicles));
+            localStorage.setItem('suppliers', JSON.stringify(suppliers));
+            localStorage.setItem('samples', JSON.stringify(samples));
+            localStorage.setItem('tests', JSON.stringify(tests));
+            localStorage.setItem('claims', JSON.stringify(claims));
+            localStorage.setItem('unloadings', JSON.stringify(unloadings));
+            localStorage.setItem('ownerDecisions', JSON.stringify(ownerDecisions));
+        }
+
+        // Navigation Functions
+        function showModule(moduleId) {
+            document.querySelectorAll('.module').forEach(module => {
+                module.style.display = 'none';
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(moduleId).style.display = 'block';
+            event.target.classList.add('active');
+
+            switch(moduleId) {
+                case 'dashboard':
+                    updateDashboard();
+                    break;
+                case 'vehicles':
+                    loadVehicleTable();
+                    break;
+                case 'suppliers':
+                    loadSupplierTable();
+                    break;
+                case 'samples':
+                    loadSampleTable();
+                    break;
+                case 'tests':
+                    loadTestTable();
+                    break;
+                case 'confirmations':
+                    loadConfirmationTable();
+                    break;
+                case 'unloading':
+                    loadUnloadingTable();
+                    break;
+                case 'claims':
+                    loadClaimTable();
+                    break;
+                case 'reports':
+                    loadReports();
+                    break;
+            }
+        }
+
+        // Dashboard Functions
+        function updateDashboard() {
+            document.getElementById('totalVehicles').textContent = vehicles.length;
+            document.getElementById('pendingSamples').textContent = vehicles.filter(v => v.status === 'Pending Sampling').length;
+            document.getElementById('pendingTests').textContent = samples.filter(s => s.status === 'Pending Test').length;
+            document.getElementById('totalClaims').textContent = claims.length;
+        }
+
+        // Vehicle Management
+        function openVehicleModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('vehicleModal'));
+            const form = document.getElementById('vehicleForm');
+            form.reset();
+            if (index !== null) {
+                const vehicle = vehicles[index];
+                document.getElementById('vehicleEditIndex').value = index;
+                document.getElementById('vehicleNumber').value = vehicle.vehicleNumber;
+                document.getElementById('driverName').value = vehicle.driverName;
+                document.getElementById('arrivalTime').value = vehicle.arrivalTime;
+                document.getElementById('supplierSelect').value = vehicle.supplier;
+                document.querySelector('.modal-title').textContent = 'Edit Vehicle';
+            } else {
+                document.getElementById('vehicleEditIndex').value = '';
+                document.querySelector('.modal-title').textContent = 'Add Vehicle';
+                setCurrentDateTime('arrivalTime');
+            }
+            modal.show();
+        }
+
+        function loadVehicleTable() {
+            const tbody = document.getElementById('vehicleTableBody');
+            tbody.innerHTML = '';
+            vehicles.forEach((vehicle, index) => {
+                const statusClass = getStatusClass(vehicle.status);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${vehicle.vehicleNumber}</td>
+                        <td>${vehicle.driverName}</td>
+                        <td>${new Date(vehicle.arrivalTime).toLocaleString()}</td>
+                        <td>${vehicle.supplier}</td>
+                        <td><span class="badge ${statusClass}">${vehicle.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openVehicleModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteVehicle(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('vehicleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('vehicleEditIndex').value;
+            const vehicle = {
+                vehicleNumber: document.getElementById('vehicleNumber').value,
+                driverName: document.getElementById('driverName').value,
+                arrivalTime: document.getElementById('arrivalTime').value,
+                supplier: document.getElementById('supplierSelect').value,
+                status: 'Pending Sampling',
+                entryTime: new Date().toISOString()
+            };
+            if (index === '') {
+                vehicles.push(vehicle);
+            } else {
+                vehicles[index] = { ...vehicles[index], ...vehicle };
+            }
+            saveData();
+            loadVehicleTable();
+            updateDashboard();
+            populateVehicleDropdowns();
+            bootstrap.Modal.getInstance(document.getElementById('vehicleModal')).hide();
+            showAlert('Vehicle saved successfully!', 'success');
+        });
+
+        function deleteVehicle(index) {
+            if (confirm('Are you sure you want to delete this vehicle?')) {
+                vehicles.splice(index, 1);
+                saveData();
+                loadVehicleTable();
+                updateDashboard();
+                populateVehicleDropdowns();
+                showAlert('Vehicle deleted successfully!', 'success');
+            }
+        }
+
+        // Enhanced Supplier Management - No hardcoded data
+        function openSupplierModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('supplierModal'));
+            const form = document.getElementById('supplierForm');
+            form.reset();
+            if (index !== null) {
+                const supplier = suppliers[index];
+                document.getElementById('supplierEditIndex').value = index;
+                document.getElementById('supplierName').value = supplier.name;
+                document.getElementById('contactPerson').value = supplier.contactPerson;
+                document.getElementById('supplierPhone').value = supplier.phone;
+                document.getElementById('supplierEmail').value = supplier.email || '';
+                document.getElementById('supplierAddress').value = supplier.address;
+                document.getElementById('supplierStatus').value = supplier.status;
+                document.querySelector('#supplierModal .modal-title').textContent = 'Edit Supplier';
+            } else {
+                document.getElementById('supplierEditIndex').value = '';
+                document.querySelector('#supplierModal .modal-title').textContent = 'Add Supplier';
+            }
+            modal.show();
+        }
+
+        function loadSupplierTable() {
+            const tbody = document.getElementById('supplierTableBody');
+            tbody.innerHTML = '';
+            suppliers.forEach((supplier, index) => {
+                const statusClass = supplier.status === 'Active' ? 'bg-success' :
+                                  supplier.status === 'Inactive' ? 'bg-secondary' : 'bg-warning';
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${supplier.name}</td>
+                        <td>${supplier.contactPerson}</td>
+                        <td>${supplier.phone}</td>
+                        <td>${supplier.address}</td>
+                        <td><span class="badge ${statusClass}">${supplier.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openSupplierModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteSupplier(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('supplierForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('supplierEditIndex').value;
+            const supplier = {
+                name: document.getElementById('supplierName').value,
+                contactPerson: document.getElementById('contactPerson').value,
+                phone: document.getElementById('supplierPhone').value,
+                email: document.getElementById('supplierEmail').value,
+                address: document.getElementById('supplierAddress').value,
+                status: document.getElementById('supplierStatus').value,
+                createdDate: index === '' ? new Date().toISOString() : suppliers[index].createdDate,
+                updatedDate: new Date().toISOString()
+            };
+            if (index === '') {
+                suppliers.push(supplier);
+            } else {
+                suppliers[index] = supplier;
+            }
+            saveData();
+            loadSupplierTable();
+            populateSupplierDropdowns();
+            bootstrap.Modal.getInstance(document.getElementById('supplierModal')).hide();
+            showAlert('Supplier saved successfully!', 'success');
+        });
+
+        function deleteSupplier(index) {
+            if (confirm('Are you sure you want to delete this supplier?')) {
+                suppliers.splice(index, 1);
+                saveData();
+                loadSupplierTable();
+                populateSupplierDropdowns();
+                showAlert('Supplier deleted successfully!', 'success');
+            }
+        }
+
+        // Sample Management
+        function openSampleModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('sampleModal'));
+            const form = document.getElementById('sampleForm');
+            form.reset();
+            populateVehicleDropdowns();
+            if (index !== null) {
+                const sample = samples[index];
+                document.getElementById('sampleEditIndex').value = index;
+                document.getElementById('sampleVehicleSelect').value = sample.vehicleId;
+                document.getElementById('samplingTime').value = sample.samplingTime;
+                document.getElementById('bagsCount').value = sample.bagsCount;
+                document.getElementById('sampleNotes').value = sample.notes;
+                document.querySelector('#sampleModal .modal-title').textContent = 'Edit Sample';
+            } else {
+                document.getElementById('sampleEditIndex').value = '';
+                document.querySelector('#sampleModal .modal-title').textContent = 'Collect Sample';
+                setCurrentDateTime('samplingTime');
+            }
+            modal.show();
+        }
+
+        function loadSampleTable() {
+            const tbody = document.getElementById('sampleTableBody');
+            tbody.innerHTML = '';
+            samples.forEach((sample, index) => {
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample.vehicleId);
+                const statusClass = getStatusClass(sample.status);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${sample.sampleId}</td>
+                        <td>${sample.vehicleId}</td>
+                        <td>${vehicle ? vehicle.supplier : 'N/A'}</td>
+                        <td>${new Date(sample.samplingTime).toLocaleString()}</td>
+                        <td>${sample.bagsCount}</td>
+                        <td><span class="badge ${statusClass}">${sample.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openSampleModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteSample(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('sampleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('sampleEditIndex').value;
+            const sample = {
+                sampleId: index === '' ? 'SMP' + Date.now() : samples[index].sampleId,
+                vehicleId: document.getElementById('sampleVehicleSelect').value,
+                samplingTime: document.getElementById('samplingTime').value,
+                bagsCount: document.getElementById('bagsCount').value,
+                notes: document.getElementById('sampleNotes').value,
+                status: 'Pending Test'
+            };
+            if (index === '') {
+                samples.push(sample);
+                const vehicleIndex = vehicles.findIndex(v => v.vehicleNumber === sample.vehicleId);
+                if (vehicleIndex !== -1) {
+                    vehicles[vehicleIndex].status = 'Sample Collected';
+                }
+            } else {
+                samples[index] = sample;
+            }
+            saveData();
+            loadSampleTable();
+            updateDashboard();
+            populateSampleDropdowns();
+            bootstrap.Modal.getInstance(document.getElementById('sampleModal')).hide();
+            showAlert('Sample saved successfully!', 'success');
+        });
+
+        function deleteSample(index) {
+            if (confirm('Are you sure you want to delete this sample?')) {
+                samples.splice(index, 1);
+                saveData();
+                loadSampleTable();
+                updateDashboard();
+                populateSampleDropdowns();
+                showAlert('Sample deleted successfully!', 'success');
+            }
+        }
+
+        // Test Management
+        function openTestModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('testModal'));
+            const form = document.getElementById('testForm');
+            form.reset();
+            populateSampleDropdowns();
+            if (index !== null) {
+                const test = tests[index];
+                document.getElementById('testEditIndex').value = index;
+                document.getElementById('testSampleSelect').value = test.sampleId;
+                document.getElementById('moisturePercent').value = test.moisturePercent;
+                document.getElementById('foreignMatterPercent').value = test.foreignMatterPercent;
+                document.getElementById('colorGrade').value = test.colorGrade;
+                document.getElementById('categoryResult').value = test.category;
+                document.getElementById('testDate').value = test.testDate;
+                document.querySelector('#testModal .modal-title').textContent = 'Edit Test Result';
+            } else {
+                document.getElementById('testEditIndex').value = '';
+                document.querySelector('#testModal .modal-title').textContent = 'Add Test Result';
+                setCurrentDateTime('testDate');
+            }
+            modal.show();
+        }
+
+        function loadTestTable() {
+            const tbody = document.getElementById('testTableBody');
+            tbody.innerHTML = '';
+            tests.forEach((test, index) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const categoryBadge = getCategoryBadge(test.category);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${test.sampleId}</td>
+                        <td>${sample ? sample.vehicleId : 'N/A'}</td>
+                        <td>${test.moisturePercent}%</td>
+                        <td>${test.foreignMatterPercent}%</td>
+                        <td>${test.colorGrade}</td>
+                        <td>${categoryBadge}</td>
+                        <td>${new Date(test.testDate).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openTestModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteTest(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('testEditIndex').value;
+            const moisturePercent = parseFloat(document.getElementById('moisturePercent').value);
+            const foreignMatterPercent = parseFloat(document.getElementById('foreignMatterPercent').value);
+            const colorGrade = document.getElementById('colorGrade').value;
+            const category = determineCategory(moisturePercent, foreignMatterPercent, colorGrade);
+            const test = {
+                sampleId: document.getElementById('testSampleSelect').value,
+                moisturePercent: moisturePercent,
+                foreignMatterPercent: foreignMatterPercent,
+                colorGrade: colorGrade,
+                category: category,
+                testDate: document.getElementById('testDate').value,
+                status: 'Waiting for Confirmation'
+            };
+            if (index === '') {
+                tests.push(test);
+                const sampleIndex = samples.findIndex(s => s.sampleId === test.sampleId);
+                if (sampleIndex !== -1) {
+                    samples[sampleIndex].status = 'Test Completed';
+                }
+            } else {
+                tests[index] = test;
+            }
+            saveData();
+            loadTestTable();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById('testModal')).hide();
+            showAlert('Test result saved successfully!', 'success');
+        });
+
+        function deleteTest(index) {
+            if (confirm('Are you sure you want to delete this test result?')) {
+                tests.splice(index, 1);
+                saveData();
+                loadTestTable();
+                updateDashboard();
+                showAlert('Test result deleted successfully!', 'success');
+            }
+        }
+
+        function determineCategory(moisture, foreignMatter, color) {
+            if (moisture <= 12 && foreignMatter <= 1 && (color === 'Excellent' || color === 'Good')) {
+                return 'Premium';
+            } else if (moisture <= 14 && foreignMatter <= 2 && (color === 'Good' || color === 'Fair')) {
+                return 'Mill';
+            } else {
+                return 'Low Mill';
+            }
+        }
+
+        document.getElementById('moisturePercent').addEventListener('input', updateCategory);
+        document.getElementById('foreignMatterPercent').addEventListener('input', updateCategory);
+        document.getElementById('colorGrade').addEventListener('change', updateCategory);
+
+        function updateCategory() {
+            const moisture = parseFloat(document.getElementById('moisturePercent').value) || 0;
+            const foreignMatter = parseFloat(document.getElementById('foreignMatterPercent').value) || 0;
+            const color = document.getElementById('colorGrade').value;
+            if (moisture && foreignMatter && color) {
+                const category = determineCategory(moisture, foreignMatter, color);
+                document.getElementById('categoryResult').value = category;
+            }
+        }
+
+        // Enhanced Owner Confirmation Management with full CRUD
+        function loadConfirmationTable() {
+            const tbody = document.getElementById('confirmationTableBody');
+            tbody.innerHTML = '';
+
+            const pendingTests = tests.filter(t => t.status === 'Waiting for Confirmation');
+            pendingTests.forEach((test) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const categoryBadge = getCategoryBadge(test.category);
+                const finalCategory = test.ownerCategory || test.category;
+                const finalCategoryBadge = getCategoryBadge(finalCategory);
+                const storageArea = test.ownerStorageArea || getDefaultStorageArea(finalCategory);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${sample ? sample.vehicleId : 'N/A'}</td>
+                        <td>${vehicle ? vehicle.supplier : 'N/A'}</td>
+                        <td>
+                            <small>
+                                <strong>M:</strong> ${test.moisturePercent}% |
+                                <strong>FM:</strong> ${test.foreignMatterPercent}% |
+                                <strong>Color:</strong> ${test.colorGrade}
+                            </small>
+                        </td>
+                        <td>${categoryBadge}</td>
+                        <td>${finalCategoryBadge}</td>
+                        <td>
+                            <small class="text-muted">${storageArea}</small>
+                        </td>
+                        <td><span class="badge bg-warning">Pending Owner Decision</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="openOwnerConfirmationModal('${test.sampleId}')">
+                                <i class="fas fa-user-tie"></i> Owner Review
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Show already confirmed items with CRUD options
+            const confirmedTests = tests.filter(t => ['Confirmed for Unloading', 'Rejected', 'Conditionally Approved'].includes(t.status));
+            confirmedTests.forEach((test) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const finalCategory = test.ownerCategory || test.category;
+                const finalCategoryBadge = getCategoryBadge(finalCategory);
+                const storageArea = test.ownerStorageArea || getDefaultStorageArea(finalCategory);
+                const statusClass = test.status === 'Confirmed for Unloading' ? 'bg-success' :
+                                   test.status === 'Conditionally Approved' ? 'bg-warning' : 'bg-danger';
+                const decisionCount = ownerDecisions.filter(d => d.sampleId === test.sampleId).length;
+
+                tbody.innerHTML += `
+                    <tr class="table-secondary">
+                        <td>${sample ? sample.vehicleId : 'N/A'}</td>
+                        <td>${vehicle ? vehicle.supplier : 'N/A'}</td>
+                        <td>
+                            <small>
+                                <strong>M:</strong> ${test.moisturePercent}% |
+                                <strong>FM:</strong> ${test.foreignMatterPercent}% |
+                                <strong>Color:</strong> ${test.colorGrade}
+                            </small>
+                        </td>
+                        <td>${getCategoryBadge(test.category)}</td>
+                        <td>${finalCategoryBadge}</td>
+                        <td>
+                            <small class="text-muted">${storageArea}</small>
+                            ${test.ownerComments ? `<br><small class="text-info"><i class="fas fa-comment"></i> ${test.ownerComments.substring(0, 30)}...</small>` : ''}
+                            ${decisionCount > 1 ? `<br><small class="text-warning"><i class="fas fa-history"></i> ${decisionCount} decisions</small>` : ''}
+                        </td>
+                        <td><span class="badge ${statusClass}">${test.status}</span></td>
+                        <td>
+                            <div class="btn-group-vertical btn-group-sm">
+                                <button class="btn btn-outline-info mb-1" onclick="viewOwnerDecision('${test.sampleId}')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-outline-primary mb-1" onclick="editOwnerConfirmation('${test.sampleId}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="deleteOwnerDecision('${test.sampleId}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openOwnerConfirmationModal(sampleId, isEdit = false) {
+            const modal = new bootstrap.Modal(document.getElementById('ownerConfirmationModal'));
+            const test = tests.find(t => t.sampleId === sampleId);
+            const sample = samples.find(s => s.sampleId === sampleId);
+            const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+
+            if (!test || !sample || !vehicle) {
+                showAlert('Error: Could not find test data', 'danger');
+                return;
+            }
+
+            // Reset form
+            document.getElementById('ownerConfirmationForm').reset();
+
+            // Set identifiers
+            document.getElementById('confirmationSampleId').value = sampleId;
+            document.getElementById('confirmationVehicleId').value = sample.vehicleId;
+            document.getElementById('confirmationEditIndex').value = isEdit ? 'edit' : '';
+
+            // Populate vehicle and test details
+            document.getElementById('confirmVehicleNo').textContent = vehicle.vehicleNumber;
+            document.getElementById('confirmDriverName').textContent = vehicle.driverName;
+            document.getElementById('confirmSupplier').textContent = vehicle.supplier;
+            document.getElementById('confirmArrivalTime').textContent = new Date(vehicle.arrivalTime).toLocaleString();
+            document.getElementById('confirmMoisture').textContent = test.moisturePercent;
+            document.getElementById('confirmForeignMatter').textContent = test.foreignMatterPercent;
+            document.getElementById('confirmColor').textContent = test.colorGrade;
+            document.getElementById('confirmAutoCategory').textContent = test.category;
+
+            // Load decision history
+            loadDecisionHistory(sampleId);
+
+            // Pre-populate fields if editing existing decision
+            if (isEdit && test.ownerCategory) {
+                document.getElementById('ownerFinalCategory').value = test.ownerCategory;
+                document.getElementById('ownerStorageArea').value = test.ownerStorageArea || '';
+                document.getElementById('ownerUnloadingPermission').value = test.ownerDecision || '';
+                document.getElementById('ownerPriceCategory').value = test.ownerPriceCategory || '';
+                document.getElementById('ownerPriority').value = test.ownerPriority || 'Normal';
+                document.getElementById('ownerComments').value = test.ownerComments || '';
+
+                // Show conditional/rejection fields if needed
+                if (test.ownerDecision === 'Conditional') {
+                    document.getElementById('conditionalFields').style.display = 'block';
+                    document.getElementById('ownerConditions').value = test.ownerConditions || '';
+                    document.getElementById('reviewDeadline').value = test.reviewDeadline || '';
+                } else if (test.ownerDecision === 'Rejected') {
+                    document.getElementById('rejectionFields').style.display = 'block';
+                    document.getElementById('rejectionReason').value = test.rejectionReason || '';
+                    document.getElementById('returnInstructions').value = test.returnInstructions || '';
+                }
+            } else {
+                // New decision - set defaults
+                document.getElementById('ownerFinalCategory').value = test.category;
+                document.getElementById('ownerPriority').value = 'Normal';
+            }
+
+            modal.show();
+        }
+
+        function loadDecisionHistory(sampleId) {
+            const decisionHistory = ownerDecisions.filter(d => d.sampleId === sampleId);
+            const historyContainer = document.getElementById('decisionHistory');
+            const historyRow = document.getElementById('decisionHistoryRow');
+
+            if (decisionHistory.length > 0) {
+                historyRow.style.display = 'block';
+                historyContainer.innerHTML = '';
+
+                decisionHistory.forEach((decision, index) => {
+                    const statusClass = decision.decision === 'Approved' ? 'success' :
+                                       decision.decision === 'Conditional' ? 'warning' : 'danger';
+                    historyContainer.innerHTML += `
+                        <div class="card decision-card">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between">
+                                    <strong>Decision #${index + 1}</strong>
+                                    <small class="text-muted">${new Date(decision.decisionDate).toLocaleString()}</small>
+                                </div>
+                                <div class="mt-1">
+                                    <span class="badge bg-${statusClass}">${decision.decision}</span>
+                                    <span class="badge bg-secondary ms-1">${decision.finalCategory}</span>
+                                </div>
+                                <div class="mt-1">
+                                    <small><strong>Storage:</strong> ${decision.storageArea}</small>
+                                </div>
+                                ${decision.comments ? `<div class="mt-1"><small><strong>Comments:</strong> ${decision.comments}</small></div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                historyRow.style.display = 'none';
+            }
+        }
+
+        function editOwnerConfirmation(sampleId) {
+            openOwnerConfirmationModal(sampleId, true);
+        }
+
+        function viewOwnerDecision(sampleId) {
+            const test = tests.find(t => t.sampleId === sampleId);
+            const sample = samples.find(s => s.sampleId === sampleId);
+            const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+            const decisionHistory = ownerDecisions.filter(d => d.sampleId === sampleId);
+
+            if (!test) return;
+
+            let modalContent = `
+                <div class="modal fade" id="viewDecisionModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info text-white">
+                                <h5 class="modal-title">Owner Decision Details - ${vehicle?.vehicleNumber}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Current Status</h6>
+                                        <p><strong>Auto Category:</strong> ${test.category}</p>
+                                        <p><strong>Final Category:</strong> <span class="badge ${getCategoryClass(test.ownerCategory || test.category)}">${test.ownerCategory || test.category}</span></p>
+                                        <p><strong>Decision:</strong> <span class="badge ${getDecisionClass(test.status)}">${test.status}</span></p>
+                                        <p><strong>Storage Area:</strong> ${test.ownerStorageArea || 'Default'}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Decision Details</h6>
+                                        <p><strong>Price Category:</strong> ${test.ownerPriceCategory || 'Standard'}</p>
+                                        <p><strong>Priority:</strong> ${test.ownerPriority || 'Normal'}</p>
+                                        <p><strong>Decision Date:</strong> ${test.ownerDecisionDate ? new Date(test.ownerDecisionDate).toLocaleString() : 'N/A'}</p>
+                                    </div>
+                                </div>
+                                ${test.ownerComments ? `<div class="mt-2"><strong>Comments:</strong><div class="alert alert-info">${test.ownerComments}</div></div>` : ''}
+                                ${test.ownerConditions ? `<div class="mt-2"><strong>Conditions:</strong><div class="alert alert-warning">${test.ownerConditions}</div></div>` : ''}
+                                ${test.rejectionReason ? `<div class="mt-2"><strong>Rejection Reason:</strong><div class="alert alert-danger">${test.rejectionReason}<br><strong>Return Instructions:</strong> ${test.returnInstructions}</div></div>` : ''}
+
+                                ${decisionHistory.length > 1 ? `
+                                    <hr>
+                                    <h6>Decision History</h6>
+                                    <div class="decision-history">
+                                        ${decisionHistory.map((decision, index) => `
+                                            <div class="card decision-card mb-2">
+                                                <div class="card-body p-2">
+                                                    <div class="d-flex justify-content-between">
+                                                        <strong>Decision #${index + 1}</strong>
+                                                        <small class="text-muted">${new Date(decision.decisionDate).toLocaleString()}</small>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        <span class="badge bg-${decision.decision === 'Approved' ? 'success' : decision.decision === 'Conditional' ? 'warning' : 'danger'}">${decision.decision}</span>
+                                                        <span class="badge bg-secondary ms-1">${decision.finalCategory}</span>
+                                                    </div>
+                                                    ${decision.comments ? `<div class="mt-1"><small><strong>Comments:</strong> ${decision.comments}</small></div>` : ''}
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            const existingModal = document.getElementById('viewDecisionModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Add new modal to body
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+            const modal = new bootstrap.Modal(document.getElementById('viewDecisionModal'));
+            modal.show();
+
+            // Clean up modal after hiding
+            document.getElementById('viewDecisionModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+
+        function deleteOwnerDecision(sampleId) {
+            if (confirm('Are you sure you want to delete this owner decision? This will reset the test status to "Waiting for Confirmation".')) {
+                const testIndex = tests.findIndex(t => t.sampleId === sampleId);
+                if (testIndex !== -1) {
+                    // Reset test to waiting for confirmation
+                    tests[testIndex].status = 'Waiting for Confirmation';
+                    delete tests[testIndex].ownerCategory;
+                    delete tests[testIndex].ownerStorageArea;
+                    delete tests[testIndex].ownerDecision;
+                    delete tests[testIndex].ownerPriceCategory;
+                    delete tests[testIndex].ownerPriority;
+                    delete tests[testIndex].ownerComments;
+                    delete tests[testIndex].ownerDecisionDate;
+                    delete tests[testIndex].ownerConditions;
+                    delete tests[testIndex].reviewDeadline;
+                    delete tests[testIndex].rejectionReason;
+                    delete tests[testIndex].returnInstructions;
+
+                    // Remove from owner decisions history
+                    ownerDecisions = ownerDecisions.filter(d => d.sampleId !== sampleId);
+
+                    // Update vehicle status
+                    const sample = samples.find(s => s.sampleId === sampleId);
+                    if (sample) {
+                        const vehicleIndex = vehicles.findIndex(v => v.vehicleNumber === sample.vehicleId);
+                        if (vehicleIndex !== -1) {
+                            vehicles[vehicleIndex].status = 'Test Completed';
+                            delete vehicles[vehicleIndex].finalCategory;
+                            delete vehicles[vehicleIndex].assignedStorageArea;
+                        }
+                    }
+
+                    // Remove related claims created by rejection
+                    claims = claims.filter(c => c.sampleId !== sampleId);
+
+                    saveData();
+                    loadConfirmationTable();
+                    updateDashboard();
+                    showAlert('Owner decision deleted successfully!', 'success');
+                }
+            }
+        }
+
+        function getDefaultStorageArea(category) {
+            const storageMap = {
+                'Premium': 'Area A - Premium Storage',
+                'Mill': 'Area B - Mill Storage',
+                'Low Mill': 'Area C - Low Mill Storage',
+                'Rejected': 'Area D - Quarantine'
+            };
+            return storageMap[category] || 'Area C - Low Mill Storage';
+        }
+
+        // Handle unloading permission change to show/hide conditional fields
+        document.getElementById('ownerUnloadingPermission').addEventListener('change', function() {
+            const conditionalFields = document.getElementById('conditionalFields');
+            const rejectionFields = document.getElementById('rejectionFields');
+            conditionalFields.style.display = this.value === 'Conditional' ? 'block' : 'none';
+            rejectionFields.style.display = this.value === 'Rejected' ? 'block' : 'none';
+        });
+
+        // Enhanced Owner Confirmation Form Submit
+        document.getElementById('ownerConfirmationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const sampleId = document.getElementById('confirmationSampleId').value;
+            const isEdit = document.getElementById('confirmationEditIndex').value === 'edit';
+            const testIndex = tests.findIndex(t => t.sampleId === sampleId);
+
+            if (testIndex === -1) {
+                showAlert('Error: Test not found', 'danger');
+                return;
+            }
+
+            const ownerDecision = document.getElementById('ownerUnloadingPermission').value;
+            const finalCategory = document.getElementById('ownerFinalCategory').value;
+            const storageArea = document.getElementById('ownerStorageArea').value || getDefaultStorageArea(finalCategory);
+
+            // Create decision record for history
+            const decisionRecord = {
+                sampleId: sampleId,
+                decision: ownerDecision,
+                finalCategory: finalCategory,
+                storageArea: storageArea,
+                priceCategory: document.getElementById('ownerPriceCategory').value,
+                priority: document.getElementById('ownerPriority').value,
+                comments: document.getElementById('ownerComments').value,
+                decisionDate: new Date().toISOString(),
+                isEdit: isEdit
+            };
+
+            // Add conditional/rejection details
+            if (ownerDecision === 'Conditional') {
+                decisionRecord.conditions = document.getElementById('ownerConditions').value;
+                decisionRecord.reviewDeadline = document.getElementById('reviewDeadline').value;
+            } else if (ownerDecision === 'Rejected') {
+                decisionRecord.rejectionReason = document.getElementById('rejectionReason').value;
+                decisionRecord.returnInstructions = document.getElementById('returnInstructions').value;
+            }
+
+            // Save to decision history
+            if (!isEdit) {
+                ownerDecisions.push(decisionRecord);
+            } else {
+                // Update latest decision in history
+                const latestDecisionIndex = ownerDecisions.map(d => d.sampleId === sampleId).lastIndexOf(true);
+                if (latestDecisionIndex !== -1) {
+                    ownerDecisions[latestDecisionIndex] = { ...ownerDecisions[latestDecisionIndex], ...decisionRecord };
+                } else {
+                    ownerDecisions.push(decisionRecord);
+                }
+            }
+
+            // Update test with owner decisions
+            tests[testIndex] = {
+                ...tests[testIndex],
+                ownerCategory: finalCategory,
+                ownerStorageArea: storageArea,
+                ownerDecision: ownerDecision,
+                ownerPriceCategory: document.getElementById('ownerPriceCategory').value,
+                ownerPriority: document.getElementById('ownerPriority').value,
+                ownerComments: document.getElementById('ownerComments').value,
+                ownerDecisionDate: new Date().toISOString(),
+                status: ownerDecision === 'Approved' ? 'Confirmed for Unloading' :
+                       ownerDecision === 'Conditional' ? 'Conditionally Approved' : 'Rejected'
+            };
+
+            // Add conditional approval details if applicable
+            if (ownerDecision === 'Conditional') {
+                tests[testIndex].ownerConditions = document.getElementById('ownerConditions').value;
+                tests[testIndex].reviewDeadline = document.getElementById('reviewDeadline').value;
+            }
+
+            // Add rejection details if applicable
+            if (ownerDecision === 'Rejected') {
+                tests[testIndex].rejectionReason = document.getElementById('rejectionReason').value;
+                tests[testIndex].returnInstructions = document.getElementById('returnInstructions').value;
+
+                // Create quality claim for rejection
+                const sample = samples.find(s => s.sampleId === sampleId);
+                if (sample) {
+                    const existingClaim = claims.find(c => c.sampleId === sampleId);
+                    if (!existingClaim) {
+                        const claim = {
+                            claimId: 'CLM' + Date.now(),
+                            vehicleId: sample.vehicleId,
+                            sampleId: sampleId,
+                            reason: document.getElementById('rejectionReason').value || 'Owner Rejection',
+                            description: `Owner rejected: ${document.getElementById('ownerComments').value || 'Quality parameters not acceptable'}`,
+                            claimDate: new Date().toISOString(),
+                            status: 'Open',
+                            returnInstructions: document.getElementById('returnInstructions').value
+                        };
+                        claims.push(claim);
+                    }
+                }
+            }
+
+            // Update vehicle status
+            const sample = samples.find(s => s.sampleId === sampleId);
+            if (sample) {
+                const vehicleIndex = vehicles.findIndex(v => v.vehicleNumber === sample.vehicleId);
+                if (vehicleIndex !== -1) {
+                    vehicles[vehicleIndex].status = tests[testIndex].status;
+                    vehicles[vehicleIndex].finalCategory = finalCategory;
+                    vehicles[vehicleIndex].assignedStorageArea = storageArea;
+                }
+            }
+
+            saveData();
+            loadConfirmationTable();
+            updateDashboard();
+            populateUnloadingDropdowns();
+            bootstrap.Modal.getInstance(document.getElementById('ownerConfirmationModal')).hide();
+
+            const alertType = ownerDecision === 'Approved' ? 'success' :
+                             ownerDecision === 'Conditional' ? 'warning' : 'info';
+            const action = isEdit ? 'updated' : 'recorded';
+            showAlert(`Owner decision ${action}: ${ownerDecision}`, alertType);
+        });
+
+        // Unloading Management
+        function openUnloadingModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('unloadingModal'));
+            const form = document.getElementById('unloadingForm');
+            form.reset();
+            populateUnloadingDropdowns();
+            if (index !== null) {
+                const unloading = unloadings[index];
+                document.getElementById('unloadingEditIndex').value = index;
+                document.getElementById('unloadingVehicleSelect').value = unloading.vehicleId;
+                document.getElementById('storageArea').value = unloading.storageArea;
+                document.getElementById('unloadingTime').value = unloading.unloadingTime;
+                document.getElementById('unloadingNotes').value = unloading.notes;
+                document.querySelector('#unloadingModal .modal-title').textContent = 'Edit Unloading';
+            } else {
+                document.getElementById('unloadingEditIndex').value = '';
+                document.querySelector('#unloadingModal .modal-title').textContent = 'Record Unloading';
+                setCurrentDateTime('unloadingTime');
+            }
+            modal.show();
+        }
+
+        function loadUnloadingTable() {
+            const tbody = document.getElementById('unloadingTableBody');
+            tbody.innerHTML = '';
+            unloadings.forEach((unloading, index) => {
+                const vehicle = vehicles.find(v => v.vehicleNumber === unloading.vehicleId);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${unloading.vehicleId}</td>
+                        <td>${vehicle ? vehicle.supplier : 'N/A'}</td>
+                        <td>${unloading.category}</td>
+                        <td>${unloading.storageArea}</td>
+                        <td>${new Date(unloading.unloadingTime).toLocaleString()}</td>
+                        <td><span class="badge bg-success">Completed</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openUnloadingModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteUnloading(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('unloadingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('unloadingEditIndex').value;
+            const vehicleId = document.getElementById('unloadingVehicleSelect').value;
+
+            const sample = samples.find(s => s.vehicleId === vehicleId);
+            const test = tests.find(t => t.sampleId === sample?.sampleId);
+            const finalCategory = test ? (test.ownerCategory || test.category) : 'Unknown';
+            const assignedStorageArea = test ? (test.ownerStorageArea || getDefaultStorageArea(finalCategory)) : document.getElementById('storageArea').value;
+
+            const unloading = {
+                vehicleId: vehicleId,
+                category: finalCategory,
+                storageArea: assignedStorageArea,
+                unloadingTime: document.getElementById('unloadingTime').value,
+                notes: document.getElementById('unloadingNotes').value,
+                status: 'Completed'
+            };
+
+            if (index === '') {
+                unloadings.push(unloading);
+                const vehicleIndex = vehicles.findIndex(v => v.vehicleNumber === vehicleId);
+                if (vehicleIndex !== -1) {
+                    vehicles[vehicleIndex].status = 'Completed';
+                }
+            } else {
+                unloadings[index] = unloading;
+            }
+
+            saveData();
+            loadUnloadingTable();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById('unloadingModal')).hide();
+            showAlert('Unloading recorded successfully!', 'success');
+        });
+
+        function deleteUnloading(index) {
+            if (confirm('Are you sure you want to delete this unloading record?')) {
+                unloadings.splice(index, 1);
+                saveData();
+                loadUnloadingTable();
+                updateDashboard();
+                showAlert('Unloading record deleted successfully!', 'success');
+            }
+        }
+
+        // Claim Management
+        function openClaimModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('claimModal'));
+            const form = document.getElementById('claimForm');
+            form.reset();
+            populateClaimDropdowns();
+            if (index !== null) {
+                const claim = claims[index];
+                document.getElementById('claimEditIndex').value = index;
+                document.getElementById('claimVehicleSelect').value = claim.vehicleId;
+                document.getElementById('claimReason').value = claim.reason;
+                document.getElementById('claimDescription').value = claim.description;
+                document.querySelector('#claimModal .modal-title').textContent = 'Edit Claim';
+            } else {
+                document.getElementById('claimEditIndex').value = '';
+                document.querySelector('#claimModal .modal-title').textContent = 'Raise Claim';
+            }
+            modal.show();
+        }
+
+        function loadClaimTable() {
+            const tbody = document.getElementById('claimTableBody');
+            tbody.innerHTML = '';
+            claims.forEach((claim, index) => {
+                const vehicle = vehicles.find(v => v.vehicleNumber === claim.vehicleId);
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${claim.claimId}</td>
+                        <td>${claim.vehicleId}</td>
+                        <td>${vehicle ? vehicle.supplier : 'N/A'}</td>
+                        <td>${claim.reason}</td>
+                        <td>${new Date(claim.claimDate).toLocaleString()}</td>
+                        <td><span class="badge bg-warning">${claim.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openClaimModal(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteClaim(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.getElementById('claimForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const index = document.getElementById('claimEditIndex').value;
+            const claim = {
+                claimId: index === '' ? 'CLM' + Date.now() : claims[index].claimId,
+                vehicleId: document.getElementById('claimVehicleSelect').value,
+                reason: document.getElementById('claimReason').value,
+                description: document.getElementById('claimDescription').value,
+                claimDate: index === '' ? new Date().toISOString() : claims[index].claimDate,
+                status: 'Open'
+            };
+            if (index === '') {
+                claims.push(claim);
+            } else {
+                claims[index] = claim;
+            }
+            saveData();
+            loadClaimTable();
+            updateDashboard();
+            bootstrap.Modal.getInstance(document.getElementById('claimModal')).hide();
+            showAlert('Quality claim saved successfully!', 'success');
+        });
+
+        function deleteClaim(index) {
+            if (confirm('Are you sure you want to delete this claim?')) {
+                claims.splice(index, 1);
+                saveData();
+                loadClaimTable();
+                updateDashboard();
+                showAlert('Claim deleted successfully!', 'success');
+            }
+        }
+
+        // Reports
+        function loadReports() {
+            generateDailySummary();
+            generateCategoryDistribution();
+            generateSupplierPerformance();
+        }
+
+        function generateDailySummary() {
+            const today = new Date().toDateString();
+            const todayVehicles = vehicles.filter(v => new Date(v.arrivalTime).toDateString() === today);
+            const todaySamples = samples.filter(s => new Date(s.samplingTime).toDateString() === today);
+            const todayTests = tests.filter(t => new Date(t.testDate).toDateString() === today);
+            document.getElementById('dailySummary').innerHTML = `
+                <p><strong>Vehicles Entered:</strong> ${todayVehicles.length}</p>
+                <p><strong>Samples Collected:</strong> ${todaySamples.length}</p>
+                <p><strong>Tests Completed:</strong> ${todayTests.length}</p>
+                <p><strong>Quality Claims:</strong> ${claims.filter(c => new Date(c.claimDate).toDateString() === today).length}</p>
+            `;
+        }
+
+        function generateCategoryDistribution() {
+            const premium = tests.filter(t => (t.ownerCategory || t.category) === 'Premium').length;
+            const mill = tests.filter(t => (t.ownerCategory || t.category) === 'Mill').length;
+            const lowMill = tests.filter(t => (t.ownerCategory || t.category) === 'Low Mill').length;
+            const rejected = tests.filter(t => (t.ownerCategory || t.category) === 'Rejected').length;
+            document.getElementById('categoryDistribution').innerHTML = `
+                <p><strong>Premium:</strong> ${premium}</p>
+                <p><strong>Mill:</strong> ${mill}</p>
+                <p><strong>Low Mill:</strong> ${lowMill}</p>
+                <p><strong>Rejected:</strong> ${rejected}</p>
+            `;
+        }
+
+        function generateSupplierPerformance() {
+            const supplierStats = {};
+            vehicles.forEach(v => {
+                if (!supplierStats[v.supplier]) {
+                    supplierStats[v.supplier] = { total: 0, claims: 0 };
+                }
+                supplierStats[v.supplier].total++;
+            });
+            claims.forEach(c => {
+                const vehicle = vehicles.find(v => v.vehicleNumber === c.vehicleId);
+                if (vehicle && supplierStats[vehicle.supplier]) {
+                    supplierStats[vehicle.supplier].claims++;
+                }
+            });
+            let performanceHtml = '';
+            Object.keys(supplierStats).forEach(supplier => {
+                const stats = supplierStats[supplier];
+                const claimRate = stats.total > 0 ? ((stats.claims / stats.total) * 100).toFixed(1) : 0;
+                performanceHtml += `
+                    <p>
+                        <strong>${supplier}:</strong><br>
+                        Deliveries: ${stats.total} | Claims: ${stats.claims} | Rate: ${claimRate}%
+                    </p>
+                `;
+            });
+            document.getElementById('supplierPerformance').innerHTML = performanceHtml || '<p>No data available</p>';
+        }
+
+        // Utility Functions
+        function populateSupplierDropdowns() {
+            const select = document.getElementById('supplierSelect');
+            if (select) {
+                select.innerHTML = '<option value="">Select Supplier</option>';
+                suppliers.filter(s => s.status === 'Active').forEach(supplier => {
+                    select.innerHTML += `
+                        <option value="${supplier.name}">${supplier.name}</option>
+                    `;
+                });
+            }
+        }
+
+        function populateVehicleDropdowns() {
+            const selects = ['sampleVehicleSelect', 'unloadingVehicleSelect', 'claimVehicleSelect'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.innerHTML = '<option value="">Select Vehicle</option>';
+                    vehicles.filter(v => ['Pending Sampling', 'Sample Collected', 'Test Completed', 'Confirmed for Unloading'].includes(v.status)).forEach(vehicle => {
+                        select.innerHTML += `
+                            <option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>
+                        `;
+                    });
+                }
+            });
+        }
+
+        function populateSampleDropdowns() {
+            const select = document.getElementById('testSampleSelect');
+            if (select) {
+                select.innerHTML = '<option value="">Select Sample</option>';
+                samples.filter(s => s.status === 'Pending Test').forEach(sample => {
+                    select.innerHTML += `
+                        <option value="${sample.sampleId}">${sample.sampleId} - ${sample.vehicleId}</option>
+                    `;
+                });
+            }
+        }
+
+        function populateUnloadingDropdowns() {
+            const select = document.getElementById('unloadingVehicleSelect');
+            if (select) {
+                select.innerHTML = '<option value="">Select Vehicle</option>';
+                vehicles.filter(v => v.status === 'Confirmed for Unloading').forEach(vehicle => {
+                    select.innerHTML += `
+                        <option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>
+                    `;
+                });
+            }
+        }
+
+        function populateClaimDropdowns() {
+            const select = document.getElementById('claimVehicleSelect');
+            if (select) {
+                select.innerHTML = '<option value="">Select Vehicle</option>';
+                vehicles.forEach(vehicle => {
+                    select.innerHTML += `
+                        <option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>
+                    `;
+                });
+            }
+        }
+
+        function getStatusClass(status) {
+            const statusClasses = {
+                'Pending Sampling': 'bg-warning',
+                'Sample Collected': 'bg-info',
+                'Test Completed': 'bg-primary',
+                'Confirmed for Unloading': 'bg-success',
+                'Conditionally Approved': 'bg-warning',
+                'Rejected': 'bg-danger',
+                'Completed': 'bg-secondary',
+                'Pending Test': 'bg-warning',
+                'Waiting for Confirmation': 'bg-info'
+            };
+            return statusClasses[status] || 'bg-secondary';
+        }
+
+        function getCategoryBadge(category) {
+            const categoryClasses = {
+                'Premium': 'bg-success',
+                'Mill': 'bg-primary',
+                'Low Mill': 'bg-warning',
+                'Rejected': 'bg-danger'
+            };
+            return `<span class="badge ${categoryClasses[category] || 'bg-secondary'}">${category}</span>`;
+        }
+
+        function getCategoryClass(category) {
+            const categoryClasses = {
+                'Premium': 'bg-success',
+                'Mill': 'bg-primary',
+                'Low Mill': 'bg-warning',
+                'Rejected': 'bg-danger'
+            };
+            return categoryClasses[category] || 'bg-secondary';
+        }
+
+        function getDecisionClass(status) {
+            const statusClasses = {
+                'Confirmed for Unloading': 'bg-success',
+                'Conditionally Approved': 'bg-warning',
+                'Rejected': 'bg-danger'
+            };
+            return statusClasses[status] || 'bg-secondary';
+        }
+
+        function setCurrentDateTime(elementId = null) {
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            if (elementId) {
+                const element = document.getElementById(elementId);
+                if (element) element.value = localDateTime;
+            } else {
+                document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+                    if (!input.value) input.value = localDateTime;
+                });
+            }
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 5000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                showAlert('Logged out successfully!', 'success');
+                // In a real application, clear session and redirect to login
+            }
+        }
+
+        // Initialize role-based access
+        function initializeRoleBasedAccess() {
+            const userRole = 'Admin';
+            document.getElementById('currentUser').textContent = userRole;
+        }
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(updateDashboard, 30000);
+
+        // Initialize role-based access on load
+        initializeRoleBasedAccess();
+    </script>
+</body>
+</html>
