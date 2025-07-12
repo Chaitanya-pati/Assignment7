@@ -409,7 +409,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="header">
             <h1>🌾 Wheat Management System</h1>
             <p>Complete Storage & Cleaning Process Management</p>
@@ -420,7 +420,7 @@
             <button class="nav-tab" onclick="showTab('orders')">Orders</button>
             <button class="nav-tab" onclick="showTab('inventory')">Inventory</button>
             <button class="nav-tab" onclick="showTab('bins')">Bins Management</button>
-            <button class="nav-tab" onclick="showTab('process')">Process Flow</button>
+            @* <button class="nav-tab" onclick="showTab('process')">Process Flow</button> *@
         </div>
 
         <!-- Dashboard Tab -->
@@ -608,7 +608,7 @@
         </div>
 
         <!-- Process Flow Tab -->
-        <div id="process" class="tab-content">
+        <div id="process" class="tab-content" hiden>
             <h2>🔄 Complete Process Flow</h2>
 
             <div class="card">
