@@ -875,9 +875,9 @@
                     <div class="modal-body">
                         <input type="hidden" id="claimEditIndex">
                         <div class="mb-3">
-                            <label class="form-label">Vehicle</label>
+                            <label class="form-label">Supplier</label>
                             <select id="claimVehicleSelect" class="form-select" required>
-                                <option value="">Select Vehicle</option>
+                                <option value="">Select Supplier</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -2120,7 +2120,7 @@
         function populateClaimDropdowns() {
             const select = document.getElementById('claimVehicleSelect');
             if (select) {
-                select.innerHTML = '<option value="">Select Vehicle</option>';
+                select.innerHTML = '<option value="">Select Supplier</option>';
                 vehicles.forEach(vehicle => {
                     select.innerHTML += `
                         <option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>
