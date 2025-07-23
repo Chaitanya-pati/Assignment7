@@ -1732,9 +1732,22 @@
 
                 // Pre-fill with auto category
                 document.getElementById('finalCategory').value = test.category;
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Category Assignment & Storage Decision';
             } else {
                 document.getElementById('approvedWheatSection').style.display = 'none';
                 document.getElementById('claimWheatSection').style.display = 'block';
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Quality Claim Resolution';
+
+                // Pre-populate claim information
+                const claimInfo = document.createElement('div');
+                claimInfo.className = 'alert alert-warning mb-3';
+                claimInfo.innerHTML = `
+                    <h6><i class="fas fa-exclamation-triangle"></i> Quality Issues Detected</h6>
+                    <p><strong>Vehicle:</strong> ${vehicle?.vehicleNumber} (${vehicle?.supplier})</p>
+                    <p><strong>Test Results:</strong> Moisture: ${test.moisturePercent}%, Foreign Matter: ${test.foreignMatterPercent}%, Color: ${test.colorGrade}</p>
+                    <p><strong>Auto Category:</strong> ${test.category}</p>
+                `;
+                document.getElementById('claimWheatSection').insertBefore(claimInfo, document.getElementById('claimWheatSection').firstChild.nextSibling);
 
                 // Add change listener for supplier contact status
                 document.getElementById('supplierContactStatus').addEventListener('change', function() {
@@ -1895,20 +1908,22 @@
 
             select.innerHTML = '<option value="">Select Authorized Vehicle</option>';
 
-            // Get vehicles that are authorized for unloading
-            const authorizedTests = tests.filter(t => t.status === 'Authorized for Unloading');
-
-            authorizedTests.forEach(test => {
-                const sample = samples.find(s => s.sampleId === test.sampleId);
+            // Get vehicles that are authorized for unloading based on owner decisions
+            ownerDecisions.filter(d => d.status === 'Authorized for Unloading').forEach(decision => {
+                const test = tests.find(t => t.testId === decision.testId);
+                const sample = samples.find(s => s.sampleId === test?.sampleId);
                 const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
-                const decision = ownerDecisions.find(d => d.testId === test.testId);
 
-                if (vehicle && decision) {
-                    select.innerHTML += `
-                        <option value="${vehicle.vehicleNumber}">
-                            ${vehicle.vehicleNumber} - ${vehicle.supplier} (${decision.finalCategory})
-                        </option>
-                    `;
+                if (vehicle && test && sample) {
+                    // Check if not already unloaded
+                    const alreadyUnloaded = unloadings.find(u => u.vehicleNumber === vehicle.vehicleNumber);
+                    if (!alreadyUnloaded) {
+                        select.innerHTML += `
+                            <option value="${vehicle.vehicleNumber}" data-test-id="${test.testId}">
+                                ${vehicle.vehicleNumber} - ${vehicle.supplier} (${decision.finalCategory} → ${decision.storageArea})
+                            </option>
+                        `;
+                    }
                 }
             });
         }
@@ -2432,35 +2447,56 @@
             const container = document.getElementById('workflowStatus');
             if (!container) return;
 
+            // Calculate real workflow statistics
+            const vehiclesWithPhotos = vehicles.filter(v => v.photoCount > 0).length;
+            const samplesCollected = samples.length;
+            const testsCompleted = tests.length;
+            const pendingOwnerDecisions = tests.filter(t =>
+                t.status === 'Waiting for Owner Decision' ||
+                t.status === 'Quality Claim Raised' ||
+                t.status === 'Pending Supplier Agreement'
+            ).length;
+            const completedUnloadings = unloadings.length;
+
             const steps = [
                 {
-                    name: 'Vehicle Registration',
-                    count: vehicles.length,
-                    status: vehicles.length > 0 ? 'complete' : 'pending',
+                    name: 'Vehicle Registration & Photos',
+                    count: vehiclesWithPhotos,
+                    total: vehicles.length,
+                    status: vehiclesWithPhotos === vehicles.length && vehicles.length > 0 ? 'complete' :
+                           vehiclesWithPhotos > 0 ? 'active' : 'pending',
                     icon: 'fas fa-truck'
                 },
                 {
                     name: 'Sample Collection',
-                    count: samples.length,
-                    status: samples.length > 0 ? 'complete' : 'pending',
+                    count: samplesCollected,
+                    total: vehiclesWithPhotos,
+                    status: samplesCollected === vehiclesWithPhotos && samplesCollected > 0 ? 'complete' :
+                           samplesCollected > 0 ? 'active' : 'pending',
                     icon: 'fas fa-flask'
                 },
                 {
                     name: 'Lab Testing',
-                    count: tests.length,
-                    status: tests.length > 0 ? 'complete' : 'pending',
+                    count: testsCompleted,
+                    total: samplesCollected,
+                    status: testsCompleted === samplesCollected && testsCompleted > 0 ? 'complete' :
+                           testsCompleted > 0 ? 'active' : 'pending',
                     icon: 'fas fa-microscope'
                 },
                 {
                     name: 'Owner Decisions',
                     count: ownerDecisions.length,
-                    status: tests.filter(t => t.status === 'Waiting for Owner Decision' || t.status === 'Quality Claim Raised').length > 0 ? 'active' : 'pending',
+                    total: testsCompleted,
+                    pending: pendingOwnerDecisions,
+                    status: pendingOwnerDecisions > 0 ? 'active' :
+                           ownerDecisions.length === testsCompleted && testsCompleted > 0 ? 'complete' : 'pending',
                     icon: 'fas fa-user-tie'
                 },
                 {
                     name: 'Unloading Complete',
-                    count: unloadings.length,
-                    status: unloadings.length > 0 ? 'complete' : 'pending',
+                    count: completedUnloadings,
+                    total: ownerDecisions.filter(d => d.status === 'Authorized for Unloading').length,
+                    status: completedUnloadings > 0 ? 'complete' : 'pending',
                     icon: 'fas fa-warehouse'
                 }
             ];
@@ -2470,13 +2506,18 @@
                 const stepClass = step.status === 'complete' ? 'step-complete' :
                                 step.status === 'active' ? 'step-active' : '';
 
+                const displayCount = step.pending !== undefined ?
+                    `${step.count} (${step.pending} pending)` :
+                    step.total !== undefined ? `${step.count}/${step.total}` : step.count;
+
                 html += `
                     <div class="col">
                         <div class="workflow-step ${stepClass}">
                             <div class="text-center">
                                 <i class="${step.icon} fa-2x mb-2"></i>
                                 <h6>${step.name}</h6>
-                                <h4>${step.count}</h4>
+                                <h5>${displayCount}</h5>
+                                <small class="text-muted">${step.status.toUpperCase()}</small>
                             </div>
                         </div>
                     </div>
@@ -2697,7 +2738,11 @@
             const select = document.getElementById('sampleVehicleSelect');
             if (select) {
                 select.innerHTML = '<option value="">Select Vehicle</option>';
-                vehicles.filter(v => v.status.includes('Pending Sampling') || v.status.includes('Sample Collected')).forEach(vehicle => {
+                // Only show vehicles that have photos captured and are ready for sampling
+                vehicles.filter(v =>
+                    v.status === 'Photos Captured - Pending Sampling' ||
+                    v.status === 'Sample Collected - Pending Lab Test'
+                ).forEach(vehicle => {
                     select.innerHTML += `<option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>`;
                 });
             }
@@ -2707,8 +2752,10 @@
             const select = document.getElementById('testSampleSelect');
             if (select) {
                 select.innerHTML = '<option value="">Select Sample</option>';
+                // Only show samples that are collected and pending test
                 samples.filter(s => s.status === 'Pending Test').forEach(sample => {
-                    select.innerHTML += `<option value="${sample.sampleId}">${sample.sampleId} - ${sample.vehicleId}</option>`;
+                    const vehicle = vehicles.find(v => v.vehicleNumber === sample.vehicleId);
+                    select.innerHTML += `<option value="${sample.sampleId}">${sample.sampleId} - Vehicle: ${sample.vehicleId} (${vehicle ? vehicle.supplier : 'Unknown'})</option>`;
                 });
             }
         }
@@ -3195,6 +3242,35 @@
                     const categoryResult = document.getElementById('categoryResult');
                     if (categoryResult) categoryResult.value = category;
                 }
+            }
+
+            // Add sample data for testing the complete workflow
+            if (vehicles.length === 0) {
+                // Add a test vehicle with photos
+                vehicles.push({
+                    vehicleNumber: 'TN01AB1234',
+                    driverName: 'Rajesh Kumar',
+                    arrivalTime: new Date().toISOString().slice(0, 16),
+                    supplier: 'Premium Wheat Suppliers Ltd',
+                    grossWeight: 25.5,
+                    status: 'Photos Captured - Pending Sampling',
+                    entryTime: new Date().toISOString(),
+                    photoCount: 3
+                });
+
+                // Add sample photos for testing
+                vehiclePhotos['TN01AB1234'] = [
+                    { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Vehicle_Front.jpg', timestamp: new Date().toISOString() },
+                    { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Wheat_Load.jpg', timestamp: new Date().toISOString() },
+                    { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Driver_Documents.jpg', timestamp: new Date().toISOString() }
+                ];
+
+                // Update dashboard and tables
+                updateDashboard();
+                updateWorkflowStatus();
+                loadVehicleTable();
+
+                addNotification('Sample vehicle data loaded for testing workflow', 'info');
             }
         });
 
