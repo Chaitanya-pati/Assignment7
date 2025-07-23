@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <DisableBuildCompression>true</DisableBuildCompression>
+    <DisablePublishCompression>true</DisablePublishCompression>
+    <EnableDefaultCompressedItems>false</EnableDefaultCompressedItems>
+  </PropertyGroup>
+</Project>

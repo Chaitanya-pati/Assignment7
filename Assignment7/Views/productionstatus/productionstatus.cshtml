@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Wheat Management System</title>
+    <title>Complete Enhanced Wheat Management System</title>
     <style>
         * {
             margin: 0;
@@ -126,11 +126,6 @@
             color: #1e88e5;
         }
 
-        .status-transfer {
-            background: #fff3e0;
-            color: #ff9800;
-        }
-
         .status-precleaning {
             background: #fff3e0;
             color: #ff9800;
@@ -149,6 +144,11 @@
         .status-processing {
             background: #fff8e1;
             color: #ffc107;
+        }
+
+        .status-grinding {
+            background: #e1f5fe;
+            color: #0277bd;
         }
 
         .status-ready {
@@ -374,26 +374,59 @@
             border-left-color: #45b7d1;
         }
 
-        .cleaning-log {
+        .waste-precleaning {
+            border-left-color: #f39c12;
+        }
+
+        .waste-postcleaning {
+            border-left-color: #e74c3c;
+        }
+
+        .waste-b1magnet {
+            border-left-color: #9b59b6;
+        }
+
+        .moisture-card {
+            background: #e8f4fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        .production-ratio {
+            background: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .ratio-warning {
+            border-color: #ffc107;
+            background: #fff8e1;
+        }
+
+        .ratio-danger {
+            border-color: #dc3545;
+            background: #ffebee;
+        }
+
+        .dispatch-item {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #28a745;
+            margin: 10px 0;
+            border-left: 4px solid #2196f3;
         }
 
-        .file-upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
+        .cleaning-frequency {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
         }
-
-            .file-upload-area:hover {
-                border-color: #667eea;
-            }
 
         .alert {
             padding: 15px;
@@ -420,6 +453,12 @@
             color: #2e7d32;
         }
 
+        .alert-danger {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+        }
+
         @@media (max-width: 768px) {
             .nav-tabs
 
@@ -439,22 +478,24 @@
             grid-template-columns: 1fr;
         }
 
-        }
-    </style>
+        }</style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌾 Enhanced Wheat Management System</h1>
-            <p>Complete Storage, Cleaning & Waste Management</p>
+            <h1>🌾 Complete Enhanced Wheat Management System</h1>
+            <p>End-to-End Production Management with Waste Tracking, Moisture Control & Dispatch</p>
         </div>
 
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
             <button class="nav-tab" onclick="showTab('orders')">Orders</button>
-            <button class="nav-tab" onclick="showTab('inventory')">Inventory</button>
+            <button class="nav-tab" onclick="showTab('moisture')">Moisture Control</button>
+            <button class="nav-tab" onclick="showTab('grinding')">B1 Scale & Grinding</button>
+            <button class="nav-tab" onclick="showTab('production')">Production</button>
+            <button class="nav-tab" onclick="showTab('dispatch')">Dispatch</button>
             <button class="nav-tab" onclick="showTab('waste')">Waste Management</button>
-            <button class="nav-tab" onclick="showTab('cleaning')">Cleaning Logs</button>
+            <button class="nav-tab" onclick="showTab('inventory')">Inventory</button>
             <button class="nav-tab" onclick="showTab('bins')">Bins</button>
         </div>
 
@@ -464,27 +505,38 @@
                 <div class="card">
                     <h3>📊 Today's Overview</h3>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Total Orders:</span>
-                        <strong id="totalOrders">0</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                         <span>Active Orders:</span>
                         <strong id="activeOrders">0</strong>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Today's Waste:</span>
-                        <strong id="todayWaste">0kg</strong>
+                        <span>Ready for Dispatch:</span>
+                        <strong id="readyDispatch">0</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Total Production Today:</span>
+                        <strong id="todayProduction">0kg</strong>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span>Last Cleaning:</span>
-                        <strong id="lastCleaning">-</strong>
+                        <span>B1 Scale Hourly Rate:</span>
+                        <strong id="b1HourlyRate">0kg/hr</strong>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>⏰ Current Processing</h3>
-                    <div id="currentProcessing">
-                        <p style="color: #666; text-align: center; margin-top: 20px;">No orders currently processing</p>
+                    <h3>⚡ Production Efficiency</h3>
+                    <div style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Products Ratio:</span>
+                            <span id="productsRatio">0%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <span>Bran Ratio:</span>
+                            <span id="branRatio">0%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Machine Efficiency:</span>
+                            <span id="machineEfficiency">0%</span>
+                        </div>
                     </div>
                 </div>
 
@@ -492,16 +544,16 @@
                     <h3>🗑️ Today's Waste Summary</h3>
                     <div style="margin-bottom: 15px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>🥁 Drum Shield:</span>
-                            <span id="todayDrumWaste">0kg</span>
+                            <span>🥁 Pre-cleaning:</span>
+                            <span id="todayPrecleaningWaste">0kg</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>🧲 Magnets:</span>
-                            <span id="todayMagnetWaste">0kg</span>
+                            <span>🧹 Post 24hr Cleaning:</span>
+                            <span id="todayPostcleaningWaste">0kg</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
-                            <span>⚪ Separator:</span>
-                            <span id="todaySeparatorWaste">0kg</span>
+                            <span>🧲 B1 Magnet:</span>
+                            <span id="todayB1MagnetWaste">0kg</span>
                         </div>
                     </div>
                 </div>
@@ -514,8 +566,8 @@
                     <button class="btn btn-warning" onclick="showModal('wasteModal')" style="width: 100%; margin-bottom: 10px;">
                         🗑️ Log Waste
                     </button>
-                    <button class="btn btn-success" onclick="showModal('cleaningModal')" style="width: 100%;">
-                        🧹 Log Cleaning
+                    <button class="btn btn-success" onclick="showModal('moistureModal')" style="width: 100%;">
+                        💧 Moisture Control
                     </button>
                 </div>
             </div>
@@ -535,12 +587,12 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
+                            <th>Batch No</th>
                             <th>Customer</th>
                             <th>Quantity</th>
-                            <th>Mix (%)</th>
                             <th>Current Stage</th>
-                            <th>Bin No.</th>
                             <th>Progress</th>
+                            <th>Moisture Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -551,10 +603,209 @@
             </div>
         </div>
 
+        <!-- Moisture Control Tab -->
+        <div id="moisture" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>💧 Moisture Control Management</h2>
+                <button class="btn btn-primary" onclick="showModal('moistureModal')">
+                    ➕ Update Moisture
+                </button>
+            </div>
+
+            <div id="moistureTracking">
+                <!-- Moisture tracking will be populated here -->
+            </div>
+        </div>
+
+        <!-- B1 Scale & Grinding Tab -->
+        <div id="grinding" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>⚖️ B1 Scale & Grinding Operations</h2>
+                <button class="btn btn-primary" onclick="showModal('grindingModal')">
+                    ➕ Log Grinding
+                </button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>⚖️ B1 Scale Statistics</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Hourly:</span>
+                        <strong id="grindingHourly">0kg</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Daily:</span>
+                        <strong id="grindingDaily">0kg</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Monthly:</span>
+                        <strong id="grindingMonthly">0kg</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🧲 B1 Magnet Cleaning</h3>
+                    <div id="b1CleaningStatus" class="cleaning-frequency">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Last Cleaning:</span>
+                            <strong id="lastB1Cleaning">Never</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Wheat Processed Since:</span>
+                            <strong id="wheatSinceCleaning">0kg</strong>
+                        </div>
+                        <button class="btn btn-warning btn-small" onclick="cleanB1Magnet()" style="width: 100%;">
+                            🧹 Clean B1 Magnet
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>Grinding History</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Order ID</th>
+                            <th>Batch No</th>
+                            <th>Weight (kg)</th>
+                            <th>Rate (kg/hr)</th>
+                            <th>B1 Magnet Waste</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grindingTable">
+                        <!-- Grinding history will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Production Tab -->
+        <div id="production" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>🏭 Production Management</h2>
+                <button class="btn btn-primary" onclick="showModal('productionModal')">
+                    ➕ Log Production
+                </button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>📊 Production Ratios</h3>
+                    <div id="productionRatios">
+                        <!-- Production ratios will be populated here -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ Product Configuration</h3>
+                    <button class="btn btn-secondary" onclick="showModal('productConfigModal')" style="width: 100%; margin-bottom: 10px;">
+                        🔧 Configure Products
+                    </button>
+                    <div id="currentProductConfig">
+                        <!-- Current product configuration will be shown here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>Production History</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Order ID</th>
+                            <th>Batch No</th>
+                            <th>Products (kg)</th>
+                            <th>Bran (kg)</th>
+                            <th>Ratio Status</th>
+                            <th>Total Bags</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productionTable">
+                        <!-- Production history will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Dispatch Tab -->
+        <div id="dispatch" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>🚚 Dispatch Management (FIFO)</h2>
+                <button class="btn btn-primary" onclick="showModal('dispatchModal')">
+                    📦 Process Dispatch
+                </button>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>FIFO Principle:</strong> Products are dispatched in First-Come-First-Serve order based on production timestamp.
+            </div>
+
+            <div id="dispatchQueue">
+                <!-- Dispatch queue will be populated here -->
+            </div>
+        </div>
+
+        <!-- Enhanced Waste Management Tab -->
+        <div id="waste" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>🗑️ Complete Waste Management</h2>
+                <button class="btn btn-primary" onclick="showModal('wasteModal')">
+                    ➕ Log Waste Entry
+                </button>
+            </div>
+
+            <div class="waste-summary">
+                <div class="waste-card waste-precleaning">
+                    <h4>🥁 Pre-cleaning Waste</h4>
+                    <div style="font-size: 1.5em; margin: 10px 0;">
+                        <span id="totalPrecleaningWaste">0</span>kg
+                    </div>
+                    <small>From pre-cleaning to conditioning</small>
+                </div>
+                <div class="waste-card waste-postcleaning">
+                    <h4>🧹 Post 24hr Cleaning</h4>
+                    <div style="font-size: 1.5em; margin: 10px 0;">
+                        <span id="totalPostcleaningWaste">0</span>kg
+                    </div>
+                    <small>After 24 hour conditioning</small>
+                </div>
+                <div class="waste-card waste-b1magnet">
+                    <h4>🧲 B1 Scale Magnet</h4>
+                    <div style="font-size: 1.5em; margin: 10px 0;">
+                        <span id="totalB1MagnetWaste">0</span>kg
+                    </div>
+                    <small>B1 scale magnetic separation</small>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>Complete Waste History</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Stage</th>
+                            <th>Waste Type</th>
+                            <th>Weight (kg)</th>
+                            <th>Order ID</th>
+                            <th>Batch No</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wasteTable">
+                        <!-- Waste entries will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Inventory Tab -->
         <div id="inventory" class="tab-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>📦 Godown Inventory Management</h2>
+                <h2>📦 Inventory Management</h2>
                 <button class="btn btn-primary" onclick="showModal('inventoryModal')">
                     ➕ Update Stock
                 </button>
@@ -566,102 +817,31 @@
                     <div style="font-size: 2em; text-align: center; margin: 20px 0;">
                         <span id="hdStock">0</span>t
                     </div>
-                    <div style="text-align: center; color: #666;">Unlimited Capacity</div>
-                    <button class="btn btn-warning btn-small" onclick="updateStock('HD')" style="width: 100%; margin-top: 10px;">
-                        Update Stock
-                    </button>
+                    <div style="text-align: center; color: #666;">Raw Material</div>
                 </div>
                 <div class="card">
                     <h3>LMQ (Low Milk Quality)</h3>
                     <div style="font-size: 2em; text-align: center; margin: 20px 0;">
                         <span id="lmqStock">0</span>t
                     </div>
-                    <div style="text-align: center; color: #666;">Unlimited Capacity</div>
-                    <button class="btn btn-warning btn-small" onclick="updateStock('LMQ')" style="width: 100%; margin-top: 10px;">
-                        Update Stock
-                    </button>
+                    <div style="text-align: center; color: #666;">Raw Material</div>
                 </div>
                 <div class="card">
                     <h3>MQ (Medium Quality)</h3>
                     <div style="font-size: 2em; text-align: center; margin: 20px 0;">
                         <span id="mqStock">0</span>t
                     </div>
-                    <div style="text-align: center; color: #666;">Unlimited Capacity</div>
-                    <button class="btn btn-warning btn-small" onclick="updateStock('MQ')" style="width: 100%; margin-top: 10px;">
-                        Update Stock
-                    </button>
+                    <div style="text-align: center; color: #666;">Raw Material</div>
                 </div>
             </div>
-        </div>
 
-        <!-- Waste Management Tab -->
-        <div id="waste" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🗑️ Waste Management</h2>
-                <button class="btn btn-primary" onclick="showModal('wasteModal')">
-                    ➕ Log Waste Entry
-                </button>
-            </div>
-
-            <div class="waste-summary">
-                <div class="waste-card waste-drum">
-                    <h4>🥁 Drum Shield</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalDrumWaste">0</span>kg
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>🏭 Finished Products Inventory</h3>
+                    <div id="finishedProductsInventory">
+                        <!-- Finished products inventory will be populated here -->
                     </div>
-                    <small>Plastic, Cotton, Thread</small>
                 </div>
-                <div class="waste-card waste-magnet">
-                    <h4>🧲 Magnets Machine</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalMagnetWaste">0</span>kg
-                    </div>
-                    <small>Metal, Particles</small>
-                </div>
-                <div class="waste-card waste-separator">
-                    <h4>⚪ Separator</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalSeparatorWaste">0</span>kg
-                    </div>
-                    <small>Stones, Heavy Particles</small>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h3>Recent Waste Entries</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Machine</th>
-                            <th>Waste Type</th>
-                            <th>Weight (kg)</th>
-                            <th>Order ID</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="wasteTable">
-                        <!-- Waste entries will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Cleaning Logs Tab -->
-        <div id="cleaning" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🧹 Cleaning & Maintenance Logs</h2>
-                <button class="btn btn-primary" onclick="showModal('cleaningModal')">
-                    ➕ Log Cleaning Activity
-                </button>
-            </div>
-
-            <div class="alert alert-info">
-                <strong>Cleaning Schedule:</strong> Configured for every 3 hours. Upload evidence photos for each cleaning activity.
-            </div>
-
-            <div id="cleaningLogs">
-                <!-- Cleaning logs will be populated here -->
             </div>
         </div>
 
@@ -690,6 +870,7 @@
         </div>
     </div>
 
+    <!-- Enhanced Modals -->
     <!-- New Order Modal -->
     <div id="newOrderModal" class="modal">
         <div class="modal-content">
@@ -734,16 +915,245 @@
         </div>
     </div>
 
-    <!-- Waste Management Modal -->
+    <!-- Moisture Control Modal -->
+    <div id="moistureModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('moistureModal')">&times;</span>
+            <h2>💧 Moisture Control</h2>
+            <form id="moistureForm">
+                <div class="form-group">
+                    <label for="moistureOrderId">Order ID:</label>
+                    <select id="moistureOrderId" required>
+                        <option value="">Select Order</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="moistureStage">Stage:</label>
+                    <select id="moistureStage" required>
+                        <option value="">Select Stage</option>
+                        <option value="initial">Initial (Before 24hr Cleaning)</option>
+                        <option value="post24hr">After 24hr Cleaning</option>
+                        <option value="target">Target Setting (Before 12hr)</option>
+                        <option value="final">Final Product</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="currentMoisture">Current Moisture (%):</label>
+                    <input type="number" id="currentMoisture" required min="0" max="100" step="0.1">
+                </div>
+                <div class="form-group" id="targetMoistureGroup" style="display: none;">
+                    <label for="targetMoisture">Target Moisture (%):</label>
+                    <input type="number" id="targetMoisture" min="0" max="100" step="0.1">
+                </div>
+                <div class="form-group" id="waterRequiredGroup" style="display: none;">
+                    <label for="waterRequired">Water Required (liters):</label>
+                    <input type="number" id="waterRequired" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="moistureNotes">Notes:</label>
+                    <textarea id="moistureNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Moisture</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Grinding Modal -->
+    <div id="grindingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('grindingModal')">&times;</span>
+            <h2>⚖️ Log Grinding Activity</h2>
+            <form id="grindingForm">
+                <div class="form-group">
+                    <label for="grindingOrderId">Order ID:</label>
+                    <select id="grindingOrderId" required>
+                        <option value="">Select Order</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="grindingWeight">Weight Processed (kg):</label>
+                    <input type="number" id="grindingWeight" required min="1" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="grindingDuration">Processing Duration (minutes):</label>
+                    <input type="number" id="grindingDuration" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="b1MagnetWaste">B1 Magnet Waste (kg):</label>
+                    <input type="number" id="b1MagnetWaste" min="0" step="0.1" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="grindingNotes">Notes:</label>
+                    <textarea id="grindingNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Log Grinding</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Production Modal -->
+    <div id="productionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('productionModal')">&times;</span>
+            <h2>🏭 Log Production</h2>
+            <form id="productionForm">
+                <div class="form-group">
+                    <label for="productionOrderId">Order ID:</label>
+                    <select id="productionOrderId" required>
+                        <option value="">Select Order</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="totalProduced">Total Weight Produced (kg):</label>
+                    <input type="number" id="totalProduced" required min="1" step="0.1">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productsWeight">Products Weight (kg):</label>
+                        <input type="number" id="productsWeight" required min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="branWeight">Bran Weight (kg):</label>
+                        <input type="number" id="branWeight" required min="0" step="0.1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="totalBags">Total Bags Produced:</label>
+                    <input type="number" id="totalBags" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="productionNotes">Notes:</label>
+                    <textarea id="productionNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Log Production</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Configuration Modal -->
+    <div id="productConfigModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('productConfigModal')">&times;</span>
+            <h2>⚙️ Configure Product Types</h2>
+            <form id="productConfigForm">
+                <div class="alert alert-info">
+                    Configure which products to generate and their percentages. Unchecked products will not be produced.
+                </div>
+
+                <h4>Main Products:</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceMaida" checked> Maida</label>
+                        <input type="number" id="maidaPercent" min="0" max="100" value="40" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceSuji" checked> Suji</label>
+                        <input type="number" id="sujiPercent" min="0" max="100" value="20" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceChakkiAta"> Chakki Ata</label>
+                        <input type="number" id="chakkiAtaPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceTandooriAta"> Tandoori Ata</label>
+                        <input type="number" id="tandooriAtaPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                </div>
+
+                <h4>Special Products:</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceChiroti"> Chiroti</label>
+                        <input type="number" id="chirotiPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceRava"> Rava</label>
+                        <input type="number" id="ravaPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceDpMaida"> DP Maida</label>
+                        <input type="number" id="dpMaidaPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" id="produceLotoMaida"> Loto Maida</label>
+                        <input type="number" id="lotoMaidaPercent" min="0" max="100" value="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><input type="checkbox" id="produceNestleMaida"> Nestle Maida</label>
+                    <input type="number" id="nestleMaidaPercent" min="0" max="100" value="0" step="0.1">
+                </div>
+
+                <h4>Ratio Settings:</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minProductsRatio">Min Products Ratio (%):</label>
+                        <input type="number" id="minProductsRatio" min="0" max="100" value="75" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxProductsRatio">Max Products Ratio (%):</label>
+                        <input type="number" id="maxProductsRatio" min="0" max="100" value="77" step="0.1">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Configuration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dispatch Modal -->
+    <div id="dispatchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('dispatchModal')">&times;</span>
+            <h2>📦 Process Dispatch</h2>
+            <form id="dispatchForm">
+                <div class="form-group">
+                    <label for="dispatchOrderId">Order ID (FIFO Order):</label>
+                    <select id="dispatchOrderId" required>
+                        <option value="">Select Order</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dispatchBags">Number of Bags to Dispatch:</label>
+                    <input type="number" id="dispatchBags" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="vehicleNumber">Vehicle Number:</label>
+                    <input type="text" id="vehicleNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="driverName">Driver Name:</label>
+                    <input type="text" id="driverName" required>
+                </div>
+                <div class="form-group">
+                    <label for="dispatchNotes">Dispatch Notes:</label>
+                    <textarea id="dispatchNotes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Process Dispatch</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enhanced Waste Modal -->
     <div id="wasteModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('wasteModal')">&times;</span>
             <h2>🗑️ Log Waste Entry</h2>
             <form id="wasteForm">
                 <div class="form-group">
-                    <label for="wasteMachine">Machine:</label>
-                    <select id="wasteMachine" required>
-                        <option value="">Select Machine</option>
+                    <label for="wasteStage">Waste Collection Stage:</label>
+                    <select id="wasteStage" required>
+                        <option value="">Select Stage</option>
+                        <option value="precleaning">🥁 Pre-cleaning to Conditioning</option>
+                        <option value="postcleaning">🧹 After 24hr Conditioning</option>
+                        <option value="b1magnet">🧲 B1 Scale Magnet</option>
                         <option value="drum">🥁 Drum Shield</option>
                         <option value="magnet">🧲 Magnets Machine</option>
                         <option value="separator">⚪ Separator</option>
@@ -751,15 +1161,17 @@
                 </div>
                 <div class="form-group">
                     <label for="wasteType">Waste Type:</label>
-                    <input type="text" id="wasteType" placeholder="e.g., Plastic, Metal, Stones" required>
+                    <input type="text" id="wasteType" placeholder="e.g., Plastic, Metal, Stones, Organic matter" required>
                 </div>
                 <div class="form-group">
                     <label for="wasteWeight">Weight (kg):</label>
                     <input type="number" id="wasteWeight" required min="0" step="0.1">
                 </div>
                 <div class="form-group">
-                    <label for="relatedOrderWaste">Related Order ID (optional):</label>
-                    <input type="text" id="relatedOrderWaste" placeholder="e.g., WO123456">
+                    <label for="relatedOrderWaste">Related Order ID:</label>
+                    <select id="relatedOrderWaste">
+                        <option value="">Select Order (Optional)</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="wasteNotes">Notes:</label>
@@ -770,63 +1182,14 @@
         </div>
     </div>
 
-    <!-- Cleaning Modal -->
-    <div id="cleaningModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('cleaningModal')">&times;</span>
-            <h2>🧹 Log Cleaning Activity</h2>
-            <form id="cleaningForm">
-                <div class="form-group">
-                    <label for="cleaningMachine">Machine/Area:</label>
-                    <select id="cleaningMachine" required>
-                        <option value="">Select Machine/Area</option>
-                        <option value="drum">🥁 Drum Shield</option>
-                        <option value="magnet">🧲 Magnets Machine</option>
-                        <option value="separator">⚪ Separator</option>
-                        <option value="condense">🏭 Condense Bins Area</option>
-                        <option value="milly">🏭 Milly Bins Area</option>
-                        <option value="general">🏗️ General Area</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="cleaningType">Cleaning Type:</label>
-                    <select id="cleaningType" required>
-                        <option value="">Select Type</option>
-                        <option value="routine">Routine Cleaning</option>
-                        <option value="deep">Deep Cleaning</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="inspection">Inspection</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="cleaningDuration">Duration (minutes):</label>
-                    <input type="number" id="cleaningDuration" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="cleaningEvidence">Upload Evidence Photo:</label>
-                    <div class="file-upload-area" onclick="document.getElementById('evidencePhoto').click()">
-                        <p>📸 Click to upload photo evidence</p>
-                        <small>Accepted formats: JPG, PNG, WebP</small>
-                    </div>
-                    <input type="file" id="evidencePhoto" accept="image/*" style="display: none;">
-                </div>
-                <div class="form-group">
-                    <label for="cleaningNotes">Cleaning Notes:</label>
-                    <textarea id="cleaningNotes" rows="3" placeholder="Describe the cleaning activity, any issues found, etc."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Log Cleaning Activity</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Inventory Management Modal -->
+    <!-- Other existing modals (inventory, bins) remain the same -->
     <div id="inventoryModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('inventoryModal')">&times;</span>
             <h2>📦 Update Inventory</h2>
             <form id="inventoryForm">
                 <div class="form-group">
-                    <label for="stockType">Wheat Type:</label>
+                    <label for="stockType">Item Type:</label>
                     <select id="stockType" required>
                         <option value="">Select Type</option>
                         <option value="HD">HD (High Density)</option>
@@ -856,7 +1219,6 @@
         </div>
     </div>
 
-    <!-- Bin Management Modal -->
     <div id="binModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('binModal')">&times;</span>
@@ -900,25 +1262,59 @@
     </div>
 
     <script>
-        // Initialize data structures
+        // Enhanced data structures
         let orders = JSON.parse(localStorage.getItem('wheatOrders')) || [];
         let inventory = JSON.parse(localStorage.getItem('wheatInventory')) || { HD: 100, LMQ: 80, MQ: 150 };
         let wasteEntries = JSON.parse(localStorage.getItem('wasteEntries')) || [];
+        let moistureRecords = JSON.parse(localStorage.getItem('moistureRecords')) || [];
+        let grindingRecords = JSON.parse(localStorage.getItem('grindingRecords')) || [];
+        let productionRecords = JSON.parse(localStorage.getItem('productionRecords')) || [];
+        let dispatchRecords = JSON.parse(localStorage.getItem('dispatchRecords')) || [];
+        let productConfig = JSON.parse(localStorage.getItem('productConfig')) || getDefaultProductConfig();
         let cleaningLogs = JSON.parse(localStorage.getItem('cleaningLogs')) || [];
-        let bins = JSON.parse(localStorage.getItem('wheatBins')) || {
-            condense: [
-                { id: 1, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                { id: 2, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                { id: 3, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                { id: 4, capacity: 65, occupied: 0, orderId: null, startTime: null }
-            ],
-            milly: [
-                { id: 1, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                { id: 2, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                { id: 3, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                { id: 4, capacity: 25, occupied: 0, orderId: null, startTime: null }
-            ]
-        };
+        let bins = JSON.parse(localStorage.getItem('wheatBins')) || getDefaultBins();
+        let finishedInventory = JSON.parse(localStorage.getItem('finishedInventory')) || {};
+
+        // Global counters for tracking
+        let b1LastCleaning = JSON.parse(localStorage.getItem('b1LastCleaning')) || null;
+        let wheatProcessedSinceCleaning = parseFloat(localStorage.getItem('wheatProcessedSinceCleaning')) || 0;
+
+        function getDefaultProductConfig() {
+            return {
+                products: {
+                    maida: { enabled: true, percentage: 40 },
+                    suji: { enabled: true, percentage: 20 },
+                    chakkiAta: { enabled: false, percentage: 0 },
+                    tandooriAta: { enabled: false, percentage: 0 },
+                    chiroti: { enabled: false, percentage: 0 },
+                    rava: { enabled: false, percentage: 0 },
+                    dpMaida: { enabled: false, percentage: 0 },
+                    lotoMaida: { enabled: false, percentage: 0 },
+                    nestleMaida: { enabled: false, percentage: 0 }
+                },
+                ratios: {
+                    minProducts: 75,
+                    maxProducts: 77
+                }
+            };
+        }
+
+        function getDefaultBins() {
+            return {
+                condense: [
+                    { id: 1, capacity: 65, occupied: 0, orderId: null, startTime: null },
+                    { id: 2, capacity: 65, occupied: 0, orderId: null, startTime: null },
+                    { id: 3, capacity: 65, occupied: 0, orderId: null, startTime: null },
+                    { id: 4, capacity: 65, occupied: 0, orderId: null, startTime: null }
+                ],
+                milly: [
+                    { id: 1, capacity: 25, occupied: 0, orderId: null, startTime: null },
+                    { id: 2, capacity: 25, occupied: 0, orderId: null, startTime: null },
+                    { id: 3, capacity: 25, occupied: 0, orderId: null, startTime: null },
+                    { id: 4, capacity: 25, occupied: 0, orderId: null, startTime: null }
+                ]
+            };
+        }
 
         // Generate sample data if none exists
         if (orders.length === 0) {
@@ -926,10 +1322,11 @@
         }
 
         function generateSampleData() {
-            // Sample orders
+            // Sample orders with batch numbers
             orders = [
                 {
                     id: 'WO001',
+                    batchNo: 'B' + Date.now(),
                     customer: 'ABC Mills Ltd',
                     quantity: 50,
                     hdPercentage: 20,
@@ -938,54 +1335,24 @@
                     status: 'Created',
                     binNo: null,
                     createdAt: new Date(),
-                    priority: 'Normal'
-                },
-                {
-                    id: 'WO002',
-                    customer: 'XYZ Foods Pvt',
-                    quantity: 75,
-                    hdPercentage: 0,
-                    lmqPercentage: 40,
-                    mqPercentage: 60,
-                    status: 'Transfer to Pre-cleaning',
-                    binNo: null,
-                    createdAt: new Date(Date.now() - 24*60*60*1000),
-                    priority: 'High'
+                    priority: 'Normal',
+                    moistureData: {},
+                    productionData: null,
+                    dispatchData: { totalBags: 0, dispatchedBags: 0, remainingBags: 0 }
                 }
             ];
 
-            // Sample waste entries
+            // Sample waste entries for all new stages
             wasteEntries = [
                 {
                     id: 'W001',
                     date: new Date(),
-                    machine: 'drum',
+                    stage: 'precleaning',
                     wasteType: 'Plastic, Cotton threads',
                     weight: 2.5,
-                    orderId: 'WO002',
-                    notes: 'Routine collection during transfer process'
-                },
-                {
-                    id: 'W002',
-                    date: new Date(Date.now() - 2*60*60*1000),
-                    machine: 'magnet',
-                    wasteType: 'Metal particles',
-                    weight: 0.8,
-                    orderId: 'WO002',
-                    notes: 'Small metal pieces collected'
-                }
-            ];
-
-            // Sample cleaning logs
-            cleaningLogs = [
-                {
-                    id: 'C001',
-                    date: new Date(Date.now() - 3*60*60*1000),
-                    machine: 'drum',
-                    type: 'routine',
-                    duration: 15,
-                    notes: 'Regular 3-hour cleaning completed',
-                    evidencePhoto: null
+                    orderId: 'WO001',
+                    batchNo: 'B' + Date.now(),
+                    notes: 'Collection during pre-cleaning to conditioning transfer'
                 }
             ];
 
@@ -1005,22 +1372,70 @@
             event.target.classList.add('active');
 
             // Update displays when switching tabs
-            if (tabName === 'dashboard') updateDashboard();
-            if (tabName === 'orders') updateOrdersTable();
-            if (tabName === 'inventory') updateInventoryDisplay();
-            if (tabName === 'waste') updateWasteDisplay();
-            if (tabName === 'cleaning') updateCleaningDisplay();
-            if (tabName === 'bins') updateBinsDisplay();
+            updateTabContent(tabName);
+        }
+
+        function updateTabContent(tabName) {
+            switch(tabName) {
+                case 'dashboard': updateDashboard(); break;
+                case 'orders': updateOrdersTable(); break;
+                case 'moisture': updateMoistureDisplay(); break;
+                case 'grinding': updateGrindingDisplay(); break;
+                case 'production': updateProductionDisplay(); break;
+                case 'dispatch': updateDispatchDisplay(); break;
+                case 'waste': updateWasteDisplay(); break;
+                case 'inventory': updateInventoryDisplay(); break;
+                case 'bins': updateBinsDisplay(); break;
+            }
         }
 
         // Modal functionality
         function showModal(modalId) {
+            populateOrderSelects();
             document.getElementById(modalId).style.display = 'block';
         }
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
+
+        function populateOrderSelects() {
+            const orderSelects = ['moistureOrderId', 'grindingOrderId', 'productionOrderId', 'dispatchOrderId', 'relatedOrderWaste'];
+
+            orderSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    const currentValue = select.value;
+                    select.innerHTML = '<option value="">Select Order</option>';
+
+                    orders.forEach(order => {
+                        if (selectId === 'dispatchOrderId') {
+                            // Only show orders ready for dispatch
+                            const production = productionRecords.find(p => p.orderId === order.id);
+                            if (production && production.totalBags > 0) {
+                                const dispatch = dispatchRecords.filter(d => d.orderId === order.id);
+                                const dispatchedBags = dispatch.reduce((sum, d) => sum + d.bags, 0);
+                                if (dispatchedBags < production.totalBags) {
+                                    const option = document.createElement('option');
+                                    option.value = order.id;
+                                    option.textContent = `${order.id} - ${order.customer} (${production.totalBags - dispatchedBags} bags remaining)`;
+                                    select.appendChild(option);
+                                }
+                            }
+                        } else {
+                            const option = document.createElement('option');
+                            option.value = order.id;
+                            option.textContent = `${order.id} - ${order.customer} (${order.batchNo})`;
+                            select.appendChild(option);
+                        }
+                    });
+
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        // Enhanced form submissions
 
         // Create new order
         document.getElementById('newOrderForm').addEventListener('submit', function(e) {
@@ -1046,8 +1461,12 @@
                 return;
             }
 
+            const orderId = 'WO' + String(Date.now()).slice(-6);
+            const batchNo = 'B' + Date.now();
+
             const order = {
-                id: 'WO' + String(Date.now()).slice(-6),
+                id: orderId,
+                batchNo: batchNo,
                 customer: document.getElementById('customerName').value,
                 quantity: quantity,
                 hdPercentage: hdPerc,
@@ -1056,7 +1475,10 @@
                 status: 'Created',
                 binNo: null,
                 createdAt: new Date(),
-                priority: document.getElementById('priority').value
+                priority: document.getElementById('priority').value,
+                moistureData: {},
+                productionData: null,
+                dispatchData: { totalBags: 0, dispatchedBags: 0, remainingBags: 0 }
             };
 
             // Deduct from inventory
@@ -1071,69 +1493,885 @@
             document.getElementById('percentageError').style.display = 'none';
             document.getElementById('mqPercentage').value = 100;
             updateAllDisplays();
-            alert(`Order ${order.id} created successfully!`);
+            alert(`Order ${orderId} created successfully with batch number ${batchNo}!`);
         });
 
-        // Waste management
+        // Moisture control
+        document.getElementById('moistureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const orderId = document.getElementById('moistureOrderId').value;
+            const stage = document.getElementById('moistureStage').value;
+            const currentMoisture = parseFloat(document.getElementById('currentMoisture').value);
+            const targetMoisture = parseFloat(document.getElementById('targetMoisture').value) || null;
+            const waterRequired = parseFloat(document.getElementById('waterRequired').value) || null;
+            const notes = document.getElementById('moistureNotes').value;
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+
+            const moistureRecord = {
+                id: 'M' + String(Date.now()).slice(-6),
+                orderId: orderId,
+                batchNo: order.batchNo,
+                stage: stage,
+                currentMoisture: currentMoisture,
+                targetMoisture: targetMoisture,
+                waterRequired: waterRequired,
+                timestamp: new Date(),
+                notes: notes
+            };
+
+            moistureRecords.push(moistureRecord);
+
+            // Update order moisture data
+            if (!order.moistureData) order.moistureData = {};
+            order.moistureData[stage] = moistureRecord;
+
+            saveData();
+            closeModal('moistureModal');
+            document.getElementById('moistureForm').reset();
+            updateAllDisplays();
+            alert(`Moisture data recorded for ${orderId} at ${stage} stage`);
+        });
+
+        // Grinding operations
+        document.getElementById('grindingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const orderId = document.getElementById('grindingOrderId').value;
+            const weight = parseFloat(document.getElementById('grindingWeight').value);
+            const duration = parseInt(document.getElementById('grindingDuration').value);
+            const b1MagnetWaste = parseFloat(document.getElementById('b1MagnetWaste').value) || 0;
+            const notes = document.getElementById('grindingNotes').value;
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+
+            const rate = (weight / duration) * 60; // kg per hour
+
+            const grindingRecord = {
+                id: 'G' + String(Date.now()).slice(-6),
+                orderId: orderId,
+                batchNo: order.batchNo,
+                weight: weight,
+                duration: duration,
+                rate: rate,
+                b1MagnetWaste: b1MagnetWaste,
+                timestamp: new Date(),
+                notes: notes
+            };
+
+            grindingRecords.push(grindingRecord);
+
+            // Track wheat processed since last B1 cleaning
+            wheatProcessedSinceCleaning += weight;
+            localStorage.setItem('wheatProcessedSinceCleaning', wheatProcessedSinceCleaning);
+
+            // Log B1 magnet waste if any
+            if (b1MagnetWaste > 0) {
+                const wasteEntry = {
+                    id: 'W' + String(Date.now()).slice(-6),
+                    date: new Date(),
+                    stage: 'b1magnet',
+                    wasteType: 'Metal particles, magnetic materials',
+                    weight: b1MagnetWaste,
+                    orderId: orderId,
+                    batchNo: order.batchNo,
+                    notes: `B1 scale magnetic separation - ${notes}`
+                };
+                wasteEntries.push(wasteEntry);
+            }
+
+            // Update order status if grinding started
+            if (order.status === 'Milly Cleaning') {
+                order.status = 'Grinding';
+            }
+
+            saveData();
+            closeModal('grindingModal');
+            document.getElementById('grindingForm').reset();
+            updateAllDisplays();
+            alert(`Grinding logged: ${weight}kg at ${rate.toFixed(1)}kg/hr for ${orderId}`);
+        });
+
+        // Production logging
+        document.getElementById('productionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const orderId = document.getElementById('productionOrderId').value;
+            const totalProduced = parseFloat(document.getElementById('totalProduced').value);
+            const productsWeight = parseFloat(document.getElementById('productsWeight').value);
+            const branWeight = parseFloat(document.getElementById('branWeight').value);
+            const totalBags = parseInt(document.getElementById('totalBags').value);
+            const notes = document.getElementById('productionNotes').value;
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+
+            // Validate totals
+            if (Math.abs((productsWeight + branWeight) - totalProduced) > 0.1) {
+                alert('Products + Bran weight must equal total produced weight!');
+                return;
+            }
+
+            // Calculate ratios
+            const productsRatio = (productsWeight / totalProduced) * 100;
+            const branRatio = (branWeight / totalProduced) * 100;
+
+            // Check if ratios are within acceptable range
+            const minProducts = productConfig.ratios.minProducts;
+            const maxProducts = productConfig.ratios.maxProducts;
+            let ratioStatus = 'Normal';
+
+            if (productsRatio < minProducts || productsRatio > maxProducts) {
+                ratioStatus = productsRatio < minProducts ? 'Below Target' : 'Above Target';
+            }
+
+            const productionRecord = {
+                id: 'P' + String(Date.now()).slice(-6),
+                orderId: orderId,
+                batchNo: order.batchNo,
+                totalProduced: totalProduced,
+                productsWeight: productsWeight,
+                branWeight: branWeight,
+                productsRatio: productsRatio,
+                branRatio: branRatio,
+                ratioStatus: ratioStatus,
+                totalBags: totalBags,
+                timestamp: new Date(),
+                notes: notes
+            };
+
+            productionRecords.push(productionRecord);
+
+            // Update order production data and status
+            order.productionData = productionRecord;
+            order.dispatchData.totalBags = totalBags;
+            order.dispatchData.remainingBags = totalBags;
+            order.status = 'Ready for Dispatch';
+
+            // Update finished goods inventory
+            updateFinishedInventory(orderId, productsWeight, branWeight);
+
+            saveData();
+            closeModal('productionModal');
+            document.getElementById('productionForm').reset();
+            updateAllDisplays();
+            alert(`Production logged for ${orderId}: ${totalBags} bags produced`);
+        });
+
+        // Product configuration
+        document.getElementById('productConfigForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const config = {
+                products: {
+                    maida: {
+                        enabled: document.getElementById('produceMaida').checked,
+                        percentage: parseFloat(document.getElementById('maidaPercent').value) || 0
+                    },
+                    suji: {
+                        enabled: document.getElementById('produceSuji').checked,
+                        percentage: parseFloat(document.getElementById('sujiPercent').value) || 0
+                    },
+                    chakkiAta: {
+                        enabled: document.getElementById('produceChakkiAta').checked,
+                        percentage: parseFloat(document.getElementById('chakkiAtaPercent').value) || 0
+                    },
+                    tandooriAta: {
+                        enabled: document.getElementById('produceTandooriAta').checked,
+                        percentage: parseFloat(document.getElementById('tandooriAtaPercent').value) || 0
+                    },
+                    chiroti: {
+                        enabled: document.getElementById('produceChiroti').checked,
+                        percentage: parseFloat(document.getElementById('chirotiPercent').value) || 0
+                    },
+                    rava: {
+                        enabled: document.getElementById('produceRava').checked,
+                        percentage: parseFloat(document.getElementById('ravaPercent').value) || 0
+                    },
+                    dpMaida: {
+                        enabled: document.getElementById('produceDpMaida').checked,
+                        percentage: parseFloat(document.getElementById('dpMaidaPercent').value) || 0
+                    },
+                    lotoMaida: {
+                        enabled: document.getElementById('produceLotoMaida').checked,
+                        percentage: parseFloat(document.getElementById('lotoMaidaPercent').value) || 0
+                    },
+                    nestleMaida: {
+                        enabled: document.getElementById('produceNestleMaida').checked,
+                        percentage: parseFloat(document.getElementById('nestleMaidaPercent').value) || 0
+                    }
+                },
+                ratios: {
+                    minProducts: parseFloat(document.getElementById('minProductsRatio').value),
+                    maxProducts: parseFloat(document.getElementById('maxProductsRatio').value)
+                }
+            };
+
+            productConfig = config;
+            saveData();
+            closeModal('productConfigModal');
+            updateAllDisplays();
+            alert('Product configuration saved successfully!');
+        });
+
+        // Dispatch processing
+        document.getElementById('dispatchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const orderId = document.getElementById('dispatchOrderId').value;
+            const bags = parseInt(document.getElementById('dispatchBags').value);
+            const vehicleNumber = document.getElementById('vehicleNumber').value;
+            const driverName = document.getElementById('driverName').value;
+            const notes = document.getElementById('dispatchNotes').value;
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+
+            const production = productionRecords.find(p => p.orderId === orderId);
+            if (!production) {
+                alert('No production record found for this order!');
+                return;
+            }
+
+            const dispatchedBags = dispatchRecords.filter(d => d.orderId === orderId)
+                .reduce((sum, d) => sum + d.bags, 0);
+
+            if (dispatchedBags + bags > production.totalBags) {
+                alert(`Cannot dispatch ${bags} bags. Only ${production.totalBags - dispatchedBags} bags remaining.`);
+                return;
+            }
+
+            const dispatchRecord = {
+                id: 'D' + String(Date.now()).slice(-6),
+                orderId: orderId,
+                batchNo: order.batchNo,
+                bags: bags,
+                vehicleNumber: vehicleNumber,
+                driverName: driverName,
+                timestamp: new Date(),
+                notes: notes
+            };
+
+            dispatchRecords.push(dispatchRecord);
+
+            // Update order dispatch data
+            order.dispatchData.dispatchedBags += bags;
+            order.dispatchData.remainingBags = production.totalBags - order.dispatchData.dispatchedBags;
+
+            // Update order status if fully dispatched
+            if (order.dispatchData.remainingBags === 0) {
+                order.status = 'Completed';
+            }
+
+            saveData();
+            closeModal('dispatchModal');
+            document.getElementById('dispatchForm').reset();
+            updateAllDisplays();
+            alert(`Dispatch processed: ${bags} bags for ${orderId} via ${vehicleNumber}`);
+        });
+
+        // Enhanced waste management
         document.getElementById('wasteForm').addEventListener('submit', function(e) {
             e.preventDefault();
+
+            const stage = document.getElementById('wasteStage').value;
+            const wasteType = document.getElementById('wasteType').value;
+            const weight = parseFloat(document.getElementById('wasteWeight').value);
+            const orderId = document.getElementById('relatedOrderWaste').value || null;
+            const notes = document.getElementById('wasteNotes').value;
+
+            let batchNo = null;
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) batchNo = order.batchNo;
+            }
 
             const wasteEntry = {
                 id: 'W' + String(Date.now()).slice(-6),
                 date: new Date(),
-                machine: document.getElementById('wasteMachine').value,
-                wasteType: document.getElementById('wasteType').value,
-                weight: parseFloat(document.getElementById('wasteWeight').value),
-                orderId: document.getElementById('relatedOrderWaste').value || null,
-                notes: document.getElementById('wasteNotes').value
+                stage: stage,
+                wasteType: wasteType,
+                weight: weight,
+                orderId: orderId,
+                batchNo: batchNo,
+                notes: notes
             };
-
-            // Convert waste weight to tons and subtract from inventory
-            const wasteInTons = wasteEntry.weight / 1000;
-            const totalInventory = inventory.HD + inventory.LMQ + inventory.MQ;
-
-            if (totalInventory > 0) {
-                // Proportionally reduce from all inventory types
-                const hdRatio = inventory.HD / totalInventory;
-                const lmqRatio = inventory.LMQ / totalInventory;
-                const mqRatio = inventory.MQ / totalInventory;
-
-                inventory.HD = Math.max(0, inventory.HD - (wasteInTons * hdRatio));
-                inventory.LMQ = Math.max(0, inventory.LMQ - (wasteInTons * lmqRatio));
-                inventory.MQ = Math.max(0, inventory.MQ - (wasteInTons * mqRatio));
-            }
 
             wasteEntries.push(wasteEntry);
             saveData();
             closeModal('wasteModal');
             document.getElementById('wasteForm').reset();
             updateAllDisplays();
-            alert(`Waste entry logged: ${wasteEntry.weight}kg from ${getMachineName(wasteEntry.machine)}`);
+            alert(`Waste entry logged: ${weight}kg from ${getStageName(stage)}`);
         });
 
-        // Cleaning logs
-        document.getElementById('cleaningForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const cleaningEntry = {
-                id: 'C' + String(Date.now()).slice(-6),
-                date: new Date(),
-                machine: document.getElementById('cleaningMachine').value,
-                type: document.getElementById('cleaningType').value,
-                duration: parseInt(document.getElementById('cleaningDuration').value),
-                notes: document.getElementById('cleaningNotes').value,
-                evidencePhoto: document.getElementById('evidencePhoto').files[0] ? 'Photo uploaded' : null
+        // Helper functions
+        function getStageName(stage) {
+            const stages = {
+                'precleaning': 'Pre-cleaning to Conditioning',
+                'postcleaning': 'After 24hr Conditioning',
+                'b1magnet': 'B1 Scale Magnet',
+                'drum': 'Drum Shield',
+                'magnet': 'Magnets Machine',
+                'separator': 'Separator'
             };
+            return stages[stage] || stage;
+        }
 
-            cleaningLogs.push(cleaningEntry);
-            saveData();
-            closeModal('cleaningModal');
-            document.getElementById('cleaningForm').reset();
-            updateAllDisplays();
-            alert(`Cleaning activity logged for ${getMachineName(cleaningEntry.machine)}`);
+        function updateFinishedInventory(orderId, productsWeight, branWeight) {
+            if (!finishedInventory[orderId]) {
+                finishedInventory[orderId] = {
+                    products: productsWeight,
+                    bran: branWeight,
+                    lastUpdated: new Date()
+                };
+            } else {
+                finishedInventory[orderId].products += productsWeight;
+                finishedInventory[orderId].bran += branWeight;
+                finishedInventory[orderId].lastUpdated = new Date();
+            }
+        }
+
+        function cleanB1Magnet() {
+            const confirmed = confirm(`Clean B1 Magnet now? ${wheatProcessedSinceCleaning.toFixed(1)}kg has been processed since last cleaning.`);
+            if (confirmed) {
+                b1LastCleaning = new Date();
+                wheatProcessedSinceCleaning = 0;
+                localStorage.setItem('b1LastCleaning', JSON.stringify(b1LastCleaning));
+                localStorage.setItem('wheatProcessedSinceCleaning', 0);
+
+                // Log cleaning activity
+                const cleaningEntry = {
+                    id: 'C' + String(Date.now()).slice(-6),
+                    date: new Date(),
+                    machine: 'b1magnet',
+                    type: 'routine',
+                    duration: 30,
+                    notes: 'Frequent B1 magnet cleaning based on quantity processed',
+                    evidencePhoto: null
+                };
+                cleaningLogs.push(cleaningEntry);
+
+                saveData();
+                updateAllDisplays();
+                alert('B1 Magnet cleaned successfully!');
+            }
+        }
+
+        // Moisture stage change handler
+        document.getElementById('moistureStage').addEventListener('change', function() {
+            const stage = this.value;
+            const targetGroup = document.getElementById('targetMoistureGroup');
+            const waterGroup = document.getElementById('waterRequiredGroup');
+
+            if (stage === 'target') {
+                targetGroup.style.display = 'block';
+                waterGroup.style.display = 'block';
+            } else {
+                targetGroup.style.display = 'none';
+                waterGroup.style.display = 'none';
+            }
         });
 
-        // Inventory management
+        // Calculate water required for target moisture
+        document.getElementById('targetMoisture').addEventListener('input', function() {
+            const currentMoisture = parseFloat(document.getElementById('currentMoisture').value) || 0;
+            const targetMoisture = parseFloat(this.value) || 0;
+            const orderId = document.getElementById('moistureOrderId').value;
+
+            if (orderId && currentMoisture > 0 && targetMoisture > currentMoisture) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    // Simplified calculation: approximately 10 liters per ton per 1% moisture increase
+                    const moistureIncrease = targetMoisture - currentMoisture;
+                    const waterRequired = order.quantity * moistureIncrease * 10;
+                    document.getElementById('waterRequired').value = waterRequired.toFixed(1);
+                }
+            }
+        });
+
+        // Update display functions
+        function updateDashboard() {
+            const activeOrders = orders.filter(o => !['Completed'].includes(o.status)).length;
+            const readyDispatch = orders.filter(o => o.status === 'Ready for Dispatch').length;
+
+            // Today's production
+            const today = new Date().toDateString();
+            const todayProduction = productionRecords.filter(p =>
+                new Date(p.timestamp).toDateString() === today
+            ).reduce((sum, p) => sum + p.totalProduced, 0);
+
+            // B1 hourly rate (last hour)
+            const lastHour = new Date(Date.now() - 60*60*1000);
+            const recentGrinding = grindingRecords.filter(g => new Date(g.timestamp) > lastHour);
+            const b1HourlyRate = recentGrinding.reduce((sum, g) => sum + g.rate, 0) / Math.max(recentGrinding.length, 1);
+
+            // Production ratios
+            const recentProduction = productionRecords.slice(-10);
+            let avgProductsRatio = 0, avgBranRatio = 0;
+            if (recentProduction.length > 0) {
+                avgProductsRatio = recentProduction.reduce((sum, p) => sum + p.productsRatio, 0) / recentProduction.length;
+                avgBranRatio = recentProduction.reduce((sum, p) => sum + p.branRatio, 0) / recentProduction.length;
+            }
+
+            // Today's waste
+            const todayWaste = wasteEntries.filter(w => new Date(w.date).toDateString() === today);
+            const todayPrecleaningWaste = todayWaste.filter(w => w.stage === 'precleaning').reduce((sum, w) => sum + w.weight, 0);
+            const todayPostcleaningWaste = todayWaste.filter(w => w.stage === 'postcleaning').reduce((sum, w) => sum + w.weight, 0);
+            const todayB1MagnetWaste = todayWaste.filter(w => w.stage === 'b1magnet').reduce((sum, w) => sum + w.weight, 0);
+
+            document.getElementById('activeOrders').textContent = activeOrders;
+            document.getElementById('readyDispatch').textContent = readyDispatch;
+            document.getElementById('todayProduction').textContent = todayProduction.toFixed(1) + 'kg';
+            document.getElementById('b1HourlyRate').textContent = b1HourlyRate.toFixed(1) + 'kg/hr';
+
+            document.getElementById('productsRatio').textContent = avgProductsRatio.toFixed(1) + '%';
+            document.getElementById('branRatio').textContent = avgBranRatio.toFixed(1) + '%';
+            document.getElementById('machineEfficiency').textContent = '95%'; // Placeholder
+
+            document.getElementById('todayPrecleaningWaste').textContent = todayPrecleaningWaste.toFixed(1) + 'kg';
+            document.getElementById('todayPostcleaningWaste').textContent = todayPostcleaningWaste.toFixed(1) + 'kg';
+            document.getElementById('todayB1MagnetWaste').textContent = todayB1MagnetWaste.toFixed(1) + 'kg';
+        }
+
+        function updateOrdersTable() {
+            const tbody = document.getElementById('ordersTable');
+            tbody.innerHTML = orders.map(order => {
+                const progress = getOrderProgress(order.status);
+
+                // Moisture status
+                let moistureStatus = 'Not Started';
+                if (order.moistureData && Object.keys(order.moistureData).length > 0) {
+                    const stages = Object.keys(order.moistureData);
+                    moistureStatus = `${stages.length} stage(s) recorded`;
+                }
+
+                return `
+                    <tr>
+                        <td><strong>${order.id}</strong></td>
+                        <td><span style="background: #e3f2fd; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${order.batchNo}</span></td>
+                        <td>${order.customer}</td>
+                        <td>${order.quantity}t</td>
+                        <td><span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '').replace('-', '')}">${order.status}</span></td>
+                        <td>
+                            <div class="progress-bar" style="width: 80px;">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <small>${progress}%</small>
+                        </td>
+                        <td style="font-size: 0.9em;">${moistureStatus}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-small" onclick="advanceOrder('${order.id}')">
+                                Next Stage
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateMoistureDisplay() {
+            const container = document.getElementById('moistureTracking');
+
+            if (moistureRecords.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No moisture records found.</div>';
+                return;
+            }
+
+            // Group by order
+            const orderGroups = {};
+            moistureRecords.forEach(record => {
+                if (!orderGroups[record.orderId]) orderGroups[record.orderId] = [];
+                orderGroups[record.orderId].push(record);
+            });
+
+            container.innerHTML = Object.keys(orderGroups).map(orderId => {
+                const records = orderGroups[orderId].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                const order = orders.find(o => o.id === orderId);
+
+                return `
+                    <div class="moisture-card">
+                        <h4>Order ${orderId} - ${order ? order.customer : 'Unknown'} (${records[0].batchNo})</h4>
+                        ${records.map(record => `
+                            <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <strong>${record.stage.charAt(0).toUpperCase() + record.stage.slice(1)} Stage</strong>
+                                    <span>${new Date(record.timestamp).toLocaleString()}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Current: ${record.currentMoisture}%</span>
+                                    ${record.targetMoisture ? `<span>Target: ${record.targetMoisture}%</span>` : ''}
+                                    ${record.waterRequired ? `<span>Water: ${record.waterRequired}L</span>` : ''}
+                                </div>
+                                ${record.notes ? `<div style="font-style: italic; margin-top: 5px;">${record.notes}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateGrindingDisplay() {
+            // B1 scale statistics
+            const now = new Date();
+            const oneHourAgo = new Date(now.getTime() - 60*60*1000);
+            const oneDayAgo = new Date(now.getTime() - 24*60*60*1000);
+            const oneMonthAgo = new Date(now.getTime() - 30*24*60*60*1000);
+
+            const hourlyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneHourAgo)
+                .reduce((sum, g) => sum + g.weight, 0);
+            const dailyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneDayAgo)
+                .reduce((sum, g) => sum + g.weight, 0);
+            const monthlyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneMonthAgo)
+                .reduce((sum, g) => sum + g.weight, 0);
+
+            document.getElementById('grindingHourly').textContent = hourlyGrinding.toFixed(1) + 'kg';
+            document.getElementById('grindingDaily').textContent = dailyGrinding.toFixed(1) + 'kg';
+            document.getElementById('grindingMonthly').textContent = monthlyGrinding.toFixed(1) + 'kg';
+
+            // B1 cleaning status
+            document.getElementById('lastB1Cleaning').textContent = b1LastCleaning ?
+                new Date(b1LastCleaning).toLocaleString() : 'Never';
+            document.getElementById('wheatSinceCleaning').textContent = wheatProcessedSinceCleaning.toFixed(1) + 'kg';
+
+            // Update cleaning frequency indicator
+            const cleaningDiv = document.getElementById('b1CleaningStatus');
+            if (wheatProcessedSinceCleaning > 1000) { // High frequency needed
+                cleaningDiv.className = 'cleaning-frequency alert-danger';
+            } else if (wheatProcessedSinceCleaning > 500) { // Medium frequency
+                cleaningDiv.className = 'cleaning-frequency alert-warning';
+            } else {
+                cleaningDiv.className = 'cleaning-frequency';
+            }
+
+            // Grinding history table
+            const tbody = document.getElementById('grindingTable');
+            tbody.innerHTML = grindingRecords.slice(-20).reverse().map(record => `
+                <tr>
+                    <td>${new Date(record.timestamp).toLocaleString()}</td>
+                    <td>${record.orderId}</td>
+                    <td>${record.batchNo}</td>
+                    <td>${record.weight}kg</td>
+                    <td>${record.rate.toFixed(1)}kg/hr</td>
+                    <td>${record.b1MagnetWaste}kg</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateProductionDisplay() {
+            // Production ratios overview
+            const ratiosDiv = document.getElementById('productionRatios');
+            const recentProduction = productionRecords.slice(-10);
+
+            if (recentProduction.length === 0) {
+                ratiosDiv.innerHTML = '<div class="alert alert-info">No production records found.</div>';
+            } else {
+                const avgProductsRatio = recentProduction.reduce((sum, p) => sum + p.productsRatio, 0) / recentProduction.length;
+                const avgBranRatio = recentProduction.reduce((sum, p) => sum + p.branRatio, 0) / recentProduction.length;
+
+                let ratioClass = 'production-ratio';
+                if (avgProductsRatio < productConfig.ratios.minProducts || avgProductsRatio > productConfig.ratios.maxProducts) {
+                    ratioClass += avgProductsRatio < productConfig.ratios.minProducts ? ' ratio-danger' : ' ratio-warning';
+                }
+
+                ratiosDiv.innerHTML = `
+                    <div class="${ratioClass}">
+                        <h5>Average Production Ratios (Last 10 batches)</h5>
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+                            <span>Products: ${avgProductsRatio.toFixed(1)}%</span>
+                            <span>Target: ${productConfig.ratios.minProducts}-${productConfig.ratios.maxProducts}%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Bran: ${avgBranRatio.toFixed(1)}%</span>
+                            <span>Status: ${ratioClass.includes('danger') ? 'Critical' : ratioClass.includes('warning') ? 'Warning' : 'Normal'}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Current product configuration
+            const configDiv = document.getElementById('currentProductConfig');
+            const enabledProducts = Object.entries(productConfig.products)
+                .filter(([key, config]) => config.enabled)
+                .map(([key, config]) => `${key}: ${config.percentage}%`)
+                .join(', ');
+
+            configDiv.innerHTML = `
+                <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <strong>Active Products:</strong><br>
+                    <small>${enabledProducts || 'Only Maida and Bran'}</small>
+                </div>
+            `;
+
+            // Production history table
+            const tbody = document.getElementById('productionTable');
+            tbody.innerHTML = productionRecords.slice(-20).reverse().map(record => {
+                let ratioStatusClass = 'status-badge ';
+                if (record.ratioStatus === 'Normal') ratioStatusClass += 'status-ready';
+                else if (record.ratioStatus === 'Below Target') ratioStatusClass += 'status-danger';
+                else ratioStatusClass += 'status-warning';
+
+                return `
+                    <tr>
+                        <td>${new Date(record.timestamp).toLocaleDateString()}</td>
+                        <td>${record.orderId}</td>
+                        <td>${record.batchNo}</td>
+                        <td>${record.productsWeight}kg (${record.productsRatio.toFixed(1)}%)</td>
+                        <td>${record.branWeight}kg (${record.branRatio.toFixed(1)}%)</td>
+                        <td><span class="${ratioStatusClass}">${record.ratioStatus}</span></td>
+                        <td>${record.totalBags}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateDispatchDisplay() {
+            const container = document.getElementById('dispatchQueue');
+
+            // Get orders ready for dispatch (FIFO order)
+            const readyOrders = orders.filter(order => {
+                const production = productionRecords.find(p => p.orderId === order.id);
+                if (!production) return false;
+
+                const dispatchedBags = dispatchRecords.filter(d => d.orderId === order.id)
+                    .reduce((sum, d) => sum + d.bags, 0);
+
+                return dispatchedBags < production.totalBags;
+            }).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+            if (readyOrders.length === 0) {
+                container.innerHTML = '<div class="alert alert-info">No orders ready for dispatch.</div>';
+                return;
+            }
+
+            container.innerHTML = readyOrders.map((order, index) => {
+                const production = productionRecords.find(p => p.orderId === order.id);
+                const dispatchedBags = dispatchRecords.filter(d => d.orderId === order.id)
+                    .reduce((sum, d) => sum + d.bags, 0);
+                const remainingBags = production.totalBags - dispatchedBags;
+
+                return `
+                    <div class="dispatch-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4>${order.id} - ${order.customer} (${order.batchNo})</h4>
+                                <div style="color: #666; font-size: 0.9em;">
+                                    Queue Position: #${index + 1} | Production Date: ${new Date(production.timestamp).toLocaleDateString()}
+                                </div>
+                                <div style="margin-top: 5px;">
+                                    <strong>Remaining: ${remainingBags} bags</strong> |
+                                    Dispatched: ${dispatchedBags}/${production.totalBags} bags
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.2em; color: #2196f3; margin-bottom: 5px;">
+                                    FIFO #${index + 1}
+                                </div>
+                                <button class="btn btn-primary btn-small" onclick="showModal('dispatchModal'); document.getElementById('dispatchOrderId').value='${order.id}'">
+                                    📦 Dispatch
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateWasteDisplay() {
+            // Update totals for all waste categories
+            const totalPrecleaningWaste = wasteEntries.filter(w => w.stage === 'precleaning').reduce((sum, w) => sum + w.weight, 0);
+            const totalPostcleaningWaste = wasteEntries.filter(w => w.stage === 'postcleaning').reduce((sum, w) => sum + w.weight, 0);
+            const totalB1MagnetWaste = wasteEntries.filter(w => w.stage === 'b1magnet').reduce((sum, w) => sum + w.weight, 0);
+
+            document.getElementById('totalPrecleaningWaste').textContent = totalPrecleaningWaste.toFixed(1);
+            document.getElementById('totalPostcleaningWaste').textContent = totalPostcleaningWaste.toFixed(1);
+            document.getElementById('totalB1MagnetWaste').textContent = totalB1MagnetWaste.toFixed(1);
+
+            // Update waste history table
+            const tbody = document.getElementById('wasteTable');
+            tbody.innerHTML = wasteEntries.slice(-30).reverse().map(waste => `
+                <tr>
+                    <td>${new Date(waste.date).toLocaleDateString()}</td>
+                    <td>${getStageName(waste.stage)}</td>
+                    <td>${waste.wasteType}</td>
+                    <td>${waste.weight}kg</td>
+                    <td>${waste.orderId || '-'}</td>
+                    <td>${waste.batchNo || '-'}</td>
+                    <td>${waste.notes || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateInventoryDisplay() {
+            document.getElementById('hdStock').textContent = inventory.HD.toFixed(1);
+            document.getElementById('lmqStock').textContent = inventory.LMQ.toFixed(1);
+            document.getElementById('mqStock').textContent = inventory.MQ.toFixed(1);
+
+            // Finished products inventory
+            const finishedDiv = document.getElementById('finishedProductsInventory');
+            if (Object.keys(finishedInventory).length === 0) {
+                finishedDiv.innerHTML = '<div class="alert alert-info">No finished products in inventory.</div>';
+            } else {
+                const totalProducts = Object.values(finishedInventory).reduce((sum, inv) => sum + inv.products, 0);
+                const totalBran = Object.values(finishedInventory).reduce((sum, inv) => sum + inv.bran, 0);
+
+                finishedDiv.innerHTML = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="text-align: center; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+                            <h4>Total Products</h4>
+                            <div style="font-size: 1.5em; margin: 10px 0;">${totalProducts.toFixed(1)}kg</div>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: #f3e5f5; border-radius: 8px;">
+                            <h4>Total Bran</h4>
+                            <div style="font-size: 1.5em; margin: 10px 0;">${totalBran.toFixed(1)}kg</div>
+                        </div>
+                    </div>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        ${Object.entries(finishedInventory).map(([orderId, inv]) => `
+                            <div style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee;">
+                                <span>${orderId}</span>
+                                <span>Products: ${inv.products.toFixed(1)}kg | Bran: ${inv.bran.toFixed(1)}kg</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function updateBinsDisplay() {
+            updateBinSection('condenseBins', bins.condense, 'Condense');
+            updateBinSection('millyBins', bins.milly, 'Milly');
+        }
+
+        function updateBinSection(containerId, binArray, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = binArray.map(bin => {
+                const isOccupied = bin.occupied > 0;
+                const utilizationPerc = ((bin.occupied / bin.capacity) * 100).toFixed(1);
+                const timeInfo = bin.startTime ? `<div style="font-size: 0.8em; color: #666;">Started: ${new Date(bin.startTime).toLocaleString()}</div>` : '';
+
+                return `
+                    <div class="bin-item ${isOccupied ? 'occupied' : 'available'}">
+                        <h4>${type} Bin ${bin.id}</h4>
+                        <div style="font-size: 1.2em; margin: 10px 0;">
+                            ${bin.occupied.toFixed(1)}/${bin.capacity}t
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${utilizationPerc}%"></div>
+                        </div>
+                        <div style="font-size: 0.9em; margin: 5px 0;">${utilizationPerc}% utilized</div>
+                        ${bin.orderId ? `<div style="font-size: 0.9em; color: #333; margin-bottom: 5px;">Order: ${bin.orderId}</div>` : ''}
+                        ${timeInfo}
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-warning btn-small" onclick="editBin('${type.toLowerCase()}', ${bin.id})" style="font-size: 0.8em; padding: 5px 10px;">
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function editBin(binType, binId) {
+            document.getElementById('binType').value = binType;
+            updateBinNumbers();
+            document.getElementById('binNumber').value = binId;
+            showModal('binModal');
+        }
+
+        function updateBinNumbers() {
+            const binType = document.getElementById('binType').value;
+            const binNumberSelect = document.getElementById('binNumber');
+
+            binNumberSelect.innerHTML = '<option value="">Select Bin</option>';
+
+            if (binType && bins[binType]) {
+                bins[binType].forEach(bin => {
+                    const option = document.createElement('option');
+                    option.value = bin.id;
+                    option.textContent = `Bin ${bin.id} (${bin.occupied}/${bin.capacity}t)`;
+                    binNumberSelect.appendChild(option);
+                });
+            }
+        }
+
+        function getOrderProgress(status) {
+            const stages = {
+                'Created': 10,
+                'Pre-cleaning': 20,
+                'Condense Cleaning': 35,
+                'Milly Cleaning': 50,
+                'Grinding': 70,
+                'Production': 85,
+                'Ready for Dispatch': 95,
+                'Completed': 100
+            };
+            return stages[status] || 0;
+        }
+
+        function advanceOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const stageFlow = ['Created', 'Pre-cleaning', 'Condense Cleaning', 'Milly Cleaning', 'Grinding', 'Production', 'Ready for Dispatch', 'Completed'];
+            const currentIndex = stageFlow.indexOf(order.status);
+
+            if (currentIndex < stageFlow.length - 1) {
+                order.status = stageFlow[currentIndex + 1];
+
+                // Auto-generate waste entries for certain stage transitions
+                if (order.status === 'Condense Cleaning') {
+                    // Pre-cleaning waste
+                    const wasteEntry = {
+                        id: 'W' + String(Date.now()).slice(-6),
+                        date: new Date(),
+                        stage: 'precleaning',
+                        wasteType: 'Organic matter, dust, foreign particles',
+                        weight: Math.random() * 3 + 1, // Random 1-4kg
+                        orderId: orderId,
+                        batchNo: order.batchNo,
+                        notes: 'Auto-generated waste from pre-cleaning to conditioning transfer'
+                    };
+                    wasteEntries.push(wasteEntry);
+                }
+
+                if (order.status === 'Milly Cleaning') {
+                    // Post 24hr cleaning waste
+                    const wasteEntry = {
+                        id: 'W' + String(Date.now()).slice(-6),
+                        date: new Date(),
+                        stage: 'postcleaning',
+                        wasteType: 'Processed waste, fine particles',
+                        weight: Math.random() * 2 + 0.5, // Random 0.5-2.5kg
+                        orderId: orderId,
+                        batchNo: order.batchNo,
+                        notes: 'Auto-generated waste after 24-hour conditioning cleaning'
+                    };
+                    wasteEntries.push(wasteEntry);
+                }
+
+                saveData();
+                updateAllDisplays();
+                alert(`Order ${orderId} advanced to ${order.status}`);
+            }
+        }
+
+        // Inventory management (existing functionality)
         document.getElementById('inventoryForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -1161,7 +2399,7 @@
             alert(`Inventory updated: ${type} ${action} ${amount}t. Reason: ${reason || 'Not specified'}`);
         });
 
-        // Bin management
+        // Bin management (existing functionality)
         document.getElementById('binForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -1214,276 +2452,15 @@
             alert(`Bin ${binType} ${binNumber} updated successfully!`);
         });
 
-        // Helper functions
-        function getMachineName(machine) {
-            const names = {
-                'drum': 'Drum Shield',
-                'magnet': 'Magnets Machine',
-                'separator': 'Separator',
-                'condense': 'Condense Bins Area',
-                'milly': 'Milly Bins Area',
-                'general': 'General Area'
-            };
-            return names[machine] || machine;
-        }
-
-        function updateBinNumbers() {
-            const binType = document.getElementById('binType').value;
-            const binNumberSelect = document.getElementById('binNumber');
-
-            binNumberSelect.innerHTML = '<option value="">Select Bin</option>';
-
-            if (binType && bins[binType]) {
-                bins[binType].forEach(bin => {
-                    const option = document.createElement('option');
-                    option.value = bin.id;
-                    option.textContent = `Bin ${bin.id} (${bin.occupied}/${bin.capacity}t)`;
-                    binNumberSelect.appendChild(option);
-                });
-            }
-        }
-
-        function updateStock(type) {
-            const amount = prompt(`Enter amount to add to ${type} stock (use negative for removal):`);
-            if (amount !== null && !isNaN(amount)) {
-                const numAmount = parseFloat(amount);
-                if (inventory[type] + numAmount < 0) {
-                    alert('Cannot reduce stock below zero!');
-                    return;
-                }
-                inventory[type] += numAmount;
-                saveData();
-                updateInventoryDisplay();
-                alert(`${type} stock updated by ${amount}t`);
-            }
-        }
-
-        // Update displays
-        function updateDashboard() {
-            const totalOrders = orders.length;
-            const activeOrders = orders.filter(o => !['Completed', 'Ready for Delivery'].includes(o.status)).length;
-
-            // Today's waste calculation
-            const today = new Date().toDateString();
-            const todayWaste = wasteEntries.filter(w => new Date(w.date).toDateString() === today);
-            const totalTodayWaste = todayWaste.reduce((sum, w) => sum + w.weight, 0);
-
-            const todayDrum = todayWaste.filter(w => w.machine === 'drum').reduce((sum, w) => sum + w.weight, 0);
-            const todayMagnet = todayWaste.filter(w => w.machine === 'magnet').reduce((sum, w) => sum + w.weight, 0);
-            const todaySeparator = todayWaste.filter(w => w.machine === 'separator').reduce((sum, w) => sum + w.weight, 0);
-
-            // Last cleaning
-            const lastCleaning = cleaningLogs.length > 0 ?
-                new Date(cleaningLogs[cleaningLogs.length - 1].date).toLocaleTimeString() : '-';
-
-            document.getElementById('totalOrders').textContent = totalOrders;
-            document.getElementById('activeOrders').textContent = activeOrders;
-            document.getElementById('todayWaste').textContent = totalTodayWaste.toFixed(1) + 'kg';
-            document.getElementById('lastCleaning').textContent = lastCleaning;
-
-            document.getElementById('todayDrumWaste').textContent = todayDrum.toFixed(1) + 'kg';
-            document.getElementById('todayMagnetWaste').textContent = todayMagnet.toFixed(1) + 'kg';
-            document.getElementById('todaySeparatorWaste').textContent = todaySeparator.toFixed(1) + 'kg';
-
-            // Update current processing
-            const processingOrders = orders.filter(o => ['Transfer to Pre-cleaning', 'Condense Cleaning', 'Milly Cleaning', 'Processing'].includes(o.status));
-            const currentProcessingDiv = document.getElementById('currentProcessing');
-
-            if (processingOrders.length === 0) {
-                currentProcessingDiv.innerHTML = '<p style="color: #666; text-align: center; margin-top: 20px;">No orders currently processing</p>';
-            } else {
-                currentProcessingDiv.innerHTML = processingOrders.map(order => `
-                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-                        <strong>${order.id}</strong> - ${order.customer}<br>
-                        <span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '').replace('-', '')}">${order.status}</span>
-                        <div style="font-size: 0.9em; color: #666; margin-top: 5px;">Bin: ${order.binNo || 'N/A'} | ${order.quantity}t</div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function updateOrdersTable() {
-            const tbody = document.getElementById('ordersTable');
-            tbody.innerHTML = orders.map(order => {
-                const progress = getOrderProgress(order.status);
-                const mixInfo = `HD:${order.hdPercentage}% LMQ:${order.lmqPercentage}% MQ:${order.mqPercentage}%`;
-                return `
-                    <tr>
-                        <td><strong>${order.id}</strong></td>
-                        <td>${order.customer}</td>
-                        <td>${order.quantity}t</td>
-                        <td style="font-size: 0.8em;">${mixInfo}</td>
-                        <td><span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '').replace('-', '')}">${order.status}</span></td>
-                        <td>${order.binNo || '-'}</td>
-                        <td>
-                            <div class="progress-bar" style="width: 80px;">
-                                <div class="progress-fill" style="width: ${progress}%"></div>
-                            </div>
-                            <small>${progress}%</small>
-                        </td>
-                        <td>
-                            <button class="btn btn-secondary btn-small" onclick="advanceOrder('${order.id}')">
-                                Next Stage
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function updateInventoryDisplay() {
-            document.getElementById('hdStock').textContent = inventory.HD.toFixed(1);
-            document.getElementById('lmqStock').textContent = inventory.LMQ.toFixed(1);
-            document.getElementById('mqStock').textContent = inventory.MQ.toFixed(1);
-        }
-
-        function updateWasteDisplay() {
-            // Update totals
-            const totalDrum = wasteEntries.filter(w => w.machine === 'drum').reduce((sum, w) => sum + w.weight, 0);
-            const totalMagnet = wasteEntries.filter(w => w.machine === 'magnet').reduce((sum, w) => sum + w.weight, 0);
-            const totalSeparator = wasteEntries.filter(w => w.machine === 'separator').reduce((sum, w) => sum + w.weight, 0);
-
-            document.getElementById('totalDrumWaste').textContent = totalDrum.toFixed(1);
-            document.getElementById('totalMagnetWaste').textContent = totalMagnet.toFixed(1);
-            document.getElementById('totalSeparatorWaste').textContent = totalSeparator.toFixed(1);
-
-            // Update table
-            const tbody = document.getElementById('wasteTable');
-            tbody.innerHTML = wasteEntries.slice(-20).reverse().map(waste => `
-                <tr>
-                    <td>${new Date(waste.date).toLocaleDateString()}</td>
-                    <td>${getMachineName(waste.machine)}</td>
-                    <td>${waste.wasteType}</td>
-                    <td>${waste.weight}kg</td>
-                    <td>${waste.orderId || '-'}</td>
-                    <td>${waste.notes}</td>
-                </tr>
-            `).join('');
-        }
-
-        function updateCleaningDisplay() {
-            const container = document.getElementById('cleaningLogs');
-            if (cleaningLogs.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No cleaning activities logged yet.</div>';
-                return;
-            }
-
-            container.innerHTML = cleaningLogs.slice(-10).reverse().map(log => `
-                <div class="cleaning-log">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h4>${getMachineName(log.machine)} - ${log.type.charAt(0).toUpperCase() + log.type.slice(1)} Cleaning</h4>
-                        <span style="background: #28a745; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.8em;">
-                            ${log.duration} mins
-                        </span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-bottom: 8px;">
-                        📅 ${new Date(log.date).toLocaleString()}
-                        ${log.evidencePhoto ? ' | 📸 Photo Evidence Uploaded' : ''}
-                    </div>
-                    ${log.notes ? `<div style="font-style: italic;">"${log.notes}"</div>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function updateBinsDisplay() {
-            updateBinSection('condenseBins', bins.condense, 'Condense');
-            updateBinSection('millyBins', bins.milly, 'Milly');
-        }
-
-        function updateBinSection(containerId, binArray, type) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = binArray.map(bin => {
-                const isOccupied = bin.occupied > 0;
-                const utilizationPerc = ((bin.occupied / bin.capacity) * 100).toFixed(1);
-                const timeInfo = bin.startTime ? `<div style="font-size: 0.8em; color: #666;">Started: ${new Date(bin.startTime).toLocaleString()}</div>` : '';
-
-                return `
-                    <div class="bin-item ${isOccupied ? 'occupied' : 'available'}">
-                        <h4>${type} Bin ${bin.id}</h4>
-                        <div style="font-size: 1.2em; margin: 10px 0;">
-                            ${bin.occupied.toFixed(1)}/${bin.capacity}t
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${utilizationPerc}%"></div>
-                        </div>
-                        <div style="font-size: 0.9em; margin: 5px 0;">${utilizationPerc}% utilized</div>
-                        ${bin.orderId ? `<div style="font-size: 0.9em; color: #333; margin-bottom: 5px;">Order: ${bin.orderId}</div>` : ''}
-                        ${timeInfo}
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-warning btn-small" onclick="editBin('${type.toLowerCase()}', ${bin.id})" style="font-size: 0.8em; padding: 5px 10px;">
-                                Edit
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function editBin(binType, binId) {
-            document.getElementById('binType').value = binType;
-            updateBinNumbers();
-            document.getElementById('binNumber').value = binId;
-            showModal('binModal');
-        }
-
-        function getOrderProgress(status) {
-            const stages = {
-                'Created': 10,
-                'Transfer to Pre-cleaning': 25,
-                'Condense Cleaning': 50,
-                'Milly Cleaning': 75,
-                'Processing': 90,
-                'Ready for Delivery': 100,
-                'Completed': 100
-            };
-            return stages[status] || 0;
-        }
-
-        function advanceOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-
-            const stageFlow = ['Created', 'Transfer to Pre-cleaning', 'Condense Cleaning', 'Milly Cleaning', 'Processing', 'Ready for Delivery', 'Completed'];
-            const currentIndex = stageFlow.indexOf(order.status);
-
-            if (currentIndex < stageFlow.length - 1) {
-                if (order.binNo) {
-                    releaseBin(order.status, order.binNo, orderId);
-                }
-
-                order.status = stageFlow[currentIndex + 1];
-                order.binNo = null;
-
-                if (['Condense Cleaning', 'Milly Cleaning'].includes(order.status)) {
-                    alert(`Order ${orderId} moved to ${order.status}. Please manually assign a bin using the Bin Management section.`);
-                }
-
-                saveData();
-                updateAllDisplays();
-                alert(`Order ${orderId} advanced to ${order.status}`);
-            }
-        }
-
-        function releaseBin(stage, binNo, orderId) {
-            let binType;
-            if (stage === 'Condense Cleaning') binType = 'condense';
-            else if (stage === 'Milly Cleaning') binType = 'milly';
-            else return;
-
-            const bin = bins[binType].find(b => b.id === binNo && b.orderId === orderId);
-            if (bin) {
-                bin.occupied = 0;
-                bin.orderId = null;
-                bin.startTime = null;
-            }
-        }
-
         function updateAllDisplays() {
             updateDashboard();
             updateOrdersTable();
-            updateInventoryDisplay();
+            updateMoistureDisplay();
+            updateGrindingDisplay();
+            updateProductionDisplay();
+            updateDispatchDisplay();
             updateWasteDisplay();
-            updateCleaningDisplay();
+            updateInventoryDisplay();
             updateBinsDisplay();
         }
 
@@ -1491,11 +2468,17 @@
             localStorage.setItem('wheatOrders', JSON.stringify(orders));
             localStorage.setItem('wheatInventory', JSON.stringify(inventory));
             localStorage.setItem('wasteEntries', JSON.stringify(wasteEntries));
+            localStorage.setItem('moistureRecords', JSON.stringify(moistureRecords));
+            localStorage.setItem('grindingRecords', JSON.stringify(grindingRecords));
+            localStorage.setItem('productionRecords', JSON.stringify(productionRecords));
+            localStorage.setItem('dispatchRecords', JSON.stringify(dispatchRecords));
+            localStorage.setItem('productConfig', JSON.stringify(productConfig));
             localStorage.setItem('cleaningLogs', JSON.stringify(cleaningLogs));
             localStorage.setItem('wheatBins', JSON.stringify(bins));
+            localStorage.setItem('finishedInventory', JSON.stringify(finishedInventory));
         }
 
-        // Auto-update percentage fields
+        // Auto-update percentage fields (existing functionality)
         document.getElementById('hdPercentage').addEventListener('input', updatePercentages);
         document.getElementById('lmqPercentage').addEventListener('input', updatePercentages);
         document.getElementById('mqPercentage').addEventListener('input', updatePercentages);
@@ -1525,33 +2508,27 @@
             }
         }
 
-        // File upload handling
-        document.getElementById('evidencePhoto').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const uploadArea = document.querySelector('.file-upload-area');
-                uploadArea.innerHTML = `
-                    <p>📸 Photo selected: ${file.name}</p>
-                    <small>Click to change photo</small>
-                `;
-                uploadArea.style.borderColor = '#28a745';
-                uploadArea.style.backgroundColor = '#f8f9fa';
-            }
-        });
-
         // Initialize the application
         function init() {
             updateAllDisplays();
 
-            // Set up automatic cleaning reminders (every 3 hours)
+            // Set up automatic cleaning reminders based on quantity processed
             setInterval(() => {
+                // B1 magnet cleaning based on quantity
+                if (wheatProcessedSinceCleaning > 1000) {
+                    if (confirm('B1 Magnet requires immediate cleaning! Over 1000kg has been processed. Clean now?')) {
+                        cleanB1Magnet();
+                    }
+                }
+
+                // General cleaning reminders (every 3 hours)
                 const lastCleaning = cleaningLogs.length > 0 ? new Date(cleaningLogs[cleaningLogs.length - 1].date) : new Date(0);
                 const timeSinceLastCleaning = Date.now() - lastCleaning.getTime();
                 const threeHours = 3 * 60 * 60 * 1000;
 
                 if (timeSinceLastCleaning > threeHours) {
-                    if (confirm('It has been more than 3 hours since the last cleaning. Would you like to log a cleaning activity?')) {
-                        showModal('cleaningModal');
+                    if (confirm('It has been more than 3 hours since the last general cleaning. Would you like to log a cleaning activity?')) {
+                        // You can implement a general cleaning modal here
                     }
                 }
             }, 30 * 60 * 1000); // Check every 30 minutes
