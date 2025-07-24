@@ -2115,7 +2115,7 @@
         }
 
         // Enhanced Owner Decision Management
-        function loadConfirmationTable() {
+        function loadConfirmationTable1() {
             const tbody = document.getElementById('confirmationTableBody');
             if (!tbody) return;
 
@@ -2170,7 +2170,124 @@
             });
         }
 
-        function openOwnerDecisionModal(testId) {
+                // Enhanced Owner Decision Management with Persistent Editable Rows
+        function loadConfirmationTable() {
+            const tbody = document.getElementById('confirmationTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            // Show ALL tests related to owner decisions, not just pending
+            const relevantTests = tests.filter(test =>
+                test.status === 'Waiting for Owner Decision' ||
+                test.status === 'Quality Claim Raised' ||
+                ownerDecisions.some(d => d.testId === test.testId)
+            );
+
+            if (relevantTests.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No tests to display</td></tr>';
+                return;
+            }
+
+            relevantTests.forEach((test) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const decision = ownerDecisions.find(d => d.testId === test.testId);
+
+                const qualityStatusBadge = test.labDecision === 'Quality Approved'
+                    ? '<span class="badge bg-success">Lab Approved</span>'
+                    : '<span class="badge bg-warning">Claim Raised</span>';
+
+                const decisionStatus = decision
+                    ? `<span class="badge bg-success">Decision Made</span>`
+                    : `<span class="badge bg-warning">Pending Decision</span>`;
+
+                const actionButton = `
+                    <button class="btn btn-sm btn-${decision ? 'secondary' : 'primary'}"
+                            onclick="openOwnerDecisionModal('${test.testId}')"
+                            title="${decision ? 'Edit Decision' : 'Make Decision'}">
+                        <i class="fas fa-user-tie"></i> ${decision ? 'Edit' : 'Decide'}
+                    </button>`;
+
+                const storageAssignment = decision ? decision.storageArea : 'Not Assigned';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${vehicle?.vehicleNumber || 'N/A'}</strong></td>
+                        <td>${vehicle?.supplier || 'N/A'}</td>
+                        <td>
+                            <small>
+                                Category: ${getCategoryBadge(test.category)}<br>
+                                Moisture: ${test.moisturePercent}%<br>
+                                Foreign Matter: ${test.foreignMatterPercent}%
+                            </small>
+                        </td>
+                        <td>${qualityStatusBadge}</td>
+                        <td><strong>${storageAssignment}</strong></td>
+                        <td>${decisionStatus}</td>
+                        <td>${actionButton}</td>
+                    </tr>
+                `;
+            });
+        }
+                function openOwnerDecisionModal(testId) {
+            const modal = new bootstrap.Modal(document.getElementById('ownerDecisionModal'));
+
+            const test = tests.find(t => t.testId === testId);
+            const sample = samples.find(s => s.sampleId === test.sampleId);
+            const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+            const decision = ownerDecisions.find(d => d.testId === testId);
+
+            // Set hidden field for form submission
+            document.getElementById('decisionTestIndex').value = testId;
+
+            // Reset all modal sections
+            document.getElementById('approvedWheatSection').style.display = 'none';
+            document.getElementById('claimWheatSection').style.display = 'none';
+            document.getElementById('claimResolutionSection').style.display = 'none';
+
+            // Show appropriate section based on lab decision
+            if (test.labDecision === 'Quality Approved') {
+                document.getElementById('approvedWheatSection').style.display = 'block';
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Category Assignment & Storage Decision';
+
+                // Fill category and storage (edit or default)
+                document.getElementById('finalCategory').value = decision?.finalCategory || test.category || '';
+                document.getElementById('storageArea').value = decision?.storageArea || '';
+
+            } else {
+                document.getElementById('claimWheatSection').style.display = 'block';
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Quality Claim Resolution';
+
+                // Set contact status if exists
+                if (decision?.supplierContactStatus) {
+                    document.getElementById('supplierContactStatus').value = decision.supplierContactStatus;
+
+                    // Show resolution section if previously agreed
+                    if (decision.supplierContactStatus === 'Agreed') {
+                        document.getElementById('claimResolutionSection').style.display = 'block';
+                        document.getElementById('claimFinalCategory').value = decision?.finalCategory || test.category || '';
+                        document.getElementById('claimStorageArea').value = decision?.storageArea || '';
+                    }
+                }
+
+                // Add change listener for dynamic resolution section
+                document.getElementById('supplierContactStatus').addEventListener('change', function () {
+                    const section = document.getElementById('claimResolutionSection');
+                    if (this.value === 'Agreed') {
+                        section.style.display = 'block';
+                        document.getElementById('claimFinalCategory').value = test.category;
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+
+            modal.show();
+        }
+
+
+        function openOwnerDecisionModal1(testId) {
             const modal = new bootstrap.Modal(document.getElementById('ownerDecisionModal'));
             const test = tests.find(t => t.testId === testId);
             const sample = samples.find(s => s.sampleId === test.sampleId);
@@ -2205,6 +2322,10 @@
 
             modal.show();
         }
+
+
+
+
 
         function saveOwnerDecision() {
             const testId = document.getElementById('decisionTestIndex').value;
