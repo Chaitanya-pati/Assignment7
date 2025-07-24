@@ -285,6 +285,23 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .receipt-upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .receipt-preview-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            background: white;
+        }
     </style>
 </head>
 <body>
@@ -426,7 +443,7 @@
                                             <th>Arrival Time</th>
                                             <th>Supplier</th>
                                             <th>Photos</th>
-                                            <th>Gross Weight (MT)</th>
+                                            <th>Supplier Receipt</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
@@ -515,7 +532,7 @@
                         <div class="card-body">
                             <div class="alert alert-info">
                                 <i class="fas fa-scale-balanced"></i>
-                                <strong>Weighing Process:</strong> Record empty vehicle weight and calculate net wheat weight automatically.
+                                <strong>Weighing Process:</strong> Record gross and empty vehicle weights to calculate net wheat weight automatically.
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -749,19 +766,15 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Arrival Time *</label>
                             <input type="datetime-local" id="arrivalTime" class="form-control" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Supplier *</label>
                             <select id="supplierSelect" class="form-select" required>
                                 <option value="">Select Supplier</option>
                             </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Gross Weight (MT) *</label>
-                            <input type="number" id="grossWeight" class="form-control" step="0.1" required>
                         </div>
                     </div>
 
@@ -804,10 +817,35 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Supplier Receipt Upload Section -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <label class="form-label"><strong><i class="fas fa-receipt"></i> Supplier Receipt Upload</strong></label>
+                            <div class="receipt-upload-section">
+                                <i class="fas fa-file-upload fa-3x text-muted mb-3"></i>
+                                <h6>Upload Supplier Receipt/Invoice</h6>
+                                <p class="text-muted">Upload receipt, invoice or delivery note from supplier</p>
+
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-primary me-2" onclick="document.getElementById('receiptFileInput').click()">
+                                        <i class="fas fa-upload"></i> Upload Receipt
+                                    </button>
+                                    <input type="file" id="receiptFileInput" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" multiple style="display: none;">
+                                </div>
+                            </div>
+                            <div id="receiptPreview" class="mt-3"></div>
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i> Accepted formats: PDF, JPG, PNG, DOC, DOCX
+                                </small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" onclick="saveVehicle()">
-                        <i class="fas fa-save"></i> Save Vehicle & Photos
+                        <i class="fas fa-save"></i> Save Vehicle & Documents
                     </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
@@ -848,18 +886,16 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <label class="form-label">Color Grade *</label>
-                                <select id="colorGrade" class="form-select" required>
-                                    <option value="">Select Color</option>
-                                    <option value="Excellent">Excellent</option>
-                                    <option value="Good">Good</option>
-                                    <option value="Fair">Fair</option>
-                                    <option value="Poor">Poor</option>
+                                <label class="form-label">Category Selection *</label>
+                                <select id="categorySelect" class="form-select" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="Mill">Mill</option>
+                                    <option value="Medium 1">Medium 1</option>
+                                    <option value="Medium 2">Medium 2</option>
+                                    <option value="Low Mill">Low Mill</option>
                                 </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Auto Category</label>
-                                <input type="text" id="categoryResult" class="form-control" readonly />
+                                <small class="text-muted">Lab tester manual category selection</small>
                             </div>
                         </div>
                     </div>
@@ -932,6 +968,8 @@
                                     <option value="">Select Category</option>
                                     <option value="Premium">Premium</option>
                                     <option value="Mill">Mill Grade</option>
+                                    <option value="Medium 1">Medium 1</option>
+                                    <option value="Medium 2">Medium 2</option>
                                     <option value="Low Mill">Low Mill</option>
                                 </select>
                             </div>
@@ -980,6 +1018,8 @@
                                         <option value="">Select Category</option>
                                         <option value="Premium">Premium</option>
                                         <option value="Mill">Mill Grade</option>
+                                        <option value="Medium 1">Medium 1</option>
+                                        <option value="Medium 2">Medium 2</option>
                                         <option value="Low Mill">Low Mill</option>
                                         <option value="Rejected">Rejected</option>
                                     </select>
@@ -1035,8 +1075,8 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label class="form-label">Gross Weight (MT)</label>
-                            <input type="number" id="unloadingGrossWeight" class="form-control" step="0.1" readonly>
+                            <label class="form-label">Gross Weight (MT) *</label>
+                            <input type="number" id="unloadingGrossWeight" class="form-control" step="0.1" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Empty Vehicle Weight (MT) *</label>
@@ -1245,6 +1285,7 @@
         let inventory = {};
         let inventoryHistory = [];
         let vehiclePhotos = {};
+        let vehicleReceipts = {};
         let notifications = [];
         let currentStream = null;
 
@@ -1258,6 +1299,7 @@
             initializeInventory();
             loadNotifications();
             updateWorkflowStatus();
+            initializeReceiptUpload();
         }
 
         // Enhanced Core Functions
@@ -1296,6 +1338,84 @@
             }
         }
 
+        // Initialize Receipt Upload Functionality
+        function initializeReceiptUpload() {
+            const receiptInput = document.getElementById('receiptFileInput');
+            if (receiptInput) {
+                receiptInput.addEventListener('change', handleReceiptUpload);
+            }
+        }
+
+        function handleReceiptUpload(event) {
+            const files = Array.from(event.target.files);
+            const previewContainer = document.getElementById('receiptPreview');
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addReceiptToPreview(e.target.result, file.name, file.type);
+                };
+
+                if (file.type.startsWith('image/')) {
+                    reader.readAsDataURL(file);
+                } else {
+                    // For non-image files, just store the file info
+                    addReceiptToPreview(null, file.name, file.type);
+                }
+            });
+
+            showAlert(`${files.length} receipt(s) uploaded successfully`, 'success');
+        }
+
+        function addReceiptToPreview(fileData, fileName, fileType) {
+            const previewContainer = document.getElementById('receiptPreview');
+            if (!previewContainer) return;
+
+            const receiptItem = document.createElement('div');
+            receiptItem.className = 'receipt-preview-item d-flex align-items-center';
+
+            let iconClass = 'fas fa-file';
+            if (fileType.includes('pdf')) iconClass = 'fas fa-file-pdf text-danger';
+            else if (fileType.includes('image')) iconClass = 'fas fa-file-image text-success';
+            else if (fileType.includes('word') || fileType.includes('doc')) iconClass = 'fas fa-file-word text-primary';
+
+            receiptItem.innerHTML = `
+                <div class="me-3">
+                    <i class="${iconClass} fa-2x"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h6 class="mb-1">${fileName}</h6>
+                    <small class="text-muted">Supplier Receipt/Invoice</small>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeReceipt(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+
+            // Store file data for later use
+            receiptItem.dataset.fileName = fileName;
+            receiptItem.dataset.fileData = fileData || '';
+            receiptItem.dataset.fileType = fileType;
+
+            previewContainer.appendChild(receiptItem);
+        }
+
+        function removeReceipt(button) {
+            if (button && button.parentElement) {
+                button.parentElement.remove();
+            }
+        }
+
+        function getVehicleReceipts() {
+            const receiptItems = document.querySelectorAll('.receipt-preview-item');
+            return Array.from(receiptItems).map(item => ({
+                fileName: item.dataset.fileName,
+                fileData: item.dataset.fileData,
+                fileType: item.dataset.fileType,
+                timestamp: new Date().toISOString()
+            }));
+        }
+
         // Enhanced Vehicle Management
         function openVehicleModal(index = null) {
             const modal = new bootstrap.Modal(document.getElementById('vehicleModal'));
@@ -1306,8 +1426,8 @@
             document.getElementById('driverName').value = '';
             document.getElementById('arrivalTime').value = '';
             document.getElementById('supplierSelect').value = '';
-            document.getElementById('grossWeight').value = '';
             document.getElementById('photoPreview').innerHTML = '';
+            document.getElementById('receiptPreview').innerHTML = '';
 
             if (index !== null) {
                 const vehicle = vehicles[index];
@@ -1316,12 +1436,18 @@
                 document.getElementById('driverName').value = vehicle.driverName;
                 document.getElementById('arrivalTime').value = vehicle.arrivalTime;
                 document.getElementById('supplierSelect').value = vehicle.supplier;
-                document.getElementById('grossWeight').value = vehicle.grossWeight || '';
                 document.querySelector('#vehicleModal .modal-title').textContent = 'Edit Vehicle Entry';
 
+                // Load photos
                 const photos = vehiclePhotos[vehicle.vehicleNumber] || [];
                 photos.forEach(photo => {
                     addPhotoToPreview(photo.data, photo.name);
+                });
+
+                // Load receipts
+                const receipts = vehicleReceipts[vehicle.vehicleNumber] || [];
+                receipts.forEach(receipt => {
+                    addReceiptToPreview(receipt.fileData, receipt.fileName, receipt.fileType);
                 });
             } else {
                 document.querySelector('#vehicleModal .modal-title').textContent = 'Vehicle Entry & Photo Documentation';
@@ -1336,14 +1462,15 @@
             const driverName = document.getElementById('driverName').value;
             const arrivalTime = document.getElementById('arrivalTime').value;
             const supplier = document.getElementById('supplierSelect').value;
-            const grossWeight = parseFloat(document.getElementById('grossWeight').value);
 
-            if (!vehicleNumber || !driverName || !arrivalTime || !supplier || !grossWeight) {
+            if (!vehicleNumber || !driverName || !arrivalTime || !supplier) {
                 showAlert('Please fill all required fields', 'warning');
                 return;
             }
 
             const photos = getVehiclePhotos();
+            const receipts = getVehicleReceipts();
+
             if (photos.length === 0) {
                 if (!confirm('No photos captured. Are you sure you want to proceed without photos?')) {
                     return;
@@ -1355,19 +1482,23 @@
                 driverName: driverName,
                 arrivalTime: arrivalTime,
                 supplier: supplier,
-                grossWeight: grossWeight,
-                status: 'Photos Captured - Pending Sampling',
+                status: 'Documents Captured - Pending Sampling',
                 entryTime: new Date().toISOString(),
-                photoCount: photos.length
+                photoCount: photos.length,
+                receiptCount: receipts.length
             };
 
             if (photos.length > 0) {
                 vehiclePhotos[vehicleNumber] = photos;
             }
 
+            if (receipts.length > 0) {
+                vehicleReceipts[vehicleNumber] = receipts;
+            }
+
             if (index === '' || index === undefined) {
                 vehicles.push(vehicle);
-                addNotification(`New vehicle ${vehicleNumber} registered with ${photos.length} photos`, 'info');
+                addNotification(`New vehicle ${vehicleNumber} registered with ${photos.length} photos and ${receipts.length} receipt(s)`, 'info');
             } else {
                 vehicles[parseInt(index)] = { ...vehicles[parseInt(index)], ...vehicle };
                 addNotification(`Vehicle ${vehicleNumber} updated`, 'info');
@@ -1381,7 +1512,7 @@
             const vehicleModal = bootstrap.Modal.getInstance(document.getElementById('vehicleModal'));
             if (vehicleModal) vehicleModal.hide();
 
-            showAlert('Vehicle saved successfully with photo documentation!', 'success');
+            showAlert('Vehicle saved successfully with documentation!', 'success');
             stopCamera();
         }
 
@@ -1393,9 +1524,15 @@
             vehicles.forEach((vehicle, index) => {
                 const statusClass = getStatusClass(vehicle.status);
                 const photos = vehiclePhotos[vehicle.vehicleNumber] || [];
+                const receipts = vehicleReceipts[vehicle.vehicleNumber] || [];
+
                 const photoDisplay = photos.length > 0 ?
                     `<span class="text-success"><i class="fas fa-camera"></i> ${photos.length} photo(s)</span>` :
                     '<span class="text-warning"><i class="fas fa-exclamation-triangle"></i> No photos</span>';
+
+                const receiptDisplay = receipts.length > 0 ?
+                    `<span class="text-success"><i class="fas fa-receipt"></i> ${receipts.length} file(s)</span>` :
+                    '<span class="text-muted"><i class="fas fa-minus"></i> No receipt</span>';
 
                 tbody.innerHTML += `
                     <tr>
@@ -1404,7 +1541,7 @@
                         <td>${new Date(vehicle.arrivalTime).toLocaleString()}</td>
                         <td>${vehicle.supplier}</td>
                         <td>${photoDisplay}</td>
-                        <td><strong>${vehicle.grossWeight || 'N/A'} MT</strong></td>
+                        <td>${receiptDisplay}</td>
                         <td><span class="badge ${statusClass}">${vehicle.status}</span></td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary me-1" onclick="openVehicleModal(${index})" title="Edit Vehicle">
@@ -1413,6 +1550,9 @@
                             <button class="btn btn-sm btn-outline-info me-1" onclick="viewVehiclePhotos('${vehicle.vehicleNumber}')" title="View Photos">
                                 <i class="fas fa-images"></i>
                             </button>
+                            <button class="btn btn-sm btn-outline-success me-1" onclick="viewVehicleReceipts('${vehicle.vehicleNumber}')" title="View Receipts">
+                                <i class="fas fa-receipt"></i>
+                            </button>
                             <button class="btn btn-sm btn-outline-danger" onclick="deleteVehicle(${index})" title="Delete Vehicle">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -1420,6 +1560,115 @@
                     </tr>
                 `;
             });
+        }
+
+        function viewVehicleReceipts(vehicleNumber) {
+            const receipts = vehicleReceipts[vehicleNumber] || [];
+            if (receipts.length === 0) {
+                showAlert('No receipts available for this vehicle', 'info');
+                return;
+            }
+
+            let receiptHtml = `
+                <div class="modal fade" id="receiptViewModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Supplier Receipts - ${vehicleNumber}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+            `;
+
+            receipts.forEach((receipt, index) => {
+                let iconClass = 'fas fa-file';
+                let iconColor = 'text-secondary';
+
+                if (receipt.fileType.includes('pdf')) {
+                    iconClass = 'fas fa-file-pdf';
+                    iconColor = 'text-danger';
+                } else if (receipt.fileType.includes('image')) {
+                    iconClass = 'fas fa-file-image';
+                    iconColor = 'text-success';
+                } else if (receipt.fileType.includes('word') || receipt.fileType.includes('doc')) {
+                    iconClass = 'fas fa-file-word';
+                    iconColor = 'text-primary';
+                }
+
+                receiptHtml += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <i class="${iconClass} ${iconColor} fa-3x mb-3"></i>
+                                <h6>${receipt.fileName}</h6>
+                                <small class="text-muted">Uploaded: ${new Date(receipt.timestamp).toLocaleString()}</small>
+                                <div class="mt-2">
+                                    ${receipt.fileData && receipt.fileType.includes('image') ?
+                                        `<button class="btn btn-sm btn-outline-primary" onclick="expandReceipt('${receipt.fileData}')">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>` :
+                                        `<button class="btn btn-sm btn-outline-info" onclick="downloadReceipt('${receipt.fileName}')">
+                                            <i class="fas fa-download"></i> Download
+                                        </button>`
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            receiptHtml += `
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            const existingModal = document.getElementById('receiptViewModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Add new modal to body
+            document.body.insertAdjacentHTML('beforeend', receiptHtml);
+            const modal = new bootstrap.Modal(document.getElementById('receiptViewModal'));
+            modal.show();
+        }
+
+        function expandReceipt(imageSrc) {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Receipt View</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="${imageSrc}" style="max-width: 100%; height: auto;">
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bootstrapModal = new bootstrap.Modal(modal);
+            bootstrapModal.show();
+
+            modal.addEventListener('hidden.bs.modal', () => {
+                modal.remove();
+            });
+        }
+
+        function downloadReceipt(fileName) {
+            showAlert(`Download functionality for ${fileName} would be implemented in production`, 'info');
         }
 
         function viewVehiclePhotos(vehicleNumber) {
@@ -1475,393 +1724,6 @@
             modal.show();
         }
 
-        // Enhanced Test Management with Lab Decision Workflow
-        function openTestModal(index = null) {
-            const modal = new bootstrap.Modal(document.getElementById('testModal'));
-            populateSampleDropdowns();
-
-            // Reset form
-            document.getElementById('testEditIndex').value = '';
-            document.getElementById('testSampleSelect').value = '';
-            document.getElementById('moisturePercent').value = '';
-            document.getElementById('foreignMatterPercent').value = '';
-            document.getElementById('colorGrade').value = '';
-            document.getElementById('categoryResult').value = '';
-            document.getElementById('testDate').value = '';
-            document.getElementById('testNotes').value = '';
-
-            // Reset lab decision buttons
-            document.getElementById('approveQualityBtn').style.display = 'block';
-            document.getElementById('raiseClaimBtn').style.display = 'block';
-
-            if (index !== null) {
-                const test = tests[index];
-                document.getElementById('testEditIndex').value = index;
-                document.getElementById('testSampleSelect').value = test.sampleId;
-                document.getElementById('moisturePercent').value = test.moisturePercent;
-                document.getElementById('foreignMatterPercent').value = test.foreignMatterPercent;
-                document.getElementById('colorGrade').value = test.colorGrade;
-                document.getElementById('categoryResult').value = test.category;
-                document.getElementById('testDate').value = test.testDate;
-                document.getElementById('testNotes').value = test.notes || '';
-                document.querySelector('#testModal .modal-title').textContent = 'Edit Test Result';
-            } else {
-                document.querySelector('#testModal .modal-title').textContent = 'Lab Test Results & Quality Decision';
-                setCurrentDateTime('testDate');
-            }
-
-            // Add event listeners for lab decision buttons
-            document.getElementById('approveQualityBtn').onclick = () => setLabDecision('approved');
-            document.getElementById('raiseClaimBtn').onclick = () => setLabDecision('claim');
-
-            modal.show();
-        }
-
-        function setLabDecision(decision) {
-            if (decision === 'approved') {
-                document.getElementById('approveQualityBtn').classList.add('active');
-                document.getElementById('raiseClaimBtn').classList.remove('active');
-                showAlert('Quality approved - will be forwarded to Owner for category assignment', 'success');
-            } else if (decision === 'claim') {
-                document.getElementById('raiseClaimBtn').classList.add('active');
-                document.getElementById('approveQualityBtn').classList.remove('active');
-                showAlert('Quality claim will be raised - Owner will coordinate with supplier', 'warning');
-            }
-        }
-
-        function saveTest() {
-            const index = document.getElementById('testEditIndex').value;
-            const sampleId = document.getElementById('testSampleSelect').value;
-            const moisturePercent = parseFloat(document.getElementById('moisturePercent').value);
-            const foreignMatterPercent = parseFloat(document.getElementById('foreignMatterPercent').value);
-            const colorGrade = document.getElementById('colorGrade').value;
-            const testDate = document.getElementById('testDate').value;
-            const notes = document.getElementById('testNotes').value;
-
-            if (!sampleId || !moisturePercent || !foreignMatterPercent || !colorGrade || !testDate) {
-                showAlert('Please fill all required fields', 'warning');
-                return;
-            }
-
-            // Check lab decision
-            const isApproved = document.getElementById('approveQualityBtn').classList.contains('active');
-            const isClaim = document.getElementById('raiseClaimBtn').classList.contains('active');
-
-            if (!isApproved && !isClaim) {
-                showAlert('Please select a lab decision (Quality Approved or Raise Claim)', 'warning');
-                return;
-            }
-
-            const category = determineCategory(moisturePercent, foreignMatterPercent, colorGrade);
-            const labDecision = isApproved ? 'Quality Approved' : 'Quality Claim Raised';
-
-            const test = {
-                sampleId: sampleId,
-                moisturePercent: moisturePercent,
-                foreignMatterPercent: foreignMatterPercent,
-                colorGrade: colorGrade,
-                category: category,
-                testDate: testDate,
-                notes: notes,
-                labDecision: labDecision,
-                status: isApproved ? 'Waiting for Owner Decision' : 'Quality Claim Raised',
-                testId: index === '' ? 'TST' + Date.now() : tests[parseInt(index)].testId || 'TST' + Date.now()
-            };
-
-            if (index === '' || index === undefined) {
-                tests.push(test);
-                // Update sample status
-                const sampleIndex = samples.findIndex(s => s.sampleId === test.sampleId);
-                if (sampleIndex !== -1) {
-                    samples[sampleIndex].status = 'Test Completed';
-                }
-
-                // Create notification for owner
-                const sample = samples.find(s => s.sampleId === sampleId);
-                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
-
-                if (isApproved) {
-                    addNotification(`Quality approved for vehicle ${vehicle?.vehicleNumber}. Awaiting your category assignment and storage decision.`, 'info');
-                } else {
-                    addNotification(`Quality claim raised for vehicle ${vehicle?.vehicleNumber}. Please coordinate with supplier ${vehicle?.supplier}.`, 'urgent');
-                    // Auto-create claim record
-                    createAutoClaim(test, vehicle);
-                }
-            } else {
-                tests[parseInt(index)] = { ...tests[parseInt(index)], ...test };
-            }
-
-            saveDataToMemory();
-            loadTestTable();
-            updateDashboard();
-            loadConfirmationTable();
-
-            const testModal = bootstrap.Modal.getInstance(document.getElementById('testModal'));
-            if (testModal) testModal.hide();
-
-            showAlert(`Test result saved with lab decision: ${labDecision}`, 'success');
-        }
-
-        function createAutoClaim(test, vehicle) {
-            const claim = {
-                claimId: 'CLM' + Date.now(),
-                vehicleNumber: vehicle?.vehicleNumber || 'Unknown',
-                supplier: vehicle?.supplier || 'Unknown',
-                testId: test.testId,
-                reason: `Quality issues detected - Moisture: ${test.moisturePercent}%, Foreign Matter: ${test.foreignMatterPercent}%, Color: ${test.colorGrade}`,
-                claimDate: new Date().toISOString(),
-                status: 'Pending Supplier Contact',
-                raisedBy: 'Lab Technician',
-                supplierResponse: '',
-                resolutionStatus: 'Open'
-            };
-            claims.push(claim);
-        }
-
-        function loadTestTable() {
-            const tbody = document.getElementById('testTableBody');
-            if (!tbody) return;
-
-            tbody.innerHTML = '';
-            tests.forEach((test, index) => {
-                const sample = samples.find(s => s.sampleId === test.sampleId);
-                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
-                const categoryBadge = getCategoryBadge(test.category);
-
-                const qualityAssessment = test.labDecision === 'Quality Approved' ?
-                    '<span class="badge bg-success"><i class="fas fa-check-circle"></i> Approved</span>' :
-                    '<span class="badge bg-warning"><i class="fas fa-exclamation-triangle"></i> Claim Raised</span>';
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${test.sampleId}</td>
-                        <td><strong>${sample ? sample.vehicleId : 'N/A'}</strong></td>
-                        <td>
-                            <small>Moisture: ${test.moisturePercent}%<br>
-                            Foreign Matter: ${test.foreignMatterPercent}%<br>
-                            Color: ${test.colorGrade}</small>
-                        </td>
-                        <td>${qualityAssessment}</td>
-                        <td>${new Date(test.testDate).toLocaleString()}</td>
-                        <td>
-                            <span class="badge ${test.labDecision === 'Quality Approved' ? 'bg-success' : 'bg-warning'}">
-                                ${test.labDecision}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openTestModal(${index})" title="Edit Test">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="deleteTest(${index})" title="Delete Test">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        // Enhanced Owner Decision Management
-        function loadConfirmationTable() {
-            const tbody = document.getElementById('confirmationTableBody');
-            if (!tbody) return;
-
-            tbody.innerHTML = '';
-
-            // Get tests that need owner decision
-            const pendingTests = tests.filter(test =>
-                test.status === 'Waiting for Owner Decision' || test.status === 'Quality Claim Raised'
-            );
-
-            if (pendingTests.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No pending decisions</td></tr>';
-                return;
-            }
-
-            pendingTests.forEach((test, index) => {
-                const sample = samples.find(s => s.sampleId === test.sampleId);
-                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
-                const decision = ownerDecisions.find(d => d.testId === test.testId);
-
-                const qualityStatusBadge = test.labDecision === 'Quality Approved' ?
-                    '<span class="badge bg-success">Lab Approved</span>' :
-                    '<span class="badge bg-warning">Claim Raised</span>';
-
-                const decisionStatus = decision ?
-                    `<span class="badge bg-success">Decision Made</span>` :
-                    `<span class="badge bg-warning">Pending Decision</span>`;
-
-                const storageAssignment = decision ? decision.storageArea : 'Not Assigned';
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td><strong>${vehicle?.vehicleNumber || 'N/A'}</strong></td>
-                        <td>${vehicle?.supplier || 'N/A'}</td>
-                        <td>
-                            <small>
-                                Category: ${getCategoryBadge(test.category)}<br>
-                                Moisture: ${test.moisturePercent}%<br>
-                                Foreign Matter: ${test.foreignMatterPercent}%
-                            </small>
-                        </td>
-                        <td>${qualityStatusBadge}</td>
-                        <td><strong>${storageAssignment}</strong></td>
-                        <td>${decisionStatus}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary" onclick="openOwnerDecisionModal('${test.testId}')" title="Make Decision">
-                                <i class="fas fa-user-tie"></i> Decide
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function openOwnerDecisionModal(testId) {
-            const modal = new bootstrap.Modal(document.getElementById('ownerDecisionModal'));
-            const test = tests.find(t => t.testId === testId);
-            const sample = samples.find(s => s.sampleId === test.sampleId);
-            const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
-
-            document.getElementById('decisionTestIndex').value = testId;
-
-            // Show appropriate section based on lab decision
-            if (test.labDecision === 'Quality Approved') {
-                document.getElementById('approvedWheatSection').style.display = 'block';
-                document.getElementById('claimWheatSection').style.display = 'none';
-
-                // Pre-fill with auto category
-                document.getElementById('finalCategory').value = test.category;
-                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Category Assignment & Storage Decision';
-            } else {
-                document.getElementById('approvedWheatSection').style.display = 'none';
-                document.getElementById('claimWheatSection').style.display = 'block';
-                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Quality Claim Resolution';
-
-                // Pre-populate claim information
-                const claimInfo = document.createElement('div');
-                claimInfo.className = 'alert alert-warning mb-3';
-                claimInfo.innerHTML = `
-                    <h6><i class="fas fa-exclamation-triangle"></i> Quality Issues Detected</h6>
-                    <p><strong>Vehicle:</strong> ${vehicle?.vehicleNumber} (${vehicle?.supplier})</p>
-                    <p><strong>Test Results:</strong> Moisture: ${test.moisturePercent}%, Foreign Matter: ${test.foreignMatterPercent}%, Color: ${test.colorGrade}</p>
-                    <p><strong>Auto Category:</strong> ${test.category}</p>
-                `;
-                document.getElementById('claimWheatSection').insertBefore(claimInfo, document.getElementById('claimWheatSection').firstChild.nextSibling);
-
-                // Add change listener for supplier contact status
-                document.getElementById('supplierContactStatus').addEventListener('change', function() {
-                    const section = document.getElementById('claimResolutionSection');
-                    if (this.value === 'Agreed') {
-                        section.style.display = 'block';
-                        document.getElementById('claimFinalCategory').value = test.category;
-                    } else {
-                        section.style.display = 'none';
-                    }
-                });
-            }
-
-            modal.show();
-        }
-
-        function saveOwnerDecision() {
-            const testId = document.getElementById('decisionTestIndex').value;
-            const test = tests.find(t => t.testId === testId);
-            const ownerNotes = document.getElementById('ownerNotes').value;
-
-            let decision = {
-                testId: testId,
-                decisionDate: new Date().toISOString(),
-                decisionBy: 'Production Manager',
-                ownerNotes: ownerNotes
-            };
-
-            if (test.labDecision === 'Quality Approved') {
-                const finalCategory = document.getElementById('finalCategory').value;
-                const storageArea = document.getElementById('storageArea').value;
-
-                if (!finalCategory || !storageArea) {
-                    showAlert('Please select final category and storage area', 'warning');
-                    return;
-                }
-
-                decision = {
-                    ...decision,
-                    finalCategory: finalCategory,
-                    storageArea: storageArea,
-                    decisionType: 'Approved for Unloading',
-                    status: 'Authorized for Unloading'
-                };
-
-                // Update test status
-                test.status = 'Authorized for Unloading';
-
-                addNotification(`Vehicle ${test.sampleId} authorized for unloading to ${storageArea}`, 'success');
-            } else {
-                const supplierContactStatus = document.getElementById('supplierContactStatus').value;
-                const agreementDetails = document.getElementById('agreementDetails').value;
-
-                if (!supplierContactStatus) {
-                    showAlert('Please update supplier contact status', 'warning');
-                    return;
-                }
-
-                decision = {
-                    ...decision,
-                    supplierContactStatus: supplierContactStatus,
-                    agreementDetails: agreementDetails,
-                    decisionType: 'Quality Claim Resolution'
-                };
-
-                if (supplierContactStatus === 'Agreed') {
-                    const claimFinalCategory = document.getElementById('claimFinalCategory').value;
-                    const claimStorageArea = document.getElementById('claimStorageArea').value;
-
-                    if (!claimFinalCategory || !claimStorageArea) {
-                        showAlert('Please select final category and storage area after agreement', 'warning');
-                        return;
-                    }
-
-                    decision.finalCategory = claimFinalCategory;
-                    decision.storageArea = claimStorageArea;
-                    decision.status = 'Authorized for Unloading';
-                    test.status = 'Authorized for Unloading';
-
-                    // Update claim status
-                    const claim = claims.find(c => c.testId === testId);
-                    if (claim) {
-                        claim.supplierResponse = 'Agreed';
-                        claim.resolutionStatus = 'Resolved';
-                        claim.status = 'Resolved - Authorized for Unloading';
-                    }
-
-                    addNotification(`Quality claim resolved. Vehicle authorized for unloading to ${claimStorageArea}`, 'success');
-                } else {
-                    decision.status = 'Pending Supplier Agreement';
-                    test.status = 'Pending Supplier Agreement';
-                    addNotification(`Supplier contact updated: ${supplierContactStatus}`, 'info');
-                }
-            }
-
-            // Save or update decision
-            const existingDecisionIndex = ownerDecisions.findIndex(d => d.testId === testId);
-            if (existingDecisionIndex !== -1) {
-                ownerDecisions[existingDecisionIndex] = decision;
-            } else {
-                ownerDecisions.push(decision);
-            }
-
-            saveDataToMemory();
-            loadConfirmationTable();
-            loadUnloadingTable();
-            updateDashboard();
-
-            const modal = bootstrap.Modal.getInstance(document.getElementById('ownerDecisionModal'));
-            if (modal) modal.hide();
-
-            showAlert('Owner decision recorded successfully!', 'success');
-        }
-
         // Enhanced Unloading & Weight Management
         function openUnloadingModal(index = null) {
             const modal = new bootstrap.Modal(document.getElementById('unloadingModal'));
@@ -1897,6 +1759,7 @@
                 updateUnloadingPreview(this.value);
             });
 
+            document.getElementById('unloadingGrossWeight').addEventListener('input', updateNetWeight);
             document.getElementById('emptyWeight').addEventListener('input', updateNetWeight);
 
             modal.show();
@@ -1933,19 +1796,16 @@
                 document.getElementById('previewStorageArea').textContent = '-';
                 document.getElementById('previewCategory').textContent = '-';
                 document.getElementById('previewWeight').textContent = '0.0';
-                document.getElementById('unloadingGrossWeight').value = '';
                 return;
             }
 
-            const vehicle = vehicles.find(v => v.vehicleNumber === vehicleNumber);
             const sample = samples.find(s => s.vehicleId === vehicleNumber);
             const test = tests.find(t => t.sampleId === sample?.sampleId);
             const decision = ownerDecisions.find(d => d.testId === test?.testId);
 
-            if (vehicle && decision) {
+            if (decision) {
                 document.getElementById('previewStorageArea').textContent = decision.storageArea;
                 document.getElementById('previewCategory').textContent = decision.finalCategory;
-                document.getElementById('unloadingGrossWeight').value = vehicle.grossWeight || '';
                 updateNetWeight();
             }
         }
@@ -2073,22 +1933,393 @@
             });
         }
 
+        // Enhanced Test Management with Lab Decision Workflow
+        function openTestModal(index = null) {
+            const modal = new bootstrap.Modal(document.getElementById('testModal'));
+            populateSampleDropdowns();
+
+            // Reset form
+            document.getElementById('testEditIndex').value = '';
+            document.getElementById('testSampleSelect').value = '';
+            document.getElementById('moisturePercent').value = '';
+            document.getElementById('foreignMatterPercent').value = '';
+            document.getElementById('categorySelect').value = '';
+            document.getElementById('testDate').value = '';
+            document.getElementById('testNotes').value = '';
+
+            // Reset lab decision buttons
+            document.getElementById('approveQualityBtn').style.display = 'block';
+            document.getElementById('raiseClaimBtn').style.display = 'block';
+
+            if (index !== null) {
+                const test = tests[index];
+                document.getElementById('testEditIndex').value = index;
+                document.getElementById('testSampleSelect').value = test.sampleId;
+                document.getElementById('moisturePercent').value = test.moisturePercent;
+                document.getElementById('foreignMatterPercent').value = test.foreignMatterPercent;
+                document.getElementById('categorySelect').value = test.category;
+                document.getElementById('testDate').value = test.testDate;
+                document.getElementById('testNotes').value = test.notes || '';
+                document.querySelector('#testModal .modal-title').textContent = 'Edit Test Result';
+            } else {
+                document.querySelector('#testModal .modal-title').textContent = 'Lab Test Results & Quality Decision';
+                setCurrentDateTime('testDate');
+            }
+
+            // Add event listeners for lab decision buttons
+            document.getElementById('approveQualityBtn').onclick = () => setLabDecision('approved');
+            document.getElementById('raiseClaimBtn').onclick = () => setLabDecision('claim');
+
+            modal.show();
+        }
+
+        function setLabDecision(decision) {
+            if (decision === 'approved') {
+                document.getElementById('approveQualityBtn').classList.add('active');
+                document.getElementById('raiseClaimBtn').classList.remove('active');
+                showAlert('Quality approved - will be forwarded to Owner for category assignment', 'success');
+            } else if (decision === 'claim') {
+                document.getElementById('raiseClaimBtn').classList.add('active');
+                document.getElementById('approveQualityBtn').classList.remove('active');
+                showAlert('Quality claim will be raised - Owner will coordinate with supplier', 'warning');
+            }
+        }
+
+        function saveTest() {
+            const index = document.getElementById('testEditIndex').value;
+            const sampleId = document.getElementById('testSampleSelect').value;
+            const moisturePercent = parseFloat(document.getElementById('moisturePercent').value);
+            const foreignMatterPercent = parseFloat(document.getElementById('foreignMatterPercent').value);
+            const category = document.getElementById('categorySelect').value;
+            const testDate = document.getElementById('testDate').value;
+            const notes = document.getElementById('testNotes').value;
+
+            if (!sampleId || !moisturePercent || !foreignMatterPercent || !category || !testDate) {
+                showAlert('Please fill all required fields including category selection', 'warning');
+                return;
+            }
+
+            // Check lab decision
+            const isApproved = document.getElementById('approveQualityBtn').classList.contains('active');
+            const isClaim = document.getElementById('raiseClaimBtn').classList.contains('active');
+
+            if (!isApproved && !isClaim) {
+                showAlert('Please select a lab decision (Quality Approved or Raise Claim)', 'warning');
+                return;
+            }
+
+            const labDecision = isApproved ? 'Quality Approved' : 'Quality Claim Raised';
+
+            const test = {
+                sampleId: sampleId,
+                moisturePercent: moisturePercent,
+                foreignMatterPercent: foreignMatterPercent,
+                category: category,
+                testDate: testDate,
+                notes: notes,
+                labDecision: labDecision,
+                status: isApproved ? 'Waiting for Owner Decision' : 'Quality Claim Raised',
+                testId: index === '' ? 'TST' + Date.now() : tests[parseInt(index)].testId || 'TST' + Date.now()
+            };
+
+            if (index === '' || index === undefined) {
+                tests.push(test);
+                // Update sample status
+                const sampleIndex = samples.findIndex(s => s.sampleId === test.sampleId);
+                if (sampleIndex !== -1) {
+                    samples[sampleIndex].status = 'Test Completed';
+                }
+
+                // Create notification for owner
+                const sample = samples.find(s => s.sampleId === sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+
+                if (isApproved) {
+                    addNotification(`Quality approved for vehicle ${vehicle?.vehicleNumber}. Awaiting your category assignment and storage decision.`, 'info');
+                } else {
+                    addNotification(`Quality claim raised for vehicle ${vehicle?.vehicleNumber}. Please coordinate with supplier ${vehicle?.supplier}.`, 'urgent');
+                    // Auto-create claim record
+                    createAutoClaim(test, vehicle);
+                }
+            } else {
+                tests[parseInt(index)] = { ...tests[parseInt(index)], ...test };
+            }
+
+            saveDataToMemory();
+            loadTestTable();
+            updateDashboard();
+            loadConfirmationTable();
+
+            const testModal = bootstrap.Modal.getInstance(document.getElementById('testModal'));
+            if (testModal) testModal.hide();
+
+            showAlert(`Test result saved with lab decision: ${labDecision}`, 'success');
+        }
+
+        function createAutoClaim(test, vehicle) {
+            const claim = {
+                claimId: 'CLM' + Date.now(),
+                vehicleNumber: vehicle?.vehicleNumber || 'Unknown',
+                supplier: vehicle?.supplier || 'Unknown',
+                testId: test.testId,
+                reason: `Quality issues detected - Moisture: ${test.moisturePercent}%, Foreign Matter: ${test.foreignMatterPercent}%`,
+                claimDate: new Date().toISOString(),
+                status: 'Pending Supplier Contact',
+                raisedBy: 'Lab Technician',
+                supplierResponse: '',
+                resolutionStatus: 'Open'
+            };
+            claims.push(claim);
+        }
+
+        function loadTestTable() {
+            const tbody = document.getElementById('testTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            tests.forEach((test, index) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const categoryBadge = getCategoryBadge(test.category);
+
+                const qualityAssessment = test.labDecision === 'Quality Approved' ?
+                    '<span class="badge bg-success"><i class="fas fa-check-circle"></i> Approved</span>' :
+                    '<span class="badge bg-warning"><i class="fas fa-exclamation-triangle"></i> Claim Raised</span>';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${test.sampleId}</td>
+                        <td><strong>${sample ? sample.vehicleId : 'N/A'}</strong></td>
+                        <td>
+                            <small>Moisture: ${test.moisturePercent}%<br>
+                            Foreign Matter: ${test.foreignMatterPercent}%</small>
+                        </td>
+                        <td>${qualityAssessment}</td>
+                        <td>${new Date(test.testDate).toLocaleString()}</td>
+                        <td>
+                            <span class="badge ${test.labDecision === 'Quality Approved' ? 'bg-success' : 'bg-warning'}">
+                                ${test.labDecision}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openTestModal(${index})" title="Edit Test">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteTest(${index})" title="Delete Test">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Enhanced Owner Decision Management
+        function loadConfirmationTable() {
+            const tbody = document.getElementById('confirmationTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            // Get tests that need owner decision
+            const pendingTests = tests.filter(test =>
+                test.status === 'Waiting for Owner Decision' || test.status === 'Quality Claim Raised'
+            );
+
+            if (pendingTests.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">No pending decisions</td></tr>';
+                return;
+            }
+
+            pendingTests.forEach((test, index) => {
+                const sample = samples.find(s => s.sampleId === test.sampleId);
+                const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+                const decision = ownerDecisions.find(d => d.testId === test.testId);
+
+                const qualityStatusBadge = test.labDecision === 'Quality Approved' ?
+                    '<span class="badge bg-success">Lab Approved</span>' :
+                    '<span class="badge bg-warning">Claim Raised</span>';
+
+                const decisionStatus = decision ?
+                    `<span class="badge bg-success">Decision Made</span>` :
+                    `<span class="badge bg-warning">Pending Decision</span>`;
+
+                const storageAssignment = decision ? decision.storageArea : 'Not Assigned';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${vehicle?.vehicleNumber || 'N/A'}</strong></td>
+                        <td>${vehicle?.supplier || 'N/A'}</td>
+                        <td>
+                            <small>
+                                Category: ${getCategoryBadge(test.category)}<br>
+                                Moisture: ${test.moisturePercent}%<br>
+                                Foreign Matter: ${test.foreignMatterPercent}%
+                            </small>
+                        </td>
+                        <td>${qualityStatusBadge}</td>
+                        <td><strong>${storageAssignment}</strong></td>
+                        <td>${decisionStatus}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="openOwnerDecisionModal('${test.testId}')" title="Make Decision">
+                                <i class="fas fa-user-tie"></i> Decide
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function openOwnerDecisionModal(testId) {
+            const modal = new bootstrap.Modal(document.getElementById('ownerDecisionModal'));
+            const test = tests.find(t => t.testId === testId);
+            const sample = samples.find(s => s.sampleId === test.sampleId);
+            const vehicle = vehicles.find(v => v.vehicleNumber === sample?.vehicleId);
+
+            document.getElementById('decisionTestIndex').value = testId;
+
+            // Show appropriate section based on lab decision
+            if (test.labDecision === 'Quality Approved') {
+                document.getElementById('approvedWheatSection').style.display = 'block';
+                document.getElementById('claimWheatSection').style.display = 'none';
+
+                // Pre-fill with auto category
+                document.getElementById('finalCategory').value = test.category;
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Category Assignment & Storage Decision';
+            } else {
+                document.getElementById('approvedWheatSection').style.display = 'none';
+                document.getElementById('claimWheatSection').style.display = 'block';
+                document.querySelector('#ownerDecisionModal .modal-title').textContent = 'Quality Claim Resolution';
+
+                // Add change listener for supplier contact status
+                document.getElementById('supplierContactStatus').addEventListener('change', function() {
+                    const section = document.getElementById('claimResolutionSection');
+                    if (this.value === 'Agreed') {
+                        section.style.display = 'block';
+                        document.getElementById('claimFinalCategory').value = test.category;
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+
+            modal.show();
+        }
+
+        function saveOwnerDecision() {
+            const testId = document.getElementById('decisionTestIndex').value;
+            const test = tests.find(t => t.testId === testId);
+            const ownerNotes = document.getElementById('ownerNotes').value;
+
+            let decision = {
+                testId: testId,
+                decisionDate: new Date().toISOString(),
+                decisionBy: 'Production Manager',
+                ownerNotes: ownerNotes
+            };
+
+            if (test.labDecision === 'Quality Approved') {
+                const finalCategory = document.getElementById('finalCategory').value;
+                const storageArea = document.getElementById('storageArea').value;
+
+                if (!finalCategory || !storageArea) {
+                    showAlert('Please select final category and storage area', 'warning');
+                    return;
+                }
+
+                decision = {
+                    ...decision,
+                    finalCategory: finalCategory,
+                    storageArea: storageArea,
+                    decisionType: 'Approved for Unloading',
+                    status: 'Authorized for Unloading'
+                };
+
+                // Update test status
+                test.status = 'Authorized for Unloading';
+
+                addNotification(`Vehicle ${test.sampleId} authorized for unloading to ${storageArea}`, 'success');
+            } else {
+                const supplierContactStatus = document.getElementById('supplierContactStatus').value;
+                const agreementDetails = document.getElementById('agreementDetails').value;
+
+                if (!supplierContactStatus) {
+                    showAlert('Please update supplier contact status', 'warning');
+                    return;
+                }
+
+                decision = {
+                    ...decision,
+                    supplierContactStatus: supplierContactStatus,
+                    agreementDetails: agreementDetails,
+                    decisionType: 'Quality Claim Resolution'
+                };
+
+                if (supplierContactStatus === 'Agreed') {
+                    const claimFinalCategory = document.getElementById('claimFinalCategory').value;
+                    const claimStorageArea = document.getElementById('claimStorageArea').value;
+
+                    if (!claimFinalCategory || !claimStorageArea) {
+                        showAlert('Please select final category and storage area after agreement', 'warning');
+                        return;
+                    }
+
+                    decision.finalCategory = claimFinalCategory;
+                    decision.storageArea = claimStorageArea;
+                    decision.status = 'Authorized for Unloading';
+                    test.status = 'Authorized for Unloading';
+
+                    // Update claim status
+                    const claim = claims.find(c => c.testId === testId);
+                    if (claim) {
+                        claim.supplierResponse = 'Agreed';
+                        claim.resolutionStatus = 'Resolved';
+                        claim.status = 'Resolved - Authorized for Unloading';
+                    }
+
+                    addNotification(`Quality claim resolved. Vehicle authorized for unloading to ${claimStorageArea}`, 'success');
+                } else {
+                    decision.status = 'Pending Supplier Agreement';
+                    test.status = 'Pending Supplier Agreement';
+                    addNotification(`Supplier contact updated: ${supplierContactStatus}`, 'info');
+                }
+            }
+
+            // Save or update decision
+            const existingDecisionIndex = ownerDecisions.findIndex(d => d.testId === testId);
+            if (existingDecisionIndex !== -1) {
+                ownerDecisions[existingDecisionIndex] = decision;
+            } else {
+                ownerDecisions.push(decision);
+            }
+
+            saveDataToMemory();
+            loadConfirmationTable();
+            loadUnloadingTable();
+            updateDashboard();
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('ownerDecisionModal'));
+            if (modal) modal.hide();
+
+            showAlert('Owner decision recorded successfully!', 'success');
+        }
+
         // Inventory Management Functions
         function initializeInventory() {
             if (Object.keys(inventory).length === 0) {
                 inventory = {
-                    'Godown A': { Premium: 0, Mill: 0, 'Low Mill': 0 },
-                    'Godown B': { Premium: 0, Mill: 0, 'Low Mill': 0 },
-                    'Godown C': { Premium: 0, Mill: 0, 'Low Mill': 0 },
-                    'Warehouse 1': { Premium: 0, Mill: 0, 'Low Mill': 0 },
-                    'Warehouse 2': { Premium: 0, Mill: 0, 'Low Mill': 0 }
+                    'Godown A': { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 },
+                    'Godown B': { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 },
+                    'Godown C': { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 },
+                    'Warehouse 1': { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 },
+                    'Warehouse 2': { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 }
                 };
             }
         }
 
         function updateInventory(storageArea, category, weight, vehicleNumber) {
             if (!inventory[storageArea]) {
-                inventory[storageArea] = { Premium: 0, Mill: 0, 'Low Mill': 0 };
+                inventory[storageArea] = { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 };
             }
 
             inventory[storageArea][category] = (inventory[storageArea][category] || 0) + weight;
@@ -2127,15 +2358,23 @@
                     <div class="mb-3 p-3 border rounded">
                         <h6><i class="fas fa-warehouse"></i> ${area}</h6>
                         <div class="row text-center">
-                            <div class="col-4">
+                            <div class="col">
                                 <small class="text-muted">Premium</small><br>
                                 <strong>${areaInventory.Premium.toFixed(1)} MT</strong>
                             </div>
-                            <div class="col-4">
+                            <div class="col">
                                 <small class="text-muted">Mill</small><br>
                                 <strong>${areaInventory.Mill.toFixed(1)} MT</strong>
                             </div>
-                            <div class="col-4">
+                            <div class="col">
+                                <small class="text-muted">Medium 1</small><br>
+                                <strong>${(areaInventory['Medium 1'] || 0).toFixed(1)} MT</strong>
+                            </div>
+                            <div class="col">
+                                <small class="text-muted">Medium 2</small><br>
+                                <strong>${(areaInventory['Medium 2'] || 0).toFixed(1)} MT</strong>
+                            </div>
+                            <div class="col">
                                 <small class="text-muted">Low Mill</small><br>
                                 <strong>${areaInventory['Low Mill'].toFixed(1)} MT</strong>
                             </div>
@@ -2155,11 +2394,13 @@
             const container = document.getElementById('categoryBreakdown');
             if (!container) return;
 
-            const totals = { Premium: 0, Mill: 0, 'Low Mill': 0 };
+            const totals = { Premium: 0, Mill: 0, 'Medium 1': 0, 'Medium 2': 0, 'Low Mill': 0 };
 
             Object.values(inventory).forEach(area => {
                 totals.Premium += area.Premium;
                 totals.Mill += area.Mill;
+                totals['Medium 1'] += area['Medium 1'] || 0;
+                totals['Medium 2'] += area['Medium 2'] || 0;
                 totals['Low Mill'] += area['Low Mill'];
             });
 
@@ -2714,10 +2955,10 @@
             }
         }
 
-        function determineCategory(moisture, foreignMatter, color) {
-            if (moisture <= 12 && foreignMatter <= 1 && (color === 'Excellent' || color === 'Good')) {
+        function determineCategory(moisture, foreignMatter) {
+            if (moisture <= 12 && foreignMatter <= 1) {
                 return 'Premium';
-            } else if (moisture <= 14 && foreignMatter <= 2 && (color === 'Good' || color === 'Fair')) {
+            } else if (moisture <= 14 && foreignMatter <= 2) {
                 return 'Mill';
             } else {
                 return 'Low Mill';
@@ -2740,7 +2981,7 @@
                 select.innerHTML = '<option value="">Select Vehicle</option>';
                 // Only show vehicles that have photos captured and are ready for sampling
                 vehicles.filter(v =>
-                    v.status === 'Photos Captured - Pending Sampling' ||
+                    v.status === 'Documents Captured - Pending Sampling' ||
                     v.status === 'Sample Collected - Pending Lab Test'
                 ).forEach(vehicle => {
                     select.innerHTML += `<option value="${vehicle.vehicleNumber}">${vehicle.vehicleNumber} - ${vehicle.supplier}</option>`;
@@ -2762,7 +3003,7 @@
 
         function getStatusClass(status) {
             const statusClasses = {
-                'Photos Captured - Pending Sampling': 'bg-info',
+                'Documents Captured - Pending Sampling': 'bg-info',
                 'Sample Collected': 'bg-primary',
                 'Test Completed': 'bg-warning',
                 'Authorized for Unloading': 'bg-success',
@@ -2778,7 +3019,9 @@
             const categoryClasses = {
                 'Premium': 'bg-success',
                 'Mill': 'bg-primary',
-                'Low Mill': 'bg-warning',
+                'Medium 1': 'bg-info',
+                'Medium 2': 'bg-warning',
+                'Low Mill': 'bg-secondary',
                 'Rejected': 'bg-danger'
             };
             return `<span class="badge ${categoryClasses[category] || 'bg-secondary'}">${category}</span>`;
@@ -3020,7 +3263,7 @@
                 // Update vehicle status back to pending sampling
                 const vehicleIndex = vehicles.findIndex(v => v.vehicleNumber === sample.vehicleId);
                 if (vehicleIndex !== -1) {
-                    vehicles[vehicleIndex].status = 'Photos Captured - Pending Sampling';
+                    vehicles[vehicleIndex].status = 'Documents Captured - Pending Sampling';
                 }
 
                 samples.splice(index, 1);
@@ -3186,6 +3429,9 @@
         window.saveVehicle = saveVehicle;
         window.deleteVehicle = (index) => { showAlert('Delete functionality maintained', 'info'); };
         window.viewVehiclePhotos = viewVehiclePhotos;
+        window.viewVehicleReceipts = viewVehicleReceipts;
+        window.expandReceipt = expandReceipt;
+        window.downloadReceipt = downloadReceipt;
         window.openSupplierModal = openSupplierModal;
         window.saveSupplier = saveSupplier;
         window.deleteSupplier = deleteSupplier;
@@ -3210,6 +3456,7 @@
         window.toggleNotifications = toggleNotifications;
         window.markNotificationRead = markNotificationRead;
         window.removePhoto = removePhoto;
+        window.removeReceipt = removeReceipt;
         window.expandPhoto = expandPhoto;
         window.logout = logout;
 
@@ -3217,32 +3464,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
 
-            // Add event listeners for real-time category calculation
-            const moistureInput = document.getElementById('moisturePercent');
-            const foreignMatterInput = document.getElementById('foreignMatterPercent');
-            const colorSelect = document.getElementById('colorGrade');
-
-            if (moistureInput) {
-                moistureInput.addEventListener('input', updateTestCategory);
-            }
-            if (foreignMatterInput) {
-                foreignMatterInput.addEventListener('input', updateTestCategory);
-            }
-            if (colorSelect) {
-                colorSelect.addEventListener('change', updateTestCategory);
-            }
-
-            function updateTestCategory() {
-                const moisture = parseFloat(moistureInput?.value) || 0;
-                const foreignMatter = parseFloat(foreignMatterInput?.value) || 0;
-                const color = colorSelect?.value || '';
-
-                if (moisture && foreignMatter && color) {
-                    const category = determineCategory(moisture, foreignMatter, color);
-                    const categoryResult = document.getElementById('categoryResult');
-                    if (categoryResult) categoryResult.value = category;
-                }
-            }
+            // Remove auto-category calculation event listeners since we're using manual selection
+            // The category is now manually selected by lab tester
 
             // Add sample data for testing the complete workflow
             if (vehicles.length === 0) {
@@ -3252,10 +3475,10 @@
                     driverName: 'Rajesh Kumar',
                     arrivalTime: new Date().toISOString().slice(0, 16),
                     supplier: 'Premium Wheat Suppliers Ltd',
-                    grossWeight: 25.5,
-                    status: 'Photos Captured - Pending Sampling',
+                    status: 'Documents Captured - Pending Sampling',
                     entryTime: new Date().toISOString(),
-                    photoCount: 3
+                    photoCount: 3,
+                    receiptCount: 1
                 });
 
                 // Add sample photos for testing
@@ -3263,6 +3486,11 @@
                     { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Vehicle_Front.jpg', timestamp: new Date().toISOString() },
                     { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Wheat_Load.jpg', timestamp: new Date().toISOString() },
                     { data: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABA...', name: 'Driver_Documents.jpg', timestamp: new Date().toISOString() }
+                ];
+
+                // Add sample receipt for testing
+                vehicleReceipts['TN01AB1234'] = [
+                    { fileName: 'Supplier_Invoice_001.pdf', fileData: '', fileType: 'application/pdf', timestamp: new Date().toISOString() }
                 ];
 
                 // Update dashboard and tables
