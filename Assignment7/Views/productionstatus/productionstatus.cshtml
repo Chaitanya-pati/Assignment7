@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Enhanced Wheat Management System</title>
+    <title>Wheat Processing Management System</title>
     <style>
         * {
             margin: 0;
@@ -19,196 +19,120 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
             text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            color: white;
+            margin-bottom: 30px;
         }
 
             .header h1 {
-                color: #2c3e50;
-                font-size: 2.5em;
+                font-size: 2.5rem;
                 margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             }
 
-            .header p {
-                color: #7f8c8d;
-                font-size: 1.1em;
-            }
-
-        .nav-tabs {
-            display: flex;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 5px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            flex-wrap: wrap;
-        }
-
-        .nav-tab {
-            flex: 1;
-            min-width: 120px;
-            padding: 15px 10px;
-            text-align: center;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9em;
-            font-weight: 500;
-        }
-
-            .nav-tab.active {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            }
-
-            .nav-tab:hover:not(.active) {
-                background: rgba(102, 126, 234, 0.1);
-            }
-
-        .tab-content {
-            display: none;
-        }
-
-            .tab-content.active {
-                display: block;
-            }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
+        .step-container {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
         }
 
-            .card:hover {
+            .step-container:hover {
                 transform: translateY(-5px);
             }
 
-            .card h3 {
-                color: #2c3e50;
-                margin-bottom: 15px;
-                font-size: 1.3em;
-            }
-
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 500;
-            text-transform: uppercase;
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
-        .status-created {
-            background: #e8f4fd;
-            color: #1e88e5;
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
         }
 
-        .status-precleaning {
-            background: #fff3e0;
-            color: #ff9800;
-        }
-
-        .status-condense {
-            background: #f3e5f5;
-            color: #9c27b0;
-        }
-
-        .status-milly {
-            background: #e8f5e8;
-            color: #4caf50;
-        }
-
-        .status-processing {
-            background: #fff8e1;
-            color: #ffc107;
-        }
-
-        .status-grinding {
-            background: #e1f5fe;
-            color: #0277bd;
-        }
-
-        .status-ready {
-            background: #e8f5e8;
-            color: #2e7d32;
-        }
-
-        .status-completed {
-            background: #f5f5f5;
-            color: #616161;
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-            .form-group label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-                color: #2c3e50;
-            }
-
-            .form-group input, .form-group select, .form-group textarea {
-                width: 100%;
-                padding: 12px;
-                border: 2px solid #e0e0e0;
-                border-radius: 8px;
-                font-size: 1em;
-                transition: border-color 0.3s ease;
-            }
-
-                .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-                    outline: none;
-                    border-color: #667eea;
-                }
-
         .form-row {
             display: flex;
-            gap: 15px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-            .form-row .form-group {
-                flex: 1;
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="number"], input[type="text"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+            input[type="number"]:focus, input[type="text"]:focus, select:focus, textarea:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             }
 
         .btn {
-            padding: 12px 25px;
+            padding: 12px 30px;
             border: none;
             border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
 
@@ -217,87 +141,65 @@
                 box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
             }
 
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
         .btn-success {
-            background: #28a745;
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
             color: white;
         }
 
         .btn-warning {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
             color: white;
         }
 
-        .btn-small {
-            padding: 8px 15px;
-            font-size: 0.9em;
-        }
-
-        .table-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+        .timer-display {
+            background: #f8f9fa;
             padding: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-            .table th, .table td {
-                padding: 12px;
-                text-align: left;
-                border-bottom: 1px solid #e0e0e0;
-            }
-
-            .table th {
-                background: #f8f9fa;
-                font-weight: 600;
-                color: #2c3e50;
-            }
-
-            .table tr:hover {
-                background: rgba(102, 126, 234, 0.05);
-            }
-
-        .bin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .bin-item {
-            background: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            padding: 15px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
         }
 
-            .bin-item.occupied {
-                background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            .timer-display h3 {
+                color: #333;
+                margin-bottom: 10px;
             }
 
-            .bin-item.available {
-                background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            }
+        .timer-time {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #cce7ff;
+            color: #004085;
+        }
 
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #e0e0e0;
+            background: #e9ecef;
             border-radius: 4px;
             overflow: hidden;
             margin: 10px 0;
@@ -305,176 +207,130 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #667eea, #764ba2);
             transition: width 0.3s ease;
         }
 
-        .modal {
-            display: none;
+        .notification {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
+            top: 20px;
             right: 20px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #999;
+            padding: 15px 20px;
+            background: #28a745;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
         }
 
-            .close:hover {
+            .notification.show {
+                transform: translateX(0);
+            }
+
+            .notification.warning {
+                background: #ffc107;
+                color: #212529;
+            }
+
+            .notification.error {
+                background: #dc3545;
+            }
+
+        .file-upload {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+            .file-upload:hover {
+                border-color: #667eea;
+            }
+
+            .file-upload.dragover {
+                border-color: #667eea;
+                background: #f8f9ff;
+            }
+
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            margin: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .production-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .order-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+            .order-info h4 {
+                color: #667eea;
+                margin-bottom: 10px;
+            }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .order-detail-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+            .order-detail-item strong {
                 color: #333;
             }
 
-        .waste-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .waste-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border-left: 4px solid;
-        }
-
-        .waste-drum {
-            border-left-color: #ff6b6b;
-        }
-
-        .waste-magnet {
-            border-left-color: #4ecdc4;
-        }
-
-        .waste-separator {
-            border-left-color: #45b7d1;
-        }
-
-        .waste-precleaning {
-            border-left-color: #f39c12;
-        }
-
-        .waste-postcleaning {
-            border-left-color: #e74c3c;
-        }
-
-        .waste-b1magnet {
-            border-left-color: #9b59b6;
-        }
-
-        .moisture-card {
-            background: #e8f4fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-        }
-
-        .production-ratio {
-            background: #f8f9fa;
-            border: 2px solid #28a745;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-        }
-
-        .ratio-warning {
-            border-color: #ffc107;
-            background: #fff8e1;
-        }
-
-        .ratio-danger {
-            border-color: #dc3545;
-            background: #ffebee;
-        }
-
-        .dispatch-item {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            border-left: 4px solid #2196f3;
-        }
-
-        .cleaning-frequency {
-            background: #fff3e0;
-            border: 2px solid #ff9800;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-        }
-
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border-left: 4px solid;
-        }
-
-        .alert-info {
-            background: #e8f4fd;
-            border-color: #1e88e5;
-            color: #1565c0;
-        }
-
-        .alert-warning {
-            background: #fff8e1;
-            border-color: #ffc107;
-            color: #f57c00;
-        }
-
-        .alert-success {
-            background: #e8f5e8;
-            border-color: #4caf50;
-            color: #2e7d32;
-        }
-
-        .alert-danger {
-            background: #ffebee;
-            border-color: #f44336;
-            color: #c62828;
-        }
-
         @@media (max-width: 768px) {
-            .nav-tabs
+            .form-row
 
         {
             flex-direction: column;
         }
 
-        .dashboard-grid {
-            grid-template-columns: 1fr;
+        .header h1 {
+            font-size: 2rem;
         }
 
-        .form-row {
-            flex-direction: column;
+        .step-container {
+            margin: 10px 0;
+            padding: 15px;
         }
 
-        .waste-summary {
+        .order-details {
             grid-template-columns: 1fr;
         }
 
@@ -483,2059 +339,1118 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌾 Complete Enhanced Wheat Management System</h1>
-            <p>End-to-End Production Management with Waste Tracking, Moisture Control & Dispatch</p>
+            <h1>🌾 Wheat Processing Management System</h1>
+            <p>Complete Production Workflow Management</p>
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
-            <button class="nav-tab" onclick="showTab('orders')">Orders</button>
-            <button class="nav-tab" onclick="showTab('moisture')">Moisture Control</button>
-            <button class="nav-tab" onclick="showTab('grinding')">B1 Scale & Grinding</button>
-            <button class="nav-tab" onclick="showTab('production')">Production</button>
-            <button class="nav-tab" onclick="showTab('dispatch')">Dispatch</button>
-            <button class="nav-tab" onclick="showTab('waste')">Waste Management</button>
-            <button class="nav-tab" onclick="showTab('inventory')">Inventory</button>
-            <button class="nav-tab" onclick="showTab('bins')">Bins</button>
-        </div>
-
-        <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content active">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>📊 Today's Overview</h3>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Active Orders:</span>
-                        <strong id="activeOrders">0</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Ready for Dispatch:</span>
-                        <strong id="readyDispatch">0</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Total Production Today:</span>
-                        <strong id="todayProduction">0kg</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>B1 Scale Hourly Rate:</span>
-                        <strong id="b1HourlyRate">0kg/hr</strong>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>⚡ Production Efficiency</h3>
-                    <div style="margin-bottom: 15px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>Products Ratio:</span>
-                            <span id="productsRatio">0%</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>Bran Ratio:</span>
-                            <span id="branRatio">0%</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Machine Efficiency:</span>
-                            <span id="machineEfficiency">0%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>🗑️ Today's Waste Summary</h3>
-                    <div style="margin-bottom: 15px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>🥁 Pre-cleaning:</span>
-                            <span id="todayPrecleaningWaste">0kg</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>🧹 Post 24hr Cleaning:</span>
-                            <span id="todayPostcleaningWaste">0kg</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>🧲 B1 Magnet:</span>
-                            <span id="todayB1MagnetWaste">0kg</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>🚀 Quick Actions</h3>
-                    <button class="btn btn-primary" onclick="showModal('newOrderModal')" style="width: 100%; margin-bottom: 10px;">
-                        ➕ New Order
-                    </button>
-                    <button class="btn btn-warning" onclick="showModal('wasteModal')" style="width: 100%; margin-bottom: 10px;">
-                        🗑️ Log Waste
-                    </button>
-                    <button class="btn btn-success" onclick="showModal('moistureModal')" style="width: 100%;">
-                        💧 Moisture Control
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Orders Tab -->
-        <div id="orders" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>📋 Order Management</h2>
-                <button class="btn btn-primary" onclick="showModal('newOrderModal')">
-                    ➕ New Order
-                </button>
+        <!-- Order Setup -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">📋</div>
+                <div class="step-title">Order Setup</div>
             </div>
 
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Batch No</th>
-                            <th>Customer</th>
-                            <th>Quantity</th>
-                            <th>Current Stage</th>
-                            <th>Progress</th>
-                            <th>Moisture Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersTable">
-                        <!-- Orders will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Moisture Control Tab -->
-        <div id="moisture" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>💧 Moisture Control Management</h2>
-                <button class="btn btn-primary" onclick="showModal('moistureModal')">
-                    ➕ Update Moisture
-                </button>
-            </div>
-
-            <div id="moistureTracking">
-                <!-- Moisture tracking will be populated here -->
-            </div>
-        </div>
-
-        <!-- B1 Scale & Grinding Tab -->
-        <div id="grinding" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>⚖️ B1 Scale & Grinding Operations</h2>
-                <button class="btn btn-primary" onclick="showModal('grindingModal')">
-                    ➕ Log Grinding
-                </button>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>⚖️ B1 Scale Statistics</h3>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Hourly:</span>
-                        <strong id="grindingHourly">0kg</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Daily:</span>
-                        <strong id="grindingDaily">0kg</strong>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>Monthly:</span>
-                        <strong id="grindingMonthly">0kg</strong>
-                    </div>
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="orderQuantity">Order Quantity (tons)</label>
+                    <input type="number" id="orderQuantity" min="1" step="0.1" value="10">
                 </div>
-
-                <div class="card">
-                    <h3>🧲 B1 Magnet Cleaning</h3>
-                    <div id="b1CleaningStatus" class="cleaning-frequency">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Last Cleaning:</span>
-                            <strong id="lastB1Cleaning">Never</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Wheat Processed Since:</span>
-                            <strong id="wheatSinceCleaning">0kg</strong>
-                        </div>
-                        <button class="btn btn-warning btn-small" onclick="cleanB1Magnet()" style="width: 100%;">
-                            🧹 Clean B1 Magnet
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h3>Grinding History</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Order ID</th>
-                            <th>Batch No</th>
-                            <th>Weight (kg)</th>
-                            <th>Rate (kg/hr)</th>
-                            <th>B1 Magnet Waste</th>
-                        </tr>
-                    </thead>
-                    <tbody id="grindingTable">
-                        <!-- Grinding history will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Production Tab -->
-        <div id="production" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🏭 Production Management</h2>
-                <button class="btn btn-primary" onclick="showModal('productionModal')">
-                    ➕ Log Production
-                </button>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>📊 Production Ratios</h3>
-                    <div id="productionRatios">
-                        <!-- Production ratios will be populated here -->
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>⚙️ Product Configuration</h3>
-                    <button class="btn btn-secondary" onclick="showModal('productConfigModal')" style="width: 100%; margin-bottom: 10px;">
-                        🔧 Configure Products
-                    </button>
-                    <div id="currentProductConfig">
-                        <!-- Current product configuration will be shown here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h3>Production History</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Order ID</th>
-                            <th>Batch No</th>
-                            <th>Products (kg)</th>
-                            <th>Bran (kg)</th>
-                            <th>Ratio Status</th>
-                            <th>Total Bags</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productionTable">
-                        <!-- Production history will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Dispatch Tab -->
-        <div id="dispatch" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🚚 Dispatch Management (FIFO)</h2>
-                <button class="btn btn-primary" onclick="showModal('dispatchModal')">
-                    📦 Process Dispatch
-                </button>
-            </div>
-
-            <div class="alert alert-info">
-                <strong>FIFO Principle:</strong> Products are dispatched in First-Come-First-Serve order based on production timestamp.
-            </div>
-
-            <div id="dispatchQueue">
-                <!-- Dispatch queue will be populated here -->
-            </div>
-        </div>
-
-        <!-- Enhanced Waste Management Tab -->
-        <div id="waste" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🗑️ Complete Waste Management</h2>
-                <button class="btn btn-primary" onclick="showModal('wasteModal')">
-                    ➕ Log Waste Entry
-                </button>
-            </div>
-
-            <div class="waste-summary">
-                <div class="waste-card waste-precleaning">
-                    <h4>🥁 Pre-cleaning Waste</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalPrecleaningWaste">0</span>kg
-                    </div>
-                    <small>From pre-cleaning to conditioning</small>
-                </div>
-                <div class="waste-card waste-postcleaning">
-                    <h4>🧹 Post 24hr Cleaning</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalPostcleaningWaste">0</span>kg
-                    </div>
-                    <small>After 24 hour conditioning</small>
-                </div>
-                <div class="waste-card waste-b1magnet">
-                    <h4>🧲 B1 Scale Magnet</h4>
-                    <div style="font-size: 1.5em; margin: 10px 0;">
-                        <span id="totalB1MagnetWaste">0</span>kg
-                    </div>
-                    <small>B1 scale magnetic separation</small>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <h3>Complete Waste History</h3>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Stage</th>
-                            <th>Waste Type</th>
-                            <th>Weight (kg)</th>
-                            <th>Order ID</th>
-                            <th>Batch No</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="wasteTable">
-                        <!-- Waste entries will be populated here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Inventory Tab -->
-        <div id="inventory" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>📦 Inventory Management</h2>
-                <button class="btn btn-primary" onclick="showModal('inventoryModal')">
-                    ➕ Update Stock
-                </button>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>HD (High Density)</h3>
-                    <div style="font-size: 2em; text-align: center; margin: 20px 0;">
-                        <span id="hdStock">0</span>t
-                    </div>
-                    <div style="text-align: center; color: #666;">Raw Material</div>
-                </div>
-                <div class="card">
-                    <h3>LMQ (Low Milk Quality)</h3>
-                    <div style="font-size: 2em; text-align: center; margin: 20px 0;">
-                        <span id="lmqStock">0</span>t
-                    </div>
-                    <div style="text-align: center; color: #666;">Raw Material</div>
-                </div>
-                <div class="card">
-                    <h3>MQ (Medium Quality)</h3>
-                    <div style="font-size: 2em; text-align: center; margin: 20px 0;">
-                        <span id="mqStock">0</span>t
-                    </div>
-                    <div style="text-align: center; color: #666;">Raw Material</div>
-                </div>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="card">
-                    <h3>🏭 Finished Products Inventory</h3>
-                    <div id="finishedProductsInventory">
-                        <!-- Finished products inventory will be populated here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bins Management Tab -->
-        <div id="bins" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>🏭 Bin Management</h2>
-                <button class="btn btn-primary" onclick="showModal('binModal')">
-                    ⚙️ Update Bin
-                </button>
-            </div>
-
-            <div class="card">
-                <h3>Condense Cleaning Bins (24 Hour Process)</h3>
-                <div class="bin-grid" id="condenseBins">
-                    <!-- Bins will be populated here -->
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Milly Cleaning Bins (12 Hour Process)</h3>
-                <div class="bin-grid" id="millyBins">
-                    <!-- Bins will be populated here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Enhanced Modals -->
-    <!-- New Order Modal -->
-    <div id="newOrderModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('newOrderModal')">&times;</span>
-            <h2>📝 Create New Order</h2>
-            <form id="newOrderForm">
-                <div class="form-group">
-                    <label for="customerName">Customer Name:</label>
-                    <input type="text" id="customerName" required>
-                </div>
-                <div class="form-group">
-                    <label for="orderQuantity">Total Quantity (tons):</label>
-                    <input type="number" id="orderQuantity" required min="1" step="0.1">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="hdPercentage">HD Percentage (%):</label>
-                        <input type="number" id="hdPercentage" min="0" max="100" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="lmqPercentage">LMQ Percentage (%):</label>
-                        <input type="number" id="lmqPercentage" min="0" max="100" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="mqPercentage">MQ Percentage (%):</label>
-                        <input type="number" id="mqPercentage" min="0" max="100" value="100" step="0.1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="priority">Priority:</label>
-                    <select id="priority">
-                        <option value="Normal">Normal</option>
-                        <option value="High">High</option>
-                        <option value="Urgent">Urgent</option>
-                    </select>
-                </div>
-                <div id="percentageError" style="color: #d32f2f; margin-bottom: 15px; display: none;">
-                    Percentages must add up to 100%
-                </div>
-                <button type="submit" class="btn btn-primary">Create Order</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Moisture Control Modal -->
-    <div id="moistureModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('moistureModal')">&times;</span>
-            <h2>💧 Moisture Control</h2>
-            <form id="moistureForm">
-                <div class="form-group">
-                    <label for="moistureOrderId">Order ID:</label>
-                    <select id="moistureOrderId" required>
-                        <option value="">Select Order</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="moistureStage">Stage:</label>
-                    <select id="moistureStage" required>
-                        <option value="">Select Stage</option>
-                        <option value="initial">Initial (Before 24hr Cleaning)</option>
-                        <option value="post24hr">After 24hr Cleaning</option>
-                        <option value="target">Target Setting (Before 12hr)</option>
-                        <option value="final">Final Product</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="currentMoisture">Current Moisture (%):</label>
-                    <input type="number" id="currentMoisture" required min="0" max="100" step="0.1">
-                </div>
-                <div class="form-group" id="targetMoistureGroup" style="display: none;">
-                    <label for="targetMoisture">Target Moisture (%):</label>
-                    <input type="number" id="targetMoisture" min="0" max="100" step="0.1">
-                </div>
-                <div class="form-group" id="waterRequiredGroup" style="display: none;">
-                    <label for="waterRequired">Water Required (liters):</label>
-                    <input type="number" id="waterRequired" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="moistureNotes">Notes:</label>
-                    <textarea id="moistureNotes" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Update Moisture</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Grinding Modal -->
-    <div id="grindingModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('grindingModal')">&times;</span>
-            <h2>⚖️ Log Grinding Activity</h2>
-            <form id="grindingForm">
-                <div class="form-group">
-                    <label for="grindingOrderId">Order ID:</label>
-                    <select id="grindingOrderId" required>
-                        <option value="">Select Order</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="grindingWeight">Weight Processed (kg):</label>
-                    <input type="number" id="grindingWeight" required min="1" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label for="grindingDuration">Processing Duration (minutes):</label>
-                    <input type="number" id="grindingDuration" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="b1MagnetWaste">B1 Magnet Waste (kg):</label>
-                    <input type="number" id="b1MagnetWaste" min="0" step="0.1" value="0">
-                </div>
-                <div class="form-group">
-                    <label for="grindingNotes">Notes:</label>
-                    <textarea id="grindingNotes" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Log Grinding</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Production Modal -->
-    <div id="productionModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('productionModal')">&times;</span>
-            <h2>🏭 Log Production</h2>
-            <form id="productionForm">
-                <div class="form-group">
-                    <label for="productionOrderId">Order ID:</label>
-                    <select id="productionOrderId" required>
-                        <option value="">Select Order</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="totalProduced">Total Weight Produced (kg):</label>
-                    <input type="number" id="totalProduced" required min="1" step="0.1">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="productsWeight">Products Weight (kg):</label>
-                        <input type="number" id="productsWeight" required min="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="branWeight">Bran Weight (kg):</label>
-                        <input type="number" id="branWeight" required min="0" step="0.1">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="totalBags">Total Bags Produced:</label>
-                    <input type="number" id="totalBags" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="productionNotes">Notes:</label>
-                    <textarea id="productionNotes" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Log Production</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Product Configuration Modal -->
-    <div id="productConfigModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('productConfigModal')">&times;</span>
-            <h2>⚙️ Configure Product Types</h2>
-            <form id="productConfigForm">
-                <div class="alert alert-info">
-                    Configure which products to generate and their percentages. Unchecked products will not be produced.
-                </div>
-
-                <h4>Main Products:</h4>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceMaida" checked> Maida</label>
-                        <input type="number" id="maidaPercent" min="0" max="100" value="40" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceSuji" checked> Suji</label>
-                        <input type="number" id="sujiPercent" min="0" max="100" value="20" step="0.1">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceChakkiAta"> Chakki Ata</label>
-                        <input type="number" id="chakkiAtaPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceTandooriAta"> Tandoori Ata</label>
-                        <input type="number" id="tandooriAtaPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                </div>
-
-                <h4>Special Products:</h4>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceChiroti"> Chiroti</label>
-                        <input type="number" id="chirotiPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceRava"> Rava</label>
-                        <input type="number" id="ravaPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceDpMaida"> DP Maida</label>
-                        <input type="number" id="dpMaidaPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label><input type="checkbox" id="produceLotoMaida"> Loto Maida</label>
-                        <input type="number" id="lotoMaidaPercent" min="0" max="100" value="0" step="0.1">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label><input type="checkbox" id="produceNestleMaida"> Nestle Maida</label>
-                    <input type="number" id="nestleMaidaPercent" min="0" max="100" value="0" step="0.1">
-                </div>
-
-                <h4>Ratio Settings:</h4>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="minProductsRatio">Min Products Ratio (%):</label>
-                        <input type="number" id="minProductsRatio" min="0" max="100" value="75" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label for="maxProductsRatio">Max Products Ratio (%):</label>
-                        <input type="number" id="maxProductsRatio" min="0" max="100" value="77" step="0.1">
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save Configuration</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Dispatch Modal -->
-    <div id="dispatchModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('dispatchModal')">&times;</span>
-            <h2>📦 Process Dispatch</h2>
-            <form id="dispatchForm">
-                <div class="form-group">
-                    <label for="dispatchOrderId">Order ID (FIFO Order):</label>
-                    <select id="dispatchOrderId" required>
-                        <option value="">Select Order</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="dispatchBags">Number of Bags to Dispatch:</label>
-                    <input type="number" id="dispatchBags" required min="1">
-                </div>
-                <div class="form-group">
-                    <label for="vehicleNumber">Vehicle Number:</label>
-                    <input type="text" id="vehicleNumber" required>
-                </div>
-                <div class="form-group">
-                    <label for="driverName">Driver Name:</label>
-                    <input type="text" id="driverName" required>
-                </div>
-                <div class="form-group">
-                    <label for="dispatchNotes">Dispatch Notes:</label>
-                    <textarea id="dispatchNotes" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Process Dispatch</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Enhanced Waste Modal -->
-    <div id="wasteModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('wasteModal')">&times;</span>
-            <h2>🗑️ Log Waste Entry</h2>
-            <form id="wasteForm">
-                <div class="form-group">
-                    <label for="wasteStage">Waste Collection Stage:</label>
-                    <select id="wasteStage" required>
-                        <option value="">Select Stage</option>
-                        <option value="precleaning">🥁 Pre-cleaning to Conditioning</option>
-                        <option value="postcleaning">🧹 After 24hr Conditioning</option>
-                        <option value="b1magnet">🧲 B1 Scale Magnet</option>
-                        <option value="drum">🥁 Drum Shield</option>
-                        <option value="magnet">🧲 Magnets Machine</option>
-                        <option value="separator">⚪ Separator</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="wasteType">Waste Type:</label>
-                    <input type="text" id="wasteType" placeholder="e.g., Plastic, Metal, Stones, Organic matter" required>
-                </div>
-                <div class="form-group">
-                    <label for="wasteWeight">Weight (kg):</label>
-                    <input type="number" id="wasteWeight" required min="0" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label for="relatedOrderWaste">Related Order ID:</label>
-                    <select id="relatedOrderWaste">
-                        <option value="">Select Order (Optional)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="wasteNotes">Notes:</label>
-                    <textarea id="wasteNotes" rows="3" placeholder="Additional notes about the waste collected..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Log Waste Entry</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Other existing modals (inventory, bins) remain the same -->
-    <div id="inventoryModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('inventoryModal')">&times;</span>
-            <h2>📦 Update Inventory</h2>
-            <form id="inventoryForm">
-                <div class="form-group">
-                    <label for="stockType">Item Type:</label>
-                    <select id="stockType" required>
+                <div class="form-col">
+                    <label for="finishedGoodsType">Finished Goods Type</label>
+                    <select id="finishedGoodsType">
                         <option value="">Select Type</option>
-                        <option value="HD">HD (High Density)</option>
-                        <option value="LMQ">LMQ (Low Milk Quality)</option>
-                        <option value="MQ">MQ (Medium Quality)</option>
+                        <option value="Maida">Maida</option>
+                        <option value="Atta">Atta</option>
+                        <option value="Suji">Suji</option>
+                        <option value="Rava">Rava</option>
+                        <option value="Mixed Products">Mixed Products</option>
+                        <option value="Custom">Custom</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="stockAction">Action:</label>
-                    <select id="stockAction" required>
-                        <option value="">Select Action</option>
-                        <option value="add">Add Stock</option>
-                        <option value="remove">Remove Stock</option>
-                        <option value="set">Set Stock</option>
+            </div>
+
+            <div class="form-group">
+                <label for="orderDescription">Description</label>
+                <textarea id="orderDescription" placeholder="Enter order description, specifications, or special requirements..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="setupOrder()">Setup Order</button>
+        </div>
+
+        <!-- Step 1: Pre-cleaning to Conditioning -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Pre-cleaning to Conditioning Cleaning</div>
+                <div class="status-indicator status-pending" id="step1Status">Pending</div>
+            </div>
+
+            <div class="form-group">
+                <label for="orderSelect">Select Order</label>
+                <select id="orderSelect" onchange="displaySelectedOrder()">
+                    <option value="">Select an order to process</option>
+                </select>
+            </div>
+
+            <div class="order-info hidden" id="selectedOrderInfo">
+                <h4>Selected Order Details</h4>
+                <div class="order-details" id="orderDetailsDisplay">
+                    <!-- Order details will be displayed here -->
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="wheatPercentage">Wheat Percentage from Bin (%)</label>
+                    <input type="number" id="wheatPercentage" min="1" max="100" step="0.1">
+                </div>
+                <div class="form-col">
+                    <label for="conditioningDuration">Conditioning Duration</label>
+                    <select id="conditioningDuration">
+                        <option value="12">12 Hours</option>
+                        <option value="24" selected>24 Hours</option>
+                        <option value="custom">Custom Duration</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="stockAmount">Amount (tons):</label>
-                    <input type="number" id="stockAmount" required min="0" step="0.1">
+            </div>
+
+            <div class="form-row" id="customDurationRow" style="display: none;">
+                <div class="form-col">
+                    <label for="customHours">Custom Duration (hours)</label>
+                    <input type="number" id="customHours" min="1" max="48" step="0.5">
                 </div>
-                <div class="form-group">
-                    <label for="stockReason">Reason:</label>
-                    <input type="text" id="stockReason" placeholder="e.g., New delivery, Order fulfillment, etc.">
+                <div class="form-col">
+                    <label for="bufferTime">Buffer Time (minutes)</label>
+                    <input type="number" id="bufferTime" min="0" max="120" value="30">
                 </div>
-                <button type="submit" class="btn btn-primary">Update Inventory</button>
-            </form>
+            </div>
+
+            <button class="btn btn-primary" onclick="startStep1()" id="step1Btn" disabled>Start Transfer</button>
+
+            <div class="timer-display hidden" id="step1Timer">
+                <h3>Conditioning Cleaning Progress</h3>
+                <div class="timer-time" id="step1Time">00:00:00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="step1Progress"></div>
+                </div>
+            </div>
+
+            <div class="form-group hidden" id="step1Complete">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="currentMoisture1">Current Moisture Level (%)</label>
+                        <input type="number" id="currentMoisture1" min="0" max="30" step="0.1">
+                    </div>
+                    <div class="form-col">
+                        <label for="step1BufferTime">Buffer Time (minutes)</label>
+                        <input type="number" id="step1BufferTime" min="0" max="120" value="30">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="completeStep1()">Complete & Transfer to Next</button>
+            </div>
+        </div>
+
+        <!-- Step 2: 12 Hours Cleaning Process -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">12 Hours Cleaning Process</div>
+                <div class="status-indicator status-pending" id="step2Status">Pending</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="targetMoisture">Target Moisture Level (%)</label>
+                    <input type="number" id="targetMoisture" min="8" max="16" step="0.1" value="12">
+                </div>
+                <div class="form-col">
+                    <label for="bufferTime2">Buffer Time (minutes)</label>
+                    <input type="number" id="bufferTime2" min="0" max="120" value="30">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startStep2()" id="step2Btn" disabled>Start 12-Hour Cleaning</button>
+
+            <div class="timer-display hidden" id="step2Timer">
+                <h3>12-Hour Cleaning Progress</h3>
+                <div class="timer-time" id="step2Time">00:00:00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="step2Progress"></div>
+                </div>
+            </div>
+
+            <div class="form-group hidden" id="step2Complete">
+                <label for="finalMoisture">Final Moisture Level (%)</label>
+                <input type="number" id="finalMoisture" min="0" max="30" step="0.1">
+                <div id="moistureCheck" class="form-group"></div>
+                <button class="btn btn-success" onclick="completeStep2()">Complete & Transfer to Grinding</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Grinding with Magnet Cleaning -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Grinding Process & Magnet Cleaning</div>
+                <div class="status-indicator status-pending" id="step3Status">Pending</div>
+            </div>
+
+            <div class="form-group">
+                <label>Magnet Cleaning (Every Hour)</label>
+                <div class="file-upload" id="magnetUpload">
+                    <p>📸 Upload Before & After Pictures of Magnets</p>
+                    <input type="file" id="magnetImages" multiple accept="image/*" style="display: none;">
+                </div>
+                <div id="magnetPreview"></div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startStep3()" id="step3Btn" disabled>Start Grinding Process</button>
+            <button class="btn btn-warning" onclick="uploadMagnetImages()" id="magnetCleanBtn" style="display: none;">Clean Magnets</button>
+
+            <div class="timer-display hidden" id="step3Timer">
+                <h3>Next Magnet Cleaning In:</h3>
+                <div class="timer-time" id="magnetTimer">01:00:00</div>
+            </div>
+
+            <button class="btn btn-success" onclick="completeStep3()" id="step3CompleteBtn" style="display: none;">Complete Grinding</button>
+        </div>
+
+        <!-- Step 4: Product Categorization -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Product Categorization & Output</div>
+                <div class="status-indicator status-pending" id="step4Status">Pending</div>
+            </div>
+
+            <div class="form-group">
+                <h4>Product Configuration</h4>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>
+                            <input type="checkbox" id="produceRava"> Produce Rava
+                        </label>
+                        <input type="number" id="ravaPercentage" placeholder="Percentage" min="0" max="100" disabled>
+                    </div>
+                    <div class="form-col">
+                        <label>
+                            <input type="checkbox" id="produceChiroti"> Produce Chiroti
+                        </label>
+                        <input type="number" id="chirotiPercentage" placeholder="Percentage" min="0" max="100" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h4>Expected Output Range</h4>
+                <div class="form-row">
+                    <div class="form-col">
+                        <label>Products (Maida, Suji, etc.) - 75-77%</label>
+                        <div class="form-row">
+                            <input type="number" id="minProducts" placeholder="Min %" value="75" readonly>
+                            <input type="number" id="maxProducts" placeholder="Max %" value="77" readonly>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <label>Bran - 23-25%</label>
+                        <div class="form-row">
+                            <input type="number" id="minBran" placeholder="Min %" value="23" readonly>
+                            <input type="number" id="maxBran" placeholder="Max %" value="25" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="startStep4()" id="step4Btn" disabled>Start Production</button>
+
+            <div class="production-summary hidden" id="productionSummary">
+                <h4>Production Summary</h4>
+                <div id="summaryDetails"></div>
+                <button class="btn btn-success" onclick="completeProduction()">Complete Production</button>
+            </div>
+        </div>
+
+        <!-- Overall Progress -->
+        <div class="step-container">
+            <div class="step-header">
+                <div class="step-number">📊</div>
+                <div class="step-title">Production Overview</div>
+            </div>
+
+            <div id="overallProgress">
+                <div class="summary-item">
+                    <span>Order Status:</span>
+                    <span id="orderStatus">Not Started</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total Processing Time:</span>
+                    <span id="totalTime">00:00:00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Current Step:</span>
+                    <span id="currentStep">Order Setup</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="binModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('binModal')">&times;</span>
-            <h2>🏭 Update Bin Status</h2>
-            <form id="binForm">
-                <div class="form-group">
-                    <label for="binType">Bin Type:</label>
-                    <select id="binType" required onchange="updateBinNumbers()">
-                        <option value="">Select Type</option>
-                        <option value="condense">Condense Cleaning Bin</option>
-                        <option value="milly">Milly Cleaning Bin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="binNumber">Bin Number:</label>
-                    <select id="binNumber" required>
-                        <option value="">Select Bin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="binAction">Action:</label>
-                    <select id="binAction" required>
-                        <option value="">Select Action</option>
-                        <option value="add">Add Wheat</option>
-                        <option value="remove">Remove Wheat</option>
-                        <option value="empty">Empty Bin</option>
-                        <option value="capacity">Update Capacity</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="binAmount">Amount (tons):</label>
-                    <input type="number" id="binAmount" required min="0" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label for="relatedOrder">Related Order ID (optional):</label>
-                    <input type="text" id="relatedOrder" placeholder="e.g., WO123456">
-                </div>
-                <button type="submit" class="btn btn-primary">Update Bin</button>
-            </form>
-        </div>
-    </div>
+    <div class="notification" id="notification"></div>
 
     <script>
-        // Enhanced data structures
-        let orders = JSON.parse(localStorage.getItem('wheatOrders')) || [];
-        let inventory = JSON.parse(localStorage.getItem('wheatInventory')) || { HD: 100, LMQ: 80, MQ: 150 };
-        let wasteEntries = JSON.parse(localStorage.getItem('wasteEntries')) || [];
-        let moistureRecords = JSON.parse(localStorage.getItem('moistureRecords')) || [];
-        let grindingRecords = JSON.parse(localStorage.getItem('grindingRecords')) || [];
-        let productionRecords = JSON.parse(localStorage.getItem('productionRecords')) || [];
-        let dispatchRecords = JSON.parse(localStorage.getItem('dispatchRecords')) || [];
-        let productConfig = JSON.parse(localStorage.getItem('productConfig')) || getDefaultProductConfig();
-        let cleaningLogs = JSON.parse(localStorage.getItem('cleaningLogs')) || [];
-        let bins = JSON.parse(localStorage.getItem('wheatBins')) || getDefaultBins();
-        let finishedInventory = JSON.parse(localStorage.getItem('finishedInventory')) || {};
+        // Global variables
+        let orderData = {};
+        let allOrders = []; // Store all orders
+        let timers = {};
+        let intervals = {};
+        let processStartTime = null;
+        let selectedOrderId = null;
 
-        // Global counters for tracking
-        let b1LastCleaning = JSON.parse(localStorage.getItem('b1LastCleaning')) || null;
-        let wheatProcessedSinceCleaning = parseFloat(localStorage.getItem('wheatProcessedSinceCleaning')) || 0;
+        // Utility functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
 
-        function getDefaultProductConfig() {
-            return {
-                products: {
-                    maida: { enabled: true, percentage: 40 },
-                    suji: { enabled: true, percentage: 20 },
-                    chakkiAta: { enabled: false, percentage: 0 },
-                    tandooriAta: { enabled: false, percentage: 0 },
-                    chiroti: { enabled: false, percentage: 0 },
-                    rava: { enabled: false, percentage: 0 },
-                    dpMaida: { enabled: false, percentage: 0 },
-                    lotoMaida: { enabled: false, percentage: 0 },
-                    nestleMaida: { enabled: false, percentage: 0 }
-                },
-                ratios: {
-                    minProducts: 75,
-                    maxProducts: 77
-                }
-            };
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
         }
 
-        function getDefaultBins() {
-            return {
-                condense: [
-                    { id: 1, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                    { id: 2, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                    { id: 3, capacity: 65, occupied: 0, orderId: null, startTime: null },
-                    { id: 4, capacity: 65, occupied: 0, orderId: null, startTime: null }
-                ],
-                milly: [
-                    { id: 1, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                    { id: 2, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                    { id: 3, capacity: 25, occupied: 0, orderId: null, startTime: null },
-                    { id: 4, capacity: 25, occupied: 0, orderId: null, startTime: null }
-                ]
-            };
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Generate sample data if none exists
-        if (orders.length === 0) {
-            generateSampleData();
+        function updateStatus(stepId, status) {
+            const statusElement = document.getElementById(`${stepId}Status`);
+            statusElement.textContent = status;
+            statusElement.className = `status-indicator status-${status.toLowerCase()}`;
         }
 
-        function generateSampleData() {
-            // Sample orders with batch numbers
-            orders = [
-                {
-                    id: 'WO001',
-                    batchNo: 'B' + Date.now(),
-                    customer: 'ABC Mills Ltd',
-                    quantity: 50,
-                    hdPercentage: 20,
-                    lmqPercentage: 30,
-                    mqPercentage: 50,
-                    status: 'Created',
-                    binNo: null,
-                    createdAt: new Date(),
-                    priority: 'Normal',
-                    moistureData: {},
-                    productionData: null,
-                    dispatchData: { totalBags: 0, dispatchedBags: 0, remainingBags: 0 }
-                }
-            ];
-
-            // Sample waste entries for all new stages
-            wasteEntries = [
-                {
-                    id: 'W001',
-                    date: new Date(),
-                    stage: 'precleaning',
-                    wasteType: 'Plastic, Cotton threads',
-                    weight: 2.5,
-                    orderId: 'WO001',
-                    batchNo: 'B' + Date.now(),
-                    notes: 'Collection during pre-cleaning to conditioning transfer'
-                }
-            ];
-
-            saveData();
-        }
-
-        // Tab switching functionality
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-
-            // Update displays when switching tabs
-            updateTabContent(tabName);
-        }
-
-        function updateTabContent(tabName) {
-            switch(tabName) {
-                case 'dashboard': updateDashboard(); break;
-                case 'orders': updateOrdersTable(); break;
-                case 'moisture': updateMoistureDisplay(); break;
-                case 'grinding': updateGrindingDisplay(); break;
-                case 'production': updateProductionDisplay(); break;
-                case 'dispatch': updateDispatchDisplay(); break;
-                case 'waste': updateWasteDisplay(); break;
-                case 'inventory': updateInventoryDisplay(); break;
-                case 'bins': updateBinsDisplay(); break;
-            }
-        }
-
-        // Modal functionality
-        function showModal(modalId) {
-            populateOrderSelects();
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function populateOrderSelects() {
-            const orderSelects = ['moistureOrderId', 'grindingOrderId', 'productionOrderId', 'dispatchOrderId', 'relatedOrderWaste'];
-
-            orderSelects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    const currentValue = select.value;
-                    select.innerHTML = '<option value="">Select Order</option>';
-
-                    orders.forEach(order => {
-                        if (selectId === 'dispatchOrderId') {
-                            // Only show orders ready for dispatch
-                            const production = productionRecords.find(p => p.orderId === order.id);
-                            if (production && production.totalBags > 0) {
-                                const dispatch = dispatchRecords.filter(d => d.orderId === order.id);
-                                const dispatchedBags = dispatch.reduce((sum, d) => sum + d.bags, 0);
-                                if (dispatchedBags < production.totalBags) {
-                                    const option = document.createElement('option');
-                                    option.value = order.id;
-                                    option.textContent = `${order.id} - ${order.customer} (${production.totalBags - dispatchedBags} bags remaining)`;
-                                    select.appendChild(option);
-                                }
-                            }
-                        } else {
-                            const option = document.createElement('option');
-                            option.value = order.id;
-                            option.textContent = `${order.id} - ${order.customer} (${order.batchNo})`;
-                            select.appendChild(option);
-                        }
-                    });
-
-                    select.value = currentValue;
-                }
-            });
-        }
-
-        // Enhanced form submissions
-
-        // Create new order
-        document.getElementById('newOrderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const hdPerc = parseFloat(document.getElementById('hdPercentage').value) || 0;
-            const lmqPerc = parseFloat(document.getElementById('lmqPercentage').value) || 0;
-            const mqPerc = parseFloat(document.getElementById('mqPercentage').value) || 0;
-            const totalPerc = hdPerc + lmqPerc + mqPerc;
-
-            if (Math.abs(totalPerc - 100) > 0.1) {
-                document.getElementById('percentageError').style.display = 'block';
-                return;
-            }
-
-            const quantity = parseFloat(document.getElementById('orderQuantity').value);
-            const requiredHD = (quantity * hdPerc) / 100;
-            const requiredLMQ = (quantity * lmqPerc) / 100;
-            const requiredMQ = (quantity * mqPerc) / 100;
-
-            if (requiredHD > inventory.HD || requiredLMQ > inventory.LMQ || requiredMQ > inventory.MQ) {
-                alert('Insufficient inventory for this order. Please check stock levels.');
-                return;
-            }
-
-            const orderId = 'WO' + String(Date.now()).slice(-6);
-            const batchNo = 'B' + Date.now();
-
-            const order = {
-                id: orderId,
-                batchNo: batchNo,
-                customer: document.getElementById('customerName').value,
-                quantity: quantity,
-                hdPercentage: hdPerc,
-                lmqPercentage: lmqPerc,
-                mqPercentage: mqPerc,
-                status: 'Created',
-                binNo: null,
-                createdAt: new Date(),
-                priority: document.getElementById('priority').value,
-                moistureData: {},
-                productionData: null,
-                dispatchData: { totalBags: 0, dispatchedBags: 0, remainingBags: 0 }
-            };
-
-            // Deduct from inventory
-            inventory.HD -= requiredHD;
-            inventory.LMQ -= requiredLMQ;
-            inventory.MQ -= requiredMQ;
-
-            orders.push(order);
-            saveData();
-            closeModal('newOrderModal');
-            document.getElementById('newOrderForm').reset();
-            document.getElementById('percentageError').style.display = 'none';
-            document.getElementById('mqPercentage').value = 100;
-            updateAllDisplays();
-            alert(`Order ${orderId} created successfully with batch number ${batchNo}!`);
-        });
-
-        // Moisture control
-        document.getElementById('moistureForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const orderId = document.getElementById('moistureOrderId').value;
-            const stage = document.getElementById('moistureStage').value;
-            const currentMoisture = parseFloat(document.getElementById('currentMoisture').value);
-            const targetMoisture = parseFloat(document.getElementById('targetMoisture').value) || null;
-            const waterRequired = parseFloat(document.getElementById('waterRequired').value) || null;
-            const notes = document.getElementById('moistureNotes').value;
-
-            const order = orders.find(o => o.id === orderId);
-            if (!order) {
-                alert('Order not found!');
-                return;
-            }
-
-            const moistureRecord = {
-                id: 'M' + String(Date.now()).slice(-6),
-                orderId: orderId,
-                batchNo: order.batchNo,
-                stage: stage,
-                currentMoisture: currentMoisture,
-                targetMoisture: targetMoisture,
-                waterRequired: waterRequired,
-                timestamp: new Date(),
-                notes: notes
-            };
-
-            moistureRecords.push(moistureRecord);
-
-            // Update order moisture data
-            if (!order.moistureData) order.moistureData = {};
-            order.moistureData[stage] = moistureRecord;
-
-            saveData();
-            closeModal('moistureModal');
-            document.getElementById('moistureForm').reset();
-            updateAllDisplays();
-            alert(`Moisture data recorded for ${orderId} at ${stage} stage`);
-        });
-
-        // Grinding operations
-        document.getElementById('grindingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const orderId = document.getElementById('grindingOrderId').value;
-            const weight = parseFloat(document.getElementById('grindingWeight').value);
-            const duration = parseInt(document.getElementById('grindingDuration').value);
-            const b1MagnetWaste = parseFloat(document.getElementById('b1MagnetWaste').value) || 0;
-            const notes = document.getElementById('grindingNotes').value;
-
-            const order = orders.find(o => o.id === orderId);
-            if (!order) {
-                alert('Order not found!');
-                return;
-            }
-
-            const rate = (weight / duration) * 60; // kg per hour
-
-            const grindingRecord = {
-                id: 'G' + String(Date.now()).slice(-6),
-                orderId: orderId,
-                batchNo: order.batchNo,
-                weight: weight,
-                duration: duration,
-                rate: rate,
-                b1MagnetWaste: b1MagnetWaste,
-                timestamp: new Date(),
-                notes: notes
-            };
-
-            grindingRecords.push(grindingRecord);
-
-            // Track wheat processed since last B1 cleaning
-            wheatProcessedSinceCleaning += weight;
-            localStorage.setItem('wheatProcessedSinceCleaning', wheatProcessedSinceCleaning);
-
-            // Log B1 magnet waste if any
-            if (b1MagnetWaste > 0) {
-                const wasteEntry = {
-                    id: 'W' + String(Date.now()).slice(-6),
-                    date: new Date(),
-                    stage: 'b1magnet',
-                    wasteType: 'Metal particles, magnetic materials',
-                    weight: b1MagnetWaste,
-                    orderId: orderId,
-                    batchNo: order.batchNo,
-                    notes: `B1 scale magnetic separation - ${notes}`
-                };
-                wasteEntries.push(wasteEntry);
-            }
-
-            // Update order status if grinding started
-            if (order.status === 'Milly Cleaning') {
-                order.status = 'Grinding';
-            }
-
-            saveData();
-            closeModal('grindingModal');
-            document.getElementById('grindingForm').reset();
-            updateAllDisplays();
-            alert(`Grinding logged: ${weight}kg at ${rate.toFixed(1)}kg/hr for ${orderId}`);
-        });
-
-        // Production logging
-        document.getElementById('productionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const orderId = document.getElementById('productionOrderId').value;
-            const totalProduced = parseFloat(document.getElementById('totalProduced').value);
-            const productsWeight = parseFloat(document.getElementById('productsWeight').value);
-            const branWeight = parseFloat(document.getElementById('branWeight').value);
-            const totalBags = parseInt(document.getElementById('totalBags').value);
-            const notes = document.getElementById('productionNotes').value;
-
-            const order = orders.find(o => o.id === orderId);
-            if (!order) {
-                alert('Order not found!');
-                return;
-            }
-
-            // Validate totals
-            if (Math.abs((productsWeight + branWeight) - totalProduced) > 0.1) {
-                alert('Products + Bran weight must equal total produced weight!');
-                return;
-            }
-
-            // Calculate ratios
-            const productsRatio = (productsWeight / totalProduced) * 100;
-            const branRatio = (branWeight / totalProduced) * 100;
-
-            // Check if ratios are within acceptable range
-            const minProducts = productConfig.ratios.minProducts;
-            const maxProducts = productConfig.ratios.maxProducts;
-            let ratioStatus = 'Normal';
-
-            if (productsRatio < minProducts || productsRatio > maxProducts) {
-                ratioStatus = productsRatio < minProducts ? 'Below Target' : 'Above Target';
-            }
-
-            const productionRecord = {
-                id: 'P' + String(Date.now()).slice(-6),
-                orderId: orderId,
-                batchNo: order.batchNo,
-                totalProduced: totalProduced,
-                productsWeight: productsWeight,
-                branWeight: branWeight,
-                productsRatio: productsRatio,
-                branRatio: branRatio,
-                ratioStatus: ratioStatus,
-                totalBags: totalBags,
-                timestamp: new Date(),
-                notes: notes
-            };
-
-            productionRecords.push(productionRecord);
-
-            // Update order production data and status
-            order.productionData = productionRecord;
-            order.dispatchData.totalBags = totalBags;
-            order.dispatchData.remainingBags = totalBags;
-            order.status = 'Ready for Dispatch';
-
-            // Update finished goods inventory
-            updateFinishedInventory(orderId, productsWeight, branWeight);
-
-            saveData();
-            closeModal('productionModal');
-            document.getElementById('productionForm').reset();
-            updateAllDisplays();
-            alert(`Production logged for ${orderId}: ${totalBags} bags produced`);
-        });
-
-        // Product configuration
-        document.getElementById('productConfigForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const config = {
-                products: {
-                    maida: {
-                        enabled: document.getElementById('produceMaida').checked,
-                        percentage: parseFloat(document.getElementById('maidaPercent').value) || 0
-                    },
-                    suji: {
-                        enabled: document.getElementById('produceSuji').checked,
-                        percentage: parseFloat(document.getElementById('sujiPercent').value) || 0
-                    },
-                    chakkiAta: {
-                        enabled: document.getElementById('produceChakkiAta').checked,
-                        percentage: parseFloat(document.getElementById('chakkiAtaPercent').value) || 0
-                    },
-                    tandooriAta: {
-                        enabled: document.getElementById('produceTandooriAta').checked,
-                        percentage: parseFloat(document.getElementById('tandooriAtaPercent').value) || 0
-                    },
-                    chiroti: {
-                        enabled: document.getElementById('produceChiroti').checked,
-                        percentage: parseFloat(document.getElementById('chirotiPercent').value) || 0
-                    },
-                    rava: {
-                        enabled: document.getElementById('produceRava').checked,
-                        percentage: parseFloat(document.getElementById('ravaPercent').value) || 0
-                    },
-                    dpMaida: {
-                        enabled: document.getElementById('produceDpMaida').checked,
-                        percentage: parseFloat(document.getElementById('dpMaidaPercent').value) || 0
-                    },
-                    lotoMaida: {
-                        enabled: document.getElementById('produceLotoMaida').checked,
-                        percentage: parseFloat(document.getElementById('lotoMaidaPercent').value) || 0
-                    },
-                    nestleMaida: {
-                        enabled: document.getElementById('produceNestleMaida').checked,
-                        percentage: parseFloat(document.getElementById('nestleMaidaPercent').value) || 0
-                    }
-                },
-                ratios: {
-                    minProducts: parseFloat(document.getElementById('minProductsRatio').value),
-                    maxProducts: parseFloat(document.getElementById('maxProductsRatio').value)
-                }
-            };
-
-            productConfig = config;
-            saveData();
-            closeModal('productConfigModal');
-            updateAllDisplays();
-            alert('Product configuration saved successfully!');
-        });
-
-        // Dispatch processing
-        document.getElementById('dispatchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const orderId = document.getElementById('dispatchOrderId').value;
-            const bags = parseInt(document.getElementById('dispatchBags').value);
-            const vehicleNumber = document.getElementById('vehicleNumber').value;
-            const driverName = document.getElementById('driverName').value;
-            const notes = document.getElementById('dispatchNotes').value;
-
-            const order = orders.find(o => o.id === orderId);
-            if (!order) {
-                alert('Order not found!');
-                return;
-            }
-
-            const production = productionRecords.find(p => p.orderId === orderId);
-            if (!production) {
-                alert('No production record found for this order!');
-                return;
-            }
-
-            const dispatchedBags = dispatchRecords.filter(d => d.orderId === orderId)
-                .reduce((sum, d) => sum + d.bags, 0);
-
-            if (dispatchedBags + bags > production.totalBags) {
-                alert(`Cannot dispatch ${bags} bags. Only ${production.totalBags - dispatchedBags} bags remaining.`);
-                return;
-            }
-
-            const dispatchRecord = {
-                id: 'D' + String(Date.now()).slice(-6),
-                orderId: orderId,
-                batchNo: order.batchNo,
-                bags: bags,
-                vehicleNumber: vehicleNumber,
-                driverName: driverName,
-                timestamp: new Date(),
-                notes: notes
-            };
-
-            dispatchRecords.push(dispatchRecord);
-
-            // Update order dispatch data
-            order.dispatchData.dispatchedBags += bags;
-            order.dispatchData.remainingBags = production.totalBags - order.dispatchData.dispatchedBags;
-
-            // Update order status if fully dispatched
-            if (order.dispatchData.remainingBags === 0) {
-                order.status = 'Completed';
-            }
-
-            saveData();
-            closeModal('dispatchModal');
-            document.getElementById('dispatchForm').reset();
-            updateAllDisplays();
-            alert(`Dispatch processed: ${bags} bags for ${orderId} via ${vehicleNumber}`);
-        });
-
-        // Enhanced waste management
-        document.getElementById('wasteForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const stage = document.getElementById('wasteStage').value;
-            const wasteType = document.getElementById('wasteType').value;
-            const weight = parseFloat(document.getElementById('wasteWeight').value);
-            const orderId = document.getElementById('relatedOrderWaste').value || null;
-            const notes = document.getElementById('wasteNotes').value;
-
-            let batchNo = null;
-            if (orderId) {
-                const order = orders.find(o => o.id === orderId);
-                if (order) batchNo = order.batchNo;
-            }
-
-            const wasteEntry = {
-                id: 'W' + String(Date.now()).slice(-6),
-                date: new Date(),
-                stage: stage,
-                wasteType: wasteType,
-                weight: weight,
-                orderId: orderId,
-                batchNo: batchNo,
-                notes: notes
-            };
-
-            wasteEntries.push(wasteEntry);
-            saveData();
-            closeModal('wasteModal');
-            document.getElementById('wasteForm').reset();
-            updateAllDisplays();
-            alert(`Waste entry logged: ${weight}kg from ${getStageName(stage)}`);
-        });
-
-        // Helper functions
-        function getStageName(stage) {
-            const stages = {
-                'precleaning': 'Pre-cleaning to Conditioning',
-                'postcleaning': 'After 24hr Conditioning',
-                'b1magnet': 'B1 Scale Magnet',
-                'drum': 'Drum Shield',
-                'magnet': 'Magnets Machine',
-                'separator': 'Separator'
-            };
-            return stages[stage] || stage;
-        }
-
-        function updateFinishedInventory(orderId, productsWeight, branWeight) {
-            if (!finishedInventory[orderId]) {
-                finishedInventory[orderId] = {
-                    products: productsWeight,
-                    bran: branWeight,
-                    lastUpdated: new Date()
-                };
-            } else {
-                finishedInventory[orderId].products += productsWeight;
-                finishedInventory[orderId].bran += branWeight;
-                finishedInventory[orderId].lastUpdated = new Date();
-            }
-        }
-
-        function cleanB1Magnet() {
-            const confirmed = confirm(`Clean B1 Magnet now? ${wheatProcessedSinceCleaning.toFixed(1)}kg has been processed since last cleaning.`);
-            if (confirmed) {
-                b1LastCleaning = new Date();
-                wheatProcessedSinceCleaning = 0;
-                localStorage.setItem('b1LastCleaning', JSON.stringify(b1LastCleaning));
-                localStorage.setItem('wheatProcessedSinceCleaning', 0);
-
-                // Log cleaning activity
-                const cleaningEntry = {
-                    id: 'C' + String(Date.now()).slice(-6),
-                    date: new Date(),
-                    machine: 'b1magnet',
-                    type: 'routine',
-                    duration: 30,
-                    notes: 'Frequent B1 magnet cleaning based on quantity processed',
-                    evidencePhoto: null
-                };
-                cleaningLogs.push(cleaningEntry);
-
-                saveData();
-                updateAllDisplays();
-                alert('B1 Magnet cleaned successfully!');
-            }
-        }
-
-        // Moisture stage change handler
-        document.getElementById('moistureStage').addEventListener('change', function() {
-            const stage = this.value;
-            const targetGroup = document.getElementById('targetMoistureGroup');
-            const waterGroup = document.getElementById('waterRequiredGroup');
-
-            if (stage === 'target') {
-                targetGroup.style.display = 'block';
-                waterGroup.style.display = 'block';
-            } else {
-                targetGroup.style.display = 'none';
-                waterGroup.style.display = 'none';
-            }
-        });
-
-        // Calculate water required for target moisture
-        document.getElementById('targetMoisture').addEventListener('input', function() {
-            const currentMoisture = parseFloat(document.getElementById('currentMoisture').value) || 0;
-            const targetMoisture = parseFloat(this.value) || 0;
-            const orderId = document.getElementById('moistureOrderId').value;
-
-            if (orderId && currentMoisture > 0 && targetMoisture > currentMoisture) {
-                const order = orders.find(o => o.id === orderId);
-                if (order) {
-                    // Simplified calculation: approximately 10 liters per ton per 1% moisture increase
-                    const moistureIncrease = targetMoisture - currentMoisture;
-                    const waterRequired = order.quantity * moistureIncrease * 10;
-                    document.getElementById('waterRequired').value = waterRequired.toFixed(1);
-                }
-            }
-        });
-
-        // Update display functions
-        function updateDashboard() {
-            const activeOrders = orders.filter(o => !['Completed'].includes(o.status)).length;
-            const readyDispatch = orders.filter(o => o.status === 'Ready for Dispatch').length;
-
-            // Today's production
-            const today = new Date().toDateString();
-            const todayProduction = productionRecords.filter(p =>
-                new Date(p.timestamp).toDateString() === today
-            ).reduce((sum, p) => sum + p.totalProduced, 0);
-
-            // B1 hourly rate (last hour)
-            const lastHour = new Date(Date.now() - 60*60*1000);
-            const recentGrinding = grindingRecords.filter(g => new Date(g.timestamp) > lastHour);
-            const b1HourlyRate = recentGrinding.reduce((sum, g) => sum + g.rate, 0) / Math.max(recentGrinding.length, 1);
-
-            // Production ratios
-            const recentProduction = productionRecords.slice(-10);
-            let avgProductsRatio = 0, avgBranRatio = 0;
-            if (recentProduction.length > 0) {
-                avgProductsRatio = recentProduction.reduce((sum, p) => sum + p.productsRatio, 0) / recentProduction.length;
-                avgBranRatio = recentProduction.reduce((sum, p) => sum + p.branRatio, 0) / recentProduction.length;
-            }
-
-            // Today's waste
-            const todayWaste = wasteEntries.filter(w => new Date(w.date).toDateString() === today);
-            const todayPrecleaningWaste = todayWaste.filter(w => w.stage === 'precleaning').reduce((sum, w) => sum + w.weight, 0);
-            const todayPostcleaningWaste = todayWaste.filter(w => w.stage === 'postcleaning').reduce((sum, w) => sum + w.weight, 0);
-            const todayB1MagnetWaste = todayWaste.filter(w => w.stage === 'b1magnet').reduce((sum, w) => sum + w.weight, 0);
-
-            document.getElementById('activeOrders').textContent = activeOrders;
-            document.getElementById('readyDispatch').textContent = readyDispatch;
-            document.getElementById('todayProduction').textContent = todayProduction.toFixed(1) + 'kg';
-            document.getElementById('b1HourlyRate').textContent = b1HourlyRate.toFixed(1) + 'kg/hr';
-
-            document.getElementById('productsRatio').textContent = avgProductsRatio.toFixed(1) + '%';
-            document.getElementById('branRatio').textContent = avgBranRatio.toFixed(1) + '%';
-            document.getElementById('machineEfficiency').textContent = '95%'; // Placeholder
-
-            document.getElementById('todayPrecleaningWaste').textContent = todayPrecleaningWaste.toFixed(1) + 'kg';
-            document.getElementById('todayPostcleaningWaste').textContent = todayPostcleaningWaste.toFixed(1) + 'kg';
-            document.getElementById('todayB1MagnetWaste').textContent = todayB1MagnetWaste.toFixed(1) + 'kg';
-        }
-
-        function updateOrdersTable() {
-            const tbody = document.getElementById('ordersTable');
-            tbody.innerHTML = orders.map(order => {
-                const progress = getOrderProgress(order.status);
-
-                // Moisture status
-                let moistureStatus = 'Not Started';
-                if (order.moistureData && Object.keys(order.moistureData).length > 0) {
-                    const stages = Object.keys(order.moistureData);
-                    moistureStatus = `${stages.length} stage(s) recorded`;
-                }
-
-                return `
-                    <tr>
-                        <td><strong>${order.id}</strong></td>
-                        <td><span style="background: #e3f2fd; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${order.batchNo}</span></td>
-                        <td>${order.customer}</td>
-                        <td>${order.quantity}t</td>
-                        <td><span class="status-badge status-${order.status.toLowerCase().replace(/ /g, '').replace('-', '')}">${order.status}</span></td>
-                        <td>
-                            <div class="progress-bar" style="width: 80px;">
-                                <div class="progress-fill" style="width: ${progress}%"></div>
-                            </div>
-                            <small>${progress}%</small>
-                        </td>
-                        <td style="font-size: 0.9em;">${moistureStatus}</td>
-                        <td>
-                            <button class="btn btn-secondary btn-small" onclick="advanceOrder('${order.id}')">
-                                Next Stage
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function updateMoistureDisplay() {
-            const container = document.getElementById('moistureTracking');
-
-            if (moistureRecords.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No moisture records found.</div>';
-                return;
-            }
-
-            // Group by order
-            const orderGroups = {};
-            moistureRecords.forEach(record => {
-                if (!orderGroups[record.orderId]) orderGroups[record.orderId] = [];
-                orderGroups[record.orderId].push(record);
-            });
-
-            container.innerHTML = Object.keys(orderGroups).map(orderId => {
-                const records = orderGroups[orderId].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                const order = orders.find(o => o.id === orderId);
-
-                return `
-                    <div class="moisture-card">
-                        <h4>Order ${orderId} - ${order ? order.customer : 'Unknown'} (${records[0].batchNo})</h4>
-                        ${records.map(record => `
-                            <div style="margin: 10px 0; padding: 10px; background: white; border-radius: 8px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                    <strong>${record.stage.charAt(0).toUpperCase() + record.stage.slice(1)} Stage</strong>
-                                    <span>${new Date(record.timestamp).toLocaleString()}</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <span>Current: ${record.currentMoisture}%</span>
-                                    ${record.targetMoisture ? `<span>Target: ${record.targetMoisture}%</span>` : ''}
-                                    ${record.waterRequired ? `<span>Water: ${record.waterRequired}L</span>` : ''}
-                                </div>
-                                ${record.notes ? `<div style="font-style: italic; margin-top: 5px;">${record.notes}</div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updateGrindingDisplay() {
-            // B1 scale statistics
-            const now = new Date();
-            const oneHourAgo = new Date(now.getTime() - 60*60*1000);
-            const oneDayAgo = new Date(now.getTime() - 24*60*60*1000);
-            const oneMonthAgo = new Date(now.getTime() - 30*24*60*60*1000);
-
-            const hourlyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneHourAgo)
-                .reduce((sum, g) => sum + g.weight, 0);
-            const dailyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneDayAgo)
-                .reduce((sum, g) => sum + g.weight, 0);
-            const monthlyGrinding = grindingRecords.filter(g => new Date(g.timestamp) > oneMonthAgo)
-                .reduce((sum, g) => sum + g.weight, 0);
-
-            document.getElementById('grindingHourly').textContent = hourlyGrinding.toFixed(1) + 'kg';
-            document.getElementById('grindingDaily').textContent = dailyGrinding.toFixed(1) + 'kg';
-            document.getElementById('grindingMonthly').textContent = monthlyGrinding.toFixed(1) + 'kg';
-
-            // B1 cleaning status
-            document.getElementById('lastB1Cleaning').textContent = b1LastCleaning ?
-                new Date(b1LastCleaning).toLocaleString() : 'Never';
-            document.getElementById('wheatSinceCleaning').textContent = wheatProcessedSinceCleaning.toFixed(1) + 'kg';
-
-            // Update cleaning frequency indicator
-            const cleaningDiv = document.getElementById('b1CleaningStatus');
-            if (wheatProcessedSinceCleaning > 1000) { // High frequency needed
-                cleaningDiv.className = 'cleaning-frequency alert-danger';
-            } else if (wheatProcessedSinceCleaning > 500) { // Medium frequency
-                cleaningDiv.className = 'cleaning-frequency alert-warning';
-            } else {
-                cleaningDiv.className = 'cleaning-frequency';
-            }
-
-            // Grinding history table
-            const tbody = document.getElementById('grindingTable');
-            tbody.innerHTML = grindingRecords.slice(-20).reverse().map(record => `
-                <tr>
-                    <td>${new Date(record.timestamp).toLocaleString()}</td>
-                    <td>${record.orderId}</td>
-                    <td>${record.batchNo}</td>
-                    <td>${record.weight}kg</td>
-                    <td>${record.rate.toFixed(1)}kg/hr</td>
-                    <td>${record.b1MagnetWaste}kg</td>
-                </tr>
-            `).join('');
-        }
-
-        function updateProductionDisplay() {
-            // Production ratios overview
-            const ratiosDiv = document.getElementById('productionRatios');
-            const recentProduction = productionRecords.slice(-10);
-
-            if (recentProduction.length === 0) {
-                ratiosDiv.innerHTML = '<div class="alert alert-info">No production records found.</div>';
-            } else {
-                const avgProductsRatio = recentProduction.reduce((sum, p) => sum + p.productsRatio, 0) / recentProduction.length;
-                const avgBranRatio = recentProduction.reduce((sum, p) => sum + p.branRatio, 0) / recentProduction.length;
-
-                let ratioClass = 'production-ratio';
-                if (avgProductsRatio < productConfig.ratios.minProducts || avgProductsRatio > productConfig.ratios.maxProducts) {
-                    ratioClass += avgProductsRatio < productConfig.ratios.minProducts ? ' ratio-danger' : ' ratio-warning';
-                }
-
-                ratiosDiv.innerHTML = `
-                    <div class="${ratioClass}">
-                        <h5>Average Production Ratios (Last 10 batches)</h5>
-                        <div style="display: flex; justify-content: space-between; margin: 10px 0;">
-                            <span>Products: ${avgProductsRatio.toFixed(1)}%</span>
-                            <span>Target: ${productConfig.ratios.minProducts}-${productConfig.ratios.maxProducts}%</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between;">
-                            <span>Bran: ${avgBranRatio.toFixed(1)}%</span>
-                            <span>Status: ${ratioClass.includes('danger') ? 'Critical' : ratioClass.includes('warning') ? 'Warning' : 'Normal'}</span>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Current product configuration
-            const configDiv = document.getElementById('currentProductConfig');
-            const enabledProducts = Object.entries(productConfig.products)
-                .filter(([key, config]) => config.enabled)
-                .map(([key, config]) => `${key}: ${config.percentage}%`)
-                .join(', ');
-
-            configDiv.innerHTML = `
-                <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-top: 10px;">
-                    <strong>Active Products:</strong><br>
-                    <small>${enabledProducts || 'Only Maida and Bran'}</small>
-                </div>
-            `;
-
-            // Production history table
-            const tbody = document.getElementById('productionTable');
-            tbody.innerHTML = productionRecords.slice(-20).reverse().map(record => {
-                let ratioStatusClass = 'status-badge ';
-                if (record.ratioStatus === 'Normal') ratioStatusClass += 'status-ready';
-                else if (record.ratioStatus === 'Below Target') ratioStatusClass += 'status-danger';
-                else ratioStatusClass += 'status-warning';
-
-                return `
-                    <tr>
-                        <td>${new Date(record.timestamp).toLocaleDateString()}</td>
-                        <td>${record.orderId}</td>
-                        <td>${record.batchNo}</td>
-                        <td>${record.productsWeight}kg (${record.productsRatio.toFixed(1)}%)</td>
-                        <td>${record.branWeight}kg (${record.branRatio.toFixed(1)}%)</td>
-                        <td><span class="${ratioStatusClass}">${record.ratioStatus}</span></td>
-                        <td>${record.totalBags}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function updateDispatchDisplay() {
-            const container = document.getElementById('dispatchQueue');
-
-            // Get orders ready for dispatch (FIFO order)
-            const readyOrders = orders.filter(order => {
-                const production = productionRecords.find(p => p.orderId === order.id);
-                if (!production) return false;
-
-                const dispatchedBags = dispatchRecords.filter(d => d.orderId === order.id)
-                    .reduce((sum, d) => sum + d.bags, 0);
-
-                return dispatchedBags < production.totalBags;
-            }).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-            if (readyOrders.length === 0) {
-                container.innerHTML = '<div class="alert alert-info">No orders ready for dispatch.</div>';
-                return;
-            }
-
-            container.innerHTML = readyOrders.map((order, index) => {
-                const production = productionRecords.find(p => p.orderId === order.id);
-                const dispatchedBags = dispatchRecords.filter(d => d.orderId === order.id)
-                    .reduce((sum, d) => sum + d.bags, 0);
-                const remainingBags = production.totalBags - dispatchedBags;
-
-                return `
-                    <div class="dispatch-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4>${order.id} - ${order.customer} (${order.batchNo})</h4>
-                                <div style="color: #666; font-size: 0.9em;">
-                                    Queue Position: #${index + 1} | Production Date: ${new Date(production.timestamp).toLocaleDateString()}
-                                </div>
-                                <div style="margin-top: 5px;">
-                                    <strong>Remaining: ${remainingBags} bags</strong> |
-                                    Dispatched: ${dispatchedBags}/${production.totalBags} bags
-                                </div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 1.2em; color: #2196f3; margin-bottom: 5px;">
-                                    FIFO #${index + 1}
-                                </div>
-                                <button class="btn btn-primary btn-small" onclick="showModal('dispatchModal'); document.getElementById('dispatchOrderId').value='${order.id}'">
-                                    📦 Dispatch
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updateWasteDisplay() {
-            // Update totals for all waste categories
-            const totalPrecleaningWaste = wasteEntries.filter(w => w.stage === 'precleaning').reduce((sum, w) => sum + w.weight, 0);
-            const totalPostcleaningWaste = wasteEntries.filter(w => w.stage === 'postcleaning').reduce((sum, w) => sum + w.weight, 0);
-            const totalB1MagnetWaste = wasteEntries.filter(w => w.stage === 'b1magnet').reduce((sum, w) => sum + w.weight, 0);
-
-            document.getElementById('totalPrecleaningWaste').textContent = totalPrecleaningWaste.toFixed(1);
-            document.getElementById('totalPostcleaningWaste').textContent = totalPostcleaningWaste.toFixed(1);
-            document.getElementById('totalB1MagnetWaste').textContent = totalB1MagnetWaste.toFixed(1);
-
-            // Update waste history table
-            const tbody = document.getElementById('wasteTable');
-            tbody.innerHTML = wasteEntries.slice(-30).reverse().map(waste => `
-                <tr>
-                    <td>${new Date(waste.date).toLocaleDateString()}</td>
-                    <td>${getStageName(waste.stage)}</td>
-                    <td>${waste.wasteType}</td>
-                    <td>${waste.weight}kg</td>
-                    <td>${waste.orderId || '-'}</td>
-                    <td>${waste.batchNo || '-'}</td>
-                    <td>${waste.notes || '-'}</td>
-                </tr>
-            `).join('');
-        }
-
-        function updateInventoryDisplay() {
-            document.getElementById('hdStock').textContent = inventory.HD.toFixed(1);
-            document.getElementById('lmqStock').textContent = inventory.LMQ.toFixed(1);
-            document.getElementById('mqStock').textContent = inventory.MQ.toFixed(1);
-
-            // Finished products inventory
-            const finishedDiv = document.getElementById('finishedProductsInventory');
-            if (Object.keys(finishedInventory).length === 0) {
-                finishedDiv.innerHTML = '<div class="alert alert-info">No finished products in inventory.</div>';
-            } else {
-                const totalProducts = Object.values(finishedInventory).reduce((sum, inv) => sum + inv.products, 0);
-                const totalBran = Object.values(finishedInventory).reduce((sum, inv) => sum + inv.bran, 0);
-
-                finishedDiv.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <div style="text-align: center; padding: 15px; background: #e3f2fd; border-radius: 8px;">
-                            <h4>Total Products</h4>
-                            <div style="font-size: 1.5em; margin: 10px 0;">${totalProducts.toFixed(1)}kg</div>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: #f3e5f5; border-radius: 8px;">
-                            <h4>Total Bran</h4>
-                            <div style="font-size: 1.5em; margin: 10px 0;">${totalBran.toFixed(1)}kg</div>
-                        </div>
-                    </div>
-                    <div style="max-height: 200px; overflow-y: auto;">
-                        ${Object.entries(finishedInventory).map(([orderId, inv]) => `
-                            <div style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #eee;">
-                                <span>${orderId}</span>
-                                <span>Products: ${inv.products.toFixed(1)}kg | Bran: ${inv.bran.toFixed(1)}kg</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-        }
-
-        function updateBinsDisplay() {
-            updateBinSection('condenseBins', bins.condense, 'Condense');
-            updateBinSection('millyBins', bins.milly, 'Milly');
-        }
-
-        function updateBinSection(containerId, binArray, type) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = binArray.map(bin => {
-                const isOccupied = bin.occupied > 0;
-                const utilizationPerc = ((bin.occupied / bin.capacity) * 100).toFixed(1);
-                const timeInfo = bin.startTime ? `<div style="font-size: 0.8em; color: #666;">Started: ${new Date(bin.startTime).toLocaleString()}</div>` : '';
-
-                return `
-                    <div class="bin-item ${isOccupied ? 'occupied' : 'available'}">
-                        <h4>${type} Bin ${bin.id}</h4>
-                        <div style="font-size: 1.2em; margin: 10px 0;">
-                            ${bin.occupied.toFixed(1)}/${bin.capacity}t
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${utilizationPerc}%"></div>
-                        </div>
-                        <div style="font-size: 0.9em; margin: 5px 0;">${utilizationPerc}% utilized</div>
-                        ${bin.orderId ? `<div style="font-size: 0.9em; color: #333; margin-bottom: 5px;">Order: ${bin.orderId}</div>` : ''}
-                        ${timeInfo}
-                        <div style="margin-top: 10px;">
-                            <button class="btn btn-warning btn-small" onclick="editBin('${type.toLowerCase()}', ${bin.id})" style="font-size: 0.8em; padding: 5px 10px;">
-                                Edit
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function editBin(binType, binId) {
-            document.getElementById('binType').value = binType;
-            updateBinNumbers();
-            document.getElementById('binNumber').value = binId;
-            showModal('binModal');
-        }
-
-        function updateBinNumbers() {
-            const binType = document.getElementById('binType').value;
-            const binNumberSelect = document.getElementById('binNumber');
-
-            binNumberSelect.innerHTML = '<option value="">Select Bin</option>';
-
-            if (binType && bins[binType]) {
-                bins[binType].forEach(bin => {
-                    const option = document.createElement('option');
-                    option.value = bin.id;
-                    option.textContent = `Bin ${bin.id} (${bin.occupied}/${bin.capacity}t)`;
-                    binNumberSelect.appendChild(option);
-                });
-            }
-        }
-
-        function getOrderProgress(status) {
-            const stages = {
-                'Created': 10,
-                'Pre-cleaning': 20,
-                'Condense Cleaning': 35,
-                'Milly Cleaning': 50,
-                'Grinding': 70,
-                'Production': 85,
-                'Ready for Dispatch': 95,
-                'Completed': 100
-            };
-            return stages[status] || 0;
-        }
-
-        function advanceOrder(orderId) {
-            const order = orders.find(o => o.id === orderId);
-            if (!order) return;
-
-            const stageFlow = ['Created', 'Pre-cleaning', 'Condense Cleaning', 'Milly Cleaning', 'Grinding', 'Production', 'Ready for Dispatch', 'Completed'];
-            const currentIndex = stageFlow.indexOf(order.status);
-
-            if (currentIndex < stageFlow.length - 1) {
-                order.status = stageFlow[currentIndex + 1];
-
-                // Auto-generate waste entries for certain stage transitions
-                if (order.status === 'Condense Cleaning') {
-                    // Pre-cleaning waste
-                    const wasteEntry = {
-                        id: 'W' + String(Date.now()).slice(-6),
-                        date: new Date(),
-                        stage: 'precleaning',
-                        wasteType: 'Organic matter, dust, foreign particles',
-                        weight: Math.random() * 3 + 1, // Random 1-4kg
-                        orderId: orderId,
-                        batchNo: order.batchNo,
-                        notes: 'Auto-generated waste from pre-cleaning to conditioning transfer'
-                    };
-                    wasteEntries.push(wasteEntry);
-                }
-
-                if (order.status === 'Milly Cleaning') {
-                    // Post 24hr cleaning waste
-                    const wasteEntry = {
-                        id: 'W' + String(Date.now()).slice(-6),
-                        date: new Date(),
-                        stage: 'postcleaning',
-                        wasteType: 'Processed waste, fine particles',
-                        weight: Math.random() * 2 + 0.5, // Random 0.5-2.5kg
-                        orderId: orderId,
-                        batchNo: order.batchNo,
-                        notes: 'Auto-generated waste after 24-hour conditioning cleaning'
-                    };
-                    wasteEntries.push(wasteEntry);
-                }
-
-                saveData();
-                updateAllDisplays();
-                alert(`Order ${orderId} advanced to ${order.status}`);
-            }
-        }
-
-        // Inventory management (existing functionality)
-        document.getElementById('inventoryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const type = document.getElementById('stockType').value;
-            const action = document.getElementById('stockAction').value;
-            const amount = parseFloat(document.getElementById('stockAmount').value);
-            const reason = document.getElementById('stockReason').value;
-
-            if (action === 'add') {
-                inventory[type] += amount;
-            } else if (action === 'remove') {
-                if (inventory[type] < amount) {
-                    alert('Insufficient stock to remove!');
-                    return;
-                }
-                inventory[type] -= amount;
-            } else if (action === 'set') {
-                inventory[type] = amount;
-            }
-
-            saveData();
-            closeModal('inventoryModal');
-            document.getElementById('inventoryForm').reset();
-            updateAllDisplays();
-            alert(`Inventory updated: ${type} ${action} ${amount}t. Reason: ${reason || 'Not specified'}`);
-        });
-
-        // Bin management (existing functionality)
-        document.getElementById('binForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const binType = document.getElementById('binType').value;
-            const binNumber = parseInt(document.getElementById('binNumber').value);
-            const action = document.getElementById('binAction').value;
-            const amount = parseFloat(document.getElementById('binAmount').value);
-            const orderId = document.getElementById('relatedOrder').value;
-
-            const bin = bins[binType].find(b => b.id === binNumber);
-            if (!bin) {
-                alert('Bin not found!');
-                return;
-            }
-
-            if (action === 'add') {
-                if (bin.occupied + amount > bin.capacity) {
-                    alert('Cannot add more than bin capacity!');
-                    return;
-                }
-                bin.occupied += amount;
-                if (orderId) bin.orderId = orderId;
-                bin.startTime = new Date();
-            } else if (action === 'remove') {
-                if (bin.occupied < amount) {
-                    alert('Cannot remove more than current amount!');
-                    return;
-                }
-                bin.occupied -= amount;
-                if (bin.occupied === 0) {
-                    bin.orderId = null;
-                    bin.startTime = null;
-                }
-            } else if (action === 'empty') {
-                bin.occupied = 0;
-                bin.orderId = null;
-                bin.startTime = null;
-            } else if (action === 'capacity') {
-                if (amount < bin.occupied) {
-                    alert('New capacity cannot be less than current occupied amount!');
-                    return;
-                }
-                bin.capacity = amount;
-            }
-
-            saveData();
-            closeModal('binModal');
-            document.getElementById('binForm').reset();
-            updateAllDisplays();
-            alert(`Bin ${binType} ${binNumber} updated successfully!`);
-        });
-
-        function updateAllDisplays() {
-            updateDashboard();
-            updateOrdersTable();
-            updateMoistureDisplay();
-            updateGrindingDisplay();
-            updateProductionDisplay();
-            updateDispatchDisplay();
-            updateWasteDisplay();
-            updateInventoryDisplay();
-            updateBinsDisplay();
+        function generateOrderId() {
+            return 'ORD-' + Date.now().toString().slice(-8);
         }
 
         function saveData() {
-            localStorage.setItem('wheatOrders', JSON.stringify(orders));
-            localStorage.setItem('wheatInventory', JSON.stringify(inventory));
-            localStorage.setItem('wasteEntries', JSON.stringify(wasteEntries));
-            localStorage.setItem('moistureRecords', JSON.stringify(moistureRecords));
-            localStorage.setItem('grindingRecords', JSON.stringify(grindingRecords));
-            localStorage.setItem('productionRecords', JSON.stringify(productionRecords));
-            localStorage.setItem('dispatchRecords', JSON.stringify(dispatchRecords));
-            localStorage.setItem('productConfig', JSON.stringify(productConfig));
-            localStorage.setItem('cleaningLogs', JSON.stringify(cleaningLogs));
-            localStorage.setItem('wheatBins', JSON.stringify(bins));
-            localStorage.setItem('finishedInventory', JSON.stringify(finishedInventory));
+            const data = {
+                orderData,
+                allOrders,
+                timers,
+                processStartTime,
+                selectedOrderId,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('wheatProcessingData', JSON.stringify(data));
         }
 
-        // Auto-update percentage fields (existing functionality)
-        document.getElementById('hdPercentage').addEventListener('input', updatePercentages);
-        document.getElementById('lmqPercentage').addEventListener('input', updatePercentages);
-        document.getElementById('mqPercentage').addEventListener('input', updatePercentages);
+        function loadData() {
+            const saved = localStorage.getItem('wheatProcessingData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                orderData = data.orderData || {};
+                allOrders = data.allOrders || [];
+                timers = data.timers || {};
+                processStartTime = data.processStartTime;
+                selectedOrderId = data.selectedOrderId;
 
-        function updatePercentages() {
-            const hd = parseFloat(document.getElementById('hdPercentage').value) || 0;
-            const lmq = parseFloat(document.getElementById('lmqPercentage').value) || 0;
-            const mq = parseFloat(document.getElementById('mqPercentage').value) || 0;
-            const total = hd + lmq + mq;
+                // Populate order dropdown
+                populateOrderDropdown();
+            }
+        }
 
-            const inputs = [document.getElementById('hdPercentage'), document.getElementById('lmqPercentage'), document.getElementById('mqPercentage')];
-            const errorDiv = document.getElementById('percentageError');
+        function populateOrderDropdown() {
+            const orderSelect = document.getElementById('orderSelect');
+            orderSelect.innerHTML = '<option value="">Select an order to process</option>';
 
-            if (Math.abs(total - 100) > 0.1) {
-                inputs.forEach(input => input.style.borderColor = '#d32f2f');
-                errorDiv.style.display = 'block';
+            // Filter for pending orders only
+            const pendingOrders = allOrders.filter(order => order.status === 'pending');
+
+            pendingOrders.forEach(order => {
+                const option = document.createElement('option');
+                option.value = order.id;
+                option.textContent = `${order.id} - ${order.quantity}t - ${order.finishedGoodsType}`;
+                orderSelect.appendChild(option);
+            });
+
+            // Restore selected order if exists
+            if (selectedOrderId) {
+                orderSelect.value = selectedOrderId;
+                displaySelectedOrder();
+            }
+        }
+
+        function displaySelectedOrder() {
+            const orderSelect = document.getElementById('orderSelect');
+            const selectedId = orderSelect.value;
+            const orderInfo = document.getElementById('selectedOrderInfo');
+            const orderDetailsDisplay = document.getElementById('orderDetailsDisplay');
+
+            if (!selectedId) {
+                orderInfo.classList.add('hidden');
+                document.getElementById('step1Btn').disabled = true;
+                selectedOrderId = null;
+                return;
+            }
+
+            const selectedOrder = allOrders.find(order => order.id === selectedId);
+            if (!selectedOrder) return;
+
+            selectedOrderId = selectedId;
+            orderData = selectedOrder; // Set current order data
+
+            // Display order details
+            orderDetailsDisplay.innerHTML = `
+                <div class="order-detail-item">
+                    <strong>Order ID:</strong><br>
+                    ${selectedOrder.id}
+                </div>
+                <div class="order-detail-item">
+                    <strong>Quantity:</strong><br>
+                    ${selectedOrder.quantity} tons
+                </div>
+                <div class="order-detail-item">
+                    <strong>Finished Goods Type:</strong><br>
+                    ${selectedOrder.finishedGoodsType}
+                </div>
+                <div class="order-detail-item">
+                    <strong>Description:</strong><br>
+                    ${selectedOrder.description || 'No description provided'}
+                </div>
+                <div class="order-detail-item">
+                    <strong>Created:</strong><br>
+                    ${new Date(selectedOrder.startTime).toLocaleString()}
+                </div>
+                <div class="order-detail-item">
+                    <strong>Status:</strong><br>
+                    <span class="status-indicator status-${selectedOrder.status}">${selectedOrder.status}</span>
+                </div>
+            `;
+
+            orderInfo.classList.remove('hidden');
+            document.getElementById('step1Btn').disabled = false;
+
+            saveData();
+        }
+
+        // Order Setup
+        function setupOrder() {
+            const quantity = parseFloat(document.getElementById('orderQuantity').value);
+            const finishedGoodsType = document.getElementById('finishedGoodsType').value;
+            const description = document.getElementById('orderDescription').value;
+
+            if (!quantity || quantity <= 0) {
+                showNotification('Please enter a valid order quantity', 'error');
+                return;
+            }
+
+            if (!finishedGoodsType) {
+                showNotification('Please select finished goods type', 'error');
+                return;
+            }
+
+            const newOrder = {
+                id: generateOrderId(),
+                quantity,
+                finishedGoodsType,
+                description,
+                startTime: new Date().toISOString(),
+                status: 'pending',
+                steps: {}
+            };
+
+            allOrders.push(newOrder);
+            populateOrderDropdown();
+
+            // Clear form
+            document.getElementById('orderQuantity').value = '';
+            document.getElementById('finishedGoodsType').value = '';
+            document.getElementById('orderDescription').value = '';
+
+            saveData();
+            showNotification(`Order ${newOrder.id} created successfully for ${quantity} tons of ${finishedGoodsType}`);
+        }
+
+        // Step 1: Pre-cleaning to Conditioning
+        function startStep1() {
+            if (!selectedOrderId || !orderData.id) {
+                showNotification('Please select an order first', 'error');
+                return;
+            }
+
+            const percentage = parseFloat(document.getElementById('wheatPercentage').value);
+            const duration = document.getElementById('conditioningDuration').value;
+            const customHours = parseFloat(document.getElementById('customHours').value);
+            const bufferTime = parseInt(document.getElementById('bufferTime').value) || 30;
+
+            if (!percentage || percentage <= 0 || percentage > 100) {
+                showNotification('Please enter a valid wheat percentage (1-100%)', 'error');
+                return;
+            }
+
+            let durationHours;
+            if (duration === 'custom') {
+                if (!customHours || customHours <= 0) {
+                    showNotification('Please enter valid custom duration', 'error');
+                    return;
+                }
+                durationHours = customHours;
             } else {
-                inputs.forEach(input => input.style.borderColor = '#e0e0e0');
-                errorDiv.style.display = 'none';
+                durationHours = parseInt(duration);
+            }
+
+            const wheatAmount = (orderData.quantity * percentage) / 100;
+
+            // Update order status
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].status = 'in-progress';
+                allOrders[orderIndex].steps.step1 = {
+                    wheatPercentage: percentage,
+                    wheatAmount,
+                    duration: durationHours,
+                    bufferTime,
+                    startTime: new Date().toISOString(),
+                    status: 'active'
+                };
+                orderData = allOrders[orderIndex];
+            }
+
+            // Start timer
+            const totalSeconds = durationHours * 3600;
+            timers.step1 = {
+                total: totalSeconds,
+                remaining: totalSeconds,
+                startTime: Date.now()
+            };
+
+            updateStatus('step1', 'Active');
+            document.getElementById('step1Btn').disabled = true;
+            document.getElementById('step1Timer').classList.remove('hidden');
+            document.getElementById('orderSelect').disabled = true; // Prevent changing order during processing
+
+            // Set up timer interval
+            intervals.step1 = setInterval(() => updateTimer('step1'), 1000);
+
+            // Set up notifications
+            setTimeout(() => showNotification('30 minutes remaining for conditioning cleaning', 'warning'), (totalSeconds - 1800) * 1000);
+            setTimeout(() => showNotification('15 minutes remaining for conditioning cleaning', 'warning'), (totalSeconds - 900) * 1000);
+            setTimeout(() => showNotification('5 minutes remaining for conditioning cleaning', 'warning'), (totalSeconds - 300) * 1000);
+            setTimeout(() => {
+                showNotification('Conditioning cleaning completed! Please capture moisture level', 'success');
+                document.getElementById('step1Complete').classList.remove('hidden');
+                clearInterval(intervals.step1);
+            }, totalSeconds * 1000);
+
+            processStartTime = Date.now();
+            document.getElementById('orderStatus').textContent = 'In Progress';
+            document.getElementById('currentStep').textContent = 'Step 1: Pre-cleaning';
+
+            saveData();
+            showNotification(`Started conditioning cleaning for ${wheatAmount.toFixed(2)} tons`);
+        }
+
+        function updateTimer(stepId) {
+            const timer = timers[stepId];
+            if (!timer) return;
+
+            const elapsed = Math.floor((Date.now() - timer.startTime) / 1000);
+            const remaining = Math.max(0, timer.total - elapsed);
+
+            document.getElementById(`${stepId}Time`).textContent = formatTime(remaining);
+
+            const progress = ((timer.total - remaining) / timer.total) * 100;
+            document.getElementById(`${stepId}Progress`).style.width = `${progress}%`;
+
+            if (remaining === 0) {
+                clearInterval(intervals[stepId]);
             }
         }
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+        function completeStep1() {
+            const moisture = parseFloat(document.getElementById('currentMoisture1').value);
+            const bufferTime = parseInt(document.getElementById('step1BufferTime').value) || 30;
+
+            if (!moisture || moisture <= 0) {
+                showNotification('Please enter current moisture level', 'error');
+                return;
+            }
+
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step1.endTime = new Date().toISOString();
+                allOrders[orderIndex].steps.step1.currentMoisture = moisture;
+                allOrders[orderIndex].steps.step1.bufferTime = bufferTime;
+                allOrders[orderIndex].steps.step1.status = 'completed';
+                orderData = allOrders[orderIndex];
+            }
+
+            updateStatus('step1', 'Completed');
+            document.getElementById('step2Btn').disabled = false;
+            document.getElementById('currentStep').textContent = 'Step 2: 12-Hour Cleaning';
+
+            saveData();
+            showNotification('Step 1 completed successfully!');
+        }
+
+        // Step 2: 12 Hours Cleaning
+        function startStep2() {
+            const targetMoisture = parseFloat(document.getElementById('targetMoisture').value);
+            const bufferTime = parseInt(document.getElementById('bufferTime2').value) || 30;
+
+            if (!targetMoisture || targetMoisture <= 0) {
+                showNotification('Please enter target moisture level', 'error');
+                return;
+            }
+
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step2 = {
+                    targetMoisture,
+                    bufferTime,
+                    startTime: new Date().toISOString(),
+                    status: 'active'
+                };
+                orderData = allOrders[orderIndex];
+            }
+
+            const totalSeconds = 12 * 3600; // 12 hours
+            timers.step2 = {
+                total: totalSeconds,
+                remaining: totalSeconds,
+                startTime: Date.now()
+            };
+
+            updateStatus('step2', 'Active');
+            document.getElementById('step2Btn').disabled = true;
+            document.getElementById('step2Timer').classList.remove('hidden');
+
+            intervals.step2 = setInterval(() => updateTimer('step2'), 1000);
+
+            // Set up notifications
+            setTimeout(() => showNotification('30 minutes remaining for 12-hour cleaning', 'warning'), (totalSeconds - 1800) * 1000);
+            setTimeout(() => showNotification('15 minutes remaining for 12-hour cleaning', 'warning'), (totalSeconds - 900) * 1000);
+            setTimeout(() => showNotification('5 minutes remaining for 12-hour cleaning', 'warning'), (totalSeconds - 300) * 1000);
+            setTimeout(() => {
+                showNotification('12-hour cleaning completed! Please capture final moisture level', 'success');
+                document.getElementById('step2Complete').classList.remove('hidden');
+                clearInterval(intervals.step2);
+            }, totalSeconds * 1000);
+
+            saveData();
+            showNotification('Started 12-hour cleaning process');
+        }
+
+        function completeStep2() {
+            const finalMoisture = parseFloat(document.getElementById('finalMoisture').value);
+            const targetMoisture = orderData.steps.step2.targetMoisture;
+
+            if (!finalMoisture || finalMoisture <= 0) {
+                showNotification('Please enter final moisture level', 'error');
+                return;
+            }
+
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step2.endTime = new Date().toISOString();
+                allOrders[orderIndex].steps.step2.finalMoisture = finalMoisture;
+                allOrders[orderIndex].steps.step2.status = 'completed';
+                orderData = allOrders[orderIndex];
+            }
+
+            // Check moisture target
+            const moistureCheck = document.getElementById('moistureCheck');
+            if (Math.abs(finalMoisture - targetMoisture) <= 0.5) {
+                moistureCheck.innerHTML = '<div style="color: green;">✅ Moisture target achieved!</div>';
+            } else {
+                moistureCheck.innerHTML = '<div style="color: orange;">⚠️ Moisture slightly off target</div>';
+            }
+
+            updateStatus('step2', 'Completed');
+            document.getElementById('step3Btn').disabled = false;
+            document.getElementById('currentStep').textContent = 'Step 3: Grinding Process';
+
+            saveData();
+            showNotification('Step 2 completed successfully!');
+        }
+
+        // Step 3: Grinding Process
+        function startStep3() {
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step3 = {
+                    startTime: new Date().toISOString(),
+                    status: 'active',
+                    magnetCleanings: []
+                };
+                orderData = allOrders[orderIndex];
+            }
+
+            updateStatus('step3', 'Active');
+            document.getElementById('step3Btn').disabled = true;
+            document.getElementById('magnetCleanBtn').style.display = 'inline-block';
+            document.getElementById('step3CompleteBtn').style.display = 'inline-block';
+            document.getElementById('step3Timer').classList.remove('hidden');
+
+            // Start hourly magnet cleaning timer
+            startMagnetTimer();
+
+            saveData();
+            showNotification('Grinding process started. Remember to clean magnets every hour!');
+        }
+
+        function startMagnetTimer() {
+            const totalSeconds = 3600; // 1 hour
+            timers.magnet = {
+                total: totalSeconds,
+                remaining: totalSeconds,
+                startTime: Date.now()
+            };
+
+            intervals.magnet = setInterval(() => {
+                const timer = timers.magnet;
+                const elapsed = Math.floor((Date.now() - timer.startTime) / 1000);
+                const remaining = Math.max(0, timer.total - elapsed);
+
+                document.getElementById('magnetTimer').textContent = formatTime(remaining);
+
+                if (remaining === 0) {
+                    showNotification('Time to clean magnets! Upload before and after pictures.', 'warning');
+                    startMagnetTimer(); // Restart timer for next hour
+                }
+            }, 1000);
+        }
+
+        function uploadMagnetImages() {
+            document.getElementById('magnetImages').click();
+        }
+
+        function completeStep3() {
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step3.endTime = new Date().toISOString();
+                allOrders[orderIndex].steps.step3.status = 'completed';
+                orderData = allOrders[orderIndex];
+            }
+
+            clearInterval(intervals.magnet);
+            updateStatus('step3', 'Completed');
+            document.getElementById('step4Btn').disabled = false;
+            document.getElementById('currentStep').textContent = 'Step 4: Product Categorization';
+
+            saveData();
+            showNotification('Grinding process completed successfully!');
+        }
+
+        // Step 4: Product Categorization
+        function startStep4() {
+            const produceRava = document.getElementById('produceRava').checked;
+            const produceChiroti = document.getElementById('produceChiroti').checked;
+            const ravaPercentage = parseFloat(document.getElementById('ravaPercentage').value) || 0;
+            const chirotiPercentage = parseFloat(document.getElementById('chirotiPercentage').value) || 0;
+
+            let totalSpecialProducts = 0;
+            if (produceRava) totalSpecialProducts += ravaPercentage;
+            if (produceChiroti) totalSpecialProducts += chirotiPercentage;
+
+            if (totalSpecialProducts > 20) {
+                showNotification('Total special products cannot exceed 20% of total production', 'error');
+                return;
+            }
+
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step4 = {
+                    startTime: new Date().toISOString(),
+                    status: 'active',
+                    produceRava,
+                    produceChiroti,
+                    ravaPercentage,
+                    chirotiPercentage
+                };
+                orderData = allOrders[orderIndex];
+            }
+
+            // Calculate production output
+            const totalQuantity = orderData.quantity * 1000; // Convert to kg
+            const branPercentage = Math.random() * (25 - 23) + 23; // Random between 23-25%
+            const productsPercentage = 100 - branPercentage;
+
+            const branOutput = (totalQuantity * branPercentage) / 100;
+            const productsOutput = (totalQuantity * productsPercentage) / 100;
+
+            let ravaOutput = 0;
+            let chirotiOutput = 0;
+            let maidaOutput = productsOutput;
+
+            if (produceRava) {
+                ravaOutput = (totalQuantity * ravaPercentage) / 100;
+                maidaOutput -= ravaOutput;
+            }
+
+            if (produceChiroti) {
+                chirotiOutput = (totalQuantity * chirotiPercentage) / 100;
+                maidaOutput -= chirotiOutput;
+            }
+
+            // Update order with output data
+            const orderIndex2 = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex2 !== -1) {
+                allOrders[orderIndex2].steps.step4.output = {
+                    totalQuantity,
+                    branOutput: branOutput.toFixed(2),
+                    maidaOutput: maidaOutput.toFixed(2),
+                    ravaOutput: ravaOutput.toFixed(2),
+                    chirotiOutput: chirotiOutput.toFixed(2),
+                    branPercentage: branPercentage.toFixed(2),
+                    productsPercentage: productsPercentage.toFixed(2)
+                };
+                orderData = allOrders[orderIndex2];
+            }
+
+            updateStatus('step4', 'Active');
+            document.getElementById('step4Btn').disabled = true;
+            displayProductionSummary();
+
+            saveData();
+            showNotification('Production started successfully!');
+        }
+
+        function displayProductionSummary() {
+            const output = orderData.steps.step4.output;
+            const summaryDiv = document.getElementById('summaryDetails');
+
+            let summaryHTML = `
+                <div class="summary-item">
+                    <span><strong>Total Input:</strong></span>
+                    <span>${(output.totalQuantity/1000).toFixed(2)} tons</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>Maida & Other Products:</strong></span>
+                    <span>${(output.maidaOutput/1000).toFixed(2)} tons (${output.productsPercentage}%)</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>Bran:</strong></span>
+                    <span>${(output.branOutput/1000).toFixed(2)} tons (${output.branPercentage}%)</span>
+                </div>
+            `;
+
+            if (orderData.steps.step4.produceRava && parseFloat(output.ravaOutput) > 0) {
+                summaryHTML += `
+                    <div class="summary-item">
+                        <span><strong>Rava:</strong></span>
+                        <span>${(output.ravaOutput/1000).toFixed(2)} tons</span>
+                    </div>
+                `;
+            }
+
+            if (orderData.steps.step4.produceChiroti && parseFloat(output.chirotiOutput) > 0) {
+                summaryHTML += `
+                    <div class="summary-item">
+                        <span><strong>Chiroti:</strong></span>
+                        <span>${(output.chirotiOutput/1000).toFixed(2)} tons</span>
+                    </div>
+                `;
+            }
+
+            // Quality check
+            const branPercent = parseFloat(output.branPercentage);
+            const qualityStatus = (branPercent >= 23 && branPercent <= 25) ?
+                '<span style="color: green;">✅ Within expected range</span>' :
+                '<span style="color: orange;">⚠️ Outside expected range</span>';
+
+            summaryHTML += `
+                <div class="summary-item">
+                    <span><strong>Quality Status:</strong></span>
+                    <span>${qualityStatus}</span>
+                </div>
+            `;
+
+            summaryDiv.innerHTML = summaryHTML;
+            document.getElementById('productionSummary').classList.remove('hidden');
+        }
+
+        function completeProduction() {
+            // Update order in allOrders array
+            const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+            if (orderIndex !== -1) {
+                allOrders[orderIndex].steps.step4.endTime = new Date().toISOString();
+                allOrders[orderIndex].steps.step4.status = 'completed';
+                allOrders[orderIndex].completedTime = new Date().toISOString();
+                allOrders[orderIndex].status = 'completed';
+                orderData = allOrders[orderIndex];
+            }
+
+            updateStatus('step4', 'Completed');
+            document.getElementById('orderStatus').textContent = 'Completed';
+            document.getElementById('currentStep').textContent = 'Production Complete';
+            document.getElementById('orderSelect').disabled = false; // Re-enable order selection
+
+            // Calculate total processing time
+            if (processStartTime) {
+                const totalTimeMs = Date.now() - processStartTime;
+                const totalTimeFormatted = formatTime(Math.floor(totalTimeMs / 1000));
+                document.getElementById('totalTime').textContent = totalTimeFormatted;
+            }
+
+            // Refresh order dropdown to remove completed order
+            populateOrderDropdown();
+
+            // Clear current selection
+            selectedOrderId = null;
+            document.getElementById('selectedOrderInfo').classList.add('hidden');
+
+            saveData();
+            showNotification(`🎉 Order ${orderData.id} production finished successfully!`, 'success');
+
+            // Generate production report
+            generateProductionReport();
+        }
+
+        function generateProductionReport() {
+            const report = {
+                orderDetails: {
+                    id: orderData.id,
+                    quantity: orderData.quantity,
+                    finishedGoodsType: orderData.finishedGoodsType,
+                    description: orderData.description,
+                    startTime: orderData.startTime,
+                    completedTime: orderData.completedTime
+                },
+                processDetails: {
+                    step1: orderData.steps.step1,
+                    step2: orderData.steps.step2,
+                    step3: orderData.steps.step3,
+                    step4: orderData.steps.step4
+                },
+                summary: orderData.steps.step4.output
+            };
+
+            localStorage.setItem(`productionReport_${orderData.id}_${Date.now()}`, JSON.stringify(report));
+            console.log('Production Report Generated:', report);
+        }
+
+        // File upload handlers
+        document.getElementById('magnetUpload').addEventListener('click', () => {
+            document.getElementById('magnetImages').click();
+        });
+
+        document.getElementById('magnetImages').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('magnetPreview');
+            preview.innerHTML = '';
+
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.className = 'image-preview';
+                    img.alt = file.name;
+                    preview.appendChild(img);
+                }
+            }
+
+            // Save magnet cleaning record
+            if (orderData.steps && orderData.steps.step3) {
+                const cleaningRecord = {
+                    timestamp: new Date().toISOString(),
+                    imageCount: files.length
+                };
+
+                const orderIndex = allOrders.findIndex(order => order.id === selectedOrderId);
+                if (orderIndex !== -1) {
+                    allOrders[orderIndex].steps.step3.magnetCleanings.push(cleaningRecord);
+                    orderData = allOrders[orderIndex];
+                }
+
+                saveData();
+                showNotification(`Magnet cleaning recorded with ${files.length} images`);
+            }
+        });
+
+        // Drag and drop for file upload
+        const uploadArea = document.getElementById('magnetUpload');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            document.getElementById('magnetImages').files = files;
+            document.getElementById('magnetImages').dispatchEvent(new Event('change'));
+        });
+
+        // Conditioning duration change handler
+        document.getElementById('conditioningDuration').addEventListener('change', function() {
+            const customRow = document.getElementById('customDurationRow');
+            if (this.value === 'custom') {
+                customRow.style.display = 'flex';
+            } else {
+                customRow.style.display = 'none';
+            }
+        });
+
+        // Product checkboxes handlers
+        document.getElementById('produceRava').addEventListener('change', function() {
+            document.getElementById('ravaPercentage').disabled = !this.checked;
+            if (!this.checked) {
+                document.getElementById('ravaPercentage').value = '';
+            }
+        });
+
+        document.getElementById('produceChiroti').addEventListener('change', function() {
+            document.getElementById('chirotiPercentage').disabled = !this.checked;
+            if (!this.checked) {
+                document.getElementById('chirotiPercentage').value = '';
+            }
+        });
+
+        // Total time update function
+        function updateTotalTime() {
+            if (processStartTime) {
+                const totalTimeMs = Date.now() - processStartTime;
+                const totalTimeFormatted = formatTime(Math.floor(totalTimeMs / 1000));
+                document.getElementById('totalTime').textContent = totalTimeFormatted;
             }
         }
 
-        // Initialize the application
-        function init() {
-            updateAllDisplays();
+        // Update total time every second
+        setInterval(updateTotalTime, 1000);
 
-            // Set up automatic cleaning reminders based on quantity processed
-            setInterval(() => {
-                // B1 magnet cleaning based on quantity
-                if (wheatProcessedSinceCleaning > 1000) {
-                    if (confirm('B1 Magnet requires immediate cleaning! Over 1000kg has been processed. Clean now?')) {
-                        cleanB1Magnet();
+        // Initialize application
+        function initializeApp() {
+            loadData();
+
+            // Restore any active timers if page was refreshed
+            Object.keys(timers).forEach(stepId => {
+                const timer = timers[stepId];
+                if (timer && timer.startTime) {
+                    const elapsed = Math.floor((Date.now() - timer.startTime) / 1000);
+                    if (elapsed < timer.total) {
+                        intervals[stepId] = setInterval(() => updateTimer(stepId), 1000);
                     }
                 }
+            });
 
-                // General cleaning reminders (every 3 hours)
-                const lastCleaning = cleaningLogs.length > 0 ? new Date(cleaningLogs[cleaningLogs.length - 1].date) : new Date(0);
-                const timeSinceLastCleaning = Date.now() - lastCleaning.getTime();
-                const threeHours = 3 * 60 * 60 * 1000;
-
-                if (timeSinceLastCleaning > threeHours) {
-                    if (confirm('It has been more than 3 hours since the last general cleaning. Would you like to log a cleaning activity?')) {
-                        // You can implement a general cleaning modal here
-                    }
-                }
-            }, 30 * 60 * 1000); // Check every 30 minutes
+            // Set initial state
+            if (!selectedOrderId) {
+                document.getElementById('orderStatus').textContent = 'Not Started';
+                document.getElementById('currentStep').textContent = 'Order Setup';
+            }
         }
 
-        // Start the application
-        init();
+        // Clear all data function (for testing/reset)
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all production data? This cannot be undone.')) {
+                localStorage.removeItem('wheatProcessingData');
+                Object.values(intervals).forEach(clearInterval);
+                location.reload();
+            }
+        }
+
+        // Add reset button to the page
+        window.addEventListener('load', () => {
+            const resetBtn = document.createElement('button');
+            resetBtn.textContent = '🔄 Reset All Data';
+            resetBtn.className = 'btn btn-warning';
+            resetBtn.style.position = 'fixed';
+            resetBtn.style.bottom = '20px';
+            resetBtn.style.right = '20px';
+            resetBtn.style.zIndex = '1000';
+            resetBtn.onclick = clearAllData;
+            document.body.appendChild(resetBtn);
+        });
+
+        // Initialize the application when page loads
+        window.addEventListener('load', initializeApp);
+
+        // Save data before page unload
+        window.addEventListener('beforeunload', saveData);
+
+        // Export/Import functionality
+        function exportData() {
+            const data = localStorage.getItem('wheatProcessingData');
+            if (data) {
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `wheat_processing_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showNotification('Data exported successfully!');
+            } else {
+                showNotification('No data to export', 'warning');
+            }
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        localStorage.setItem('wheatProcessingData', JSON.stringify(data));
+                        showNotification('Data imported successfully! Please refresh the page.');
+                    } catch (error) {
+                        showNotification('Invalid file format', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Add export/import buttons
+        window.addEventListener('load', () => {
+            const exportBtn = document.createElement('button');
+            exportBtn.textContent = '📤 Export Data';
+            exportBtn.className = 'btn btn-primary';
+            exportBtn.style.position = 'fixed';
+            exportBtn.style.bottom = '70px';
+            exportBtn.style.right = '20px';
+            exportBtn.style.zIndex = '1000';
+            exportBtn.onclick = exportData;
+            document.body.appendChild(exportBtn);
+
+            const importInput = document.createElement('input');
+            importInput.type = 'file';
+            importInput.accept = '.json';
+            importInput.style.display = 'none';
+            importInput.onchange = importData;
+            document.body.appendChild(importInput);
+
+            const importBtn = document.createElement('button');
+            importBtn.textContent = '📥 Import Data';
+            importBtn.className = 'btn btn-primary';
+            importBtn.style.position = 'fixed';
+            importBtn.style.bottom = '120px';
+            importBtn.style.right = '20px';
+            importBtn.style.zIndex = '1000';
+            importBtn.onclick = () => importInput.click();
+            document.body.appendChild(importBtn);
+        });
+
     </script>
 </body>
 </html>
