@@ -362,8 +362,8 @@
         <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value green" id="totalGodavanStock">500.0</div>
-                    <div class="stat-label">Total Godavan Stock (tons)</div>
+                    <div class="stat-value green" id="totalGodownStock">500.0</div>
+                    <div class="stat-label">Total Godown Stock (tons)</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value blue" id="transferredToday">0.0</div>
@@ -380,23 +380,23 @@
             </div>
 
             <div class="card">
-                <h3>Godavan Stock by Category</h3>
+                <h3>Godown Stock by Category</h3>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value blue" id="lowGodavanStock">125.0</div>
-                        <div class="stat-label">LOW Godavan (tons)</div>
+                        <div class="stat-value blue" id="lowGodownStock">125.0</div>
+                        <div class="stat-label">LOW Godown (tons)</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value green" id="mill1GodavanStock">125.0</div>
-                        <div class="stat-label">MILL 1 Godavan (tons)</div>
+                        <div class="stat-value green" id="mill1GodownStock">125.0</div>
+                        <div class="stat-label">MILL 1 Godown (tons)</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value orange" id="mill2GodavanStock">125.0</div>
-                        <div class="stat-label">MILL 2 Godavan (tons)</div>
+                        <div class="stat-value orange" id="mill2GodownStock">125.0</div>
+                        <div class="stat-label">MILL 2 Godown (tons)</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value red" id="hdGodavanStock">125.0</div>
-                        <div class="stat-label">HD Godavan (tons)</div>
+                        <div class="stat-value red" id="hdGodownStock">125.0</div>
+                        <div class="stat-label">HD Godown (tons)</div>
                     </div>
                 </div>
             </div>
@@ -426,8 +426,8 @@
         <!-- Transfer Tab -->
         <div id="transfer" class="tab-content">
             <div class="card">
-                <h3>Select Source Godavan</h3>
-                <div class="bin-grid" id="godavanSelection"></div>
+                <h3>Select Source Godown</h3>
+                <div class="bin-grid" id="GodownSelection"></div>
             </div>
 
             <div class="card">
@@ -440,8 +440,8 @@
                 <form id="transferForm">
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Selected Godavan</label>
-                            <input type="text" id="selectedGodavanDisplay" readonly style="background: #f8f9fa;">
+                            <label>Selected Godown</label>
+                            <input type="text" id="selectedGodownDisplay" readonly style="background: #f8f9fa;">
                         </div>
                         <div class="form-group">
                             <label>Selected Bin</label>
@@ -458,7 +458,7 @@
                             <input type="text" id="transferOperator" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" disabled id="transferBtn">Select Godavan and Bin First</button>
+                    <button type="submit" class="btn btn-primary" disabled id="transferBtn">Select Godown and Bin First</button>
                 </form>
             </div>
 
@@ -468,7 +468,7 @@
                     <thead>
                         <tr>
                             <th>Time</th>
-                            <th>From Godavan</th>
+                            <th>From Godown</th>
                             <th>To Bin</th>
                             <th>Amount (tons)</th>
                             <th>Operator</th>
@@ -635,12 +635,12 @@
     </div>
 
     <script>
-        // Godavan configuration
-        const godavanConfig = [
-            { id: 'godavan-low', name: 'LOW', stock: 125.0 },
-            { id: 'godavan-mill1', name: 'MILL 1', stock: 125.0 },
-            { id: 'godavan-mill2', name: 'MILL 2', stock: 125.0 },
-            { id: 'godavan-hd', name: 'HD', stock: 125.0 }
+        // Godown configuration
+        const GodownConfig = [
+            { id: 'Godown-low', name: 'LOW', stock: 125.0 },
+            { id: 'Godown-mill1', name: 'MILL 1', stock: 125.0 },
+            { id: 'Godown-mill2', name: 'MILL 2', stock: 125.0 },
+            { id: 'Godown-hd', name: 'HD', stock: 125.0 }
         ];
 
         // Bin configuration (all capacities in tons)
@@ -654,8 +654,8 @@
 
         // Data storage (all in tons)
         let data = {
-            godavans: [...godavanConfig],
-            totalGodavanStock: 500.0, // Total of all godavans
+            Godowns: [...GodownConfig],
+            totalGodownStock: 500.0, // Total of all Godowns
             transferredToday: 0,
             totalWaste: 0,
             transfers: [],
@@ -666,7 +666,7 @@
         };
 
         let selectedBinId = null;
-        let selectedGodavanId = null;
+        let selectedGodownId = null;
         let cameraStream = null;
 
         // Tab switching
@@ -687,19 +687,19 @@
         // Update all displays
         function updateDisplays() {
             // Update dashboard stats (all in tons)
-            document.getElementById('totalGodavanStock').textContent = data.totalGodavanStock.toFixed(1);
+            document.getElementById('totalGodownStock').textContent = data.totalGodownStock.toFixed(1);
             document.getElementById('transferredToday').textContent = data.transferredToday.toFixed(1);
             document.getElementById('totalBinsUsed').textContent = data.bins.filter(bin => bin.current > 0).length;
             document.getElementById('totalWaste').textContent = data.totalWaste.toFixed(1);
 
-            // Update individual Godavan stocks
-            document.getElementById('lowGodavanStock').textContent = data.godavans.find(g => g.id === 'godavan-low').stock.toFixed(1);
-            document.getElementById('mill1GodavanStock').textContent = data.godavans.find(g => g.id === 'godavan-mill1').stock.toFixed(1);
-            document.getElementById('mill2GodavanStock').textContent = data.godavans.find(g => g.id === 'godavan-mill2').stock.toFixed(1);
-            document.getElementById('hdGodavanStock').textContent = data.godavans.find(g => g.id === 'godavan-hd').stock.toFixed(1);
+            // Update individual Godown stocks
+            document.getElementById('lowGodownStock').textContent = data.Godowns.find(g => g.id === 'Godown-low').stock.toFixed(1);
+            document.getElementById('mill1GodownStock').textContent = data.Godowns.find(g => g.id === 'Godown-mill1').stock.toFixed(1);
+            document.getElementById('mill2GodownStock').textContent = data.Godowns.find(g => g.id === 'Godown-mill2').stock.toFixed(1);
+            document.getElementById('hdGodownStock').textContent = data.Godowns.find(g => g.id === 'Godown-hd').stock.toFixed(1);
 
             updateBinDisplays();
-            updateGodavanDisplays();
+            updateGodownDisplays();
             updateStatus();
             updateTables();
             updateDailySummary();
@@ -708,23 +708,23 @@
         function updateBinDisplays() {
             const binSelectionDiv = document.getElementById('binSelection');
             const dashboardBinsDiv = document.getElementById('dashboardBins');
-            const godavanSelectionDiv = document.getElementById('godavanSelection');
+            const GodownSelectionDiv = document.getElementById('GodownSelection');
 
-            // Update Godavan selection
-            if (godavanSelectionDiv) {
-                const godavanHTML = data.godavans.map(godavan => {
+            // Update Godown selection
+            if (GodownSelectionDiv) {
+                const GodownHTML = data.Godowns.map(Godown => {
                     return `
-                        <div class="bin-card ${selectedGodavanId === godavan.id ? 'selected' : ''}"
-                             onclick="selectGodavan('${godavan.id}')" style="cursor: pointer;">
-                            <div class="bin-name">${godavan.name} Godavan</div>
-                            <div class="bin-info">Stock: ${godavan.stock.toFixed(1)}t</div>
+                        <div class="bin-card ${selectedGodownId === Godown.id ? 'selected' : ''}"
+                             onclick="selectGodown('${Godown.id}')" style="cursor: pointer;">
+                            <div class="bin-name">${Godown.name} Godown</div>
+                            <div class="bin-info">Stock: ${Godown.stock.toFixed(1)}t</div>
                             <div class="capacity-bar">
-                                <div class="capacity-fill" style="width: ${(godavan.stock/125)*100}%"></div>
+                                <div class="capacity-fill" style="width: ${(Godown.stock/125)*100}%"></div>
                             </div>
                         </div>
                     `;
                 }).join('');
-                godavanSelectionDiv.innerHTML = godavanHTML;
+                GodownSelectionDiv.innerHTML = GodownHTML;
             }
 
             // Update Bin selection
@@ -754,14 +754,14 @@
             }
         }
 
-        function selectGodavan(godavanId) {
-            console.log('Selecting Godavan:', godavanId); // Debug log
-            selectedGodavanId = godavanId;
-            const selectedGodavan = data.godavans.find(g => g.id === godavanId);
+        function selectGodown(GodownId) {
+            console.log('Selecting Godown:', GodownId); // Debug log
+            selectedGodownId = GodownId;
+            const selectedGodown = data.Godowns.find(g => g.id === GodownId);
 
-            if (selectedGodavan) {
-                document.getElementById('selectedGodavanDisplay').value =
-                    `${selectedGodavan.name} (Available: ${selectedGodavan.stock.toFixed(1)}t)`;
+            if (selectedGodown) {
+                document.getElementById('selectedGodownDisplay').value =
+                    `${selectedGodown.name} (Available: ${selectedGodown.stock.toFixed(1)}t)`;
                 updateTransferButton();
             }
 
@@ -784,14 +784,14 @@
         }
 
         function updateTransferButton() {
-            console.log('Updating transfer button - Godavan:', selectedGodavanId, 'Bin:', selectedBinId); // Debug log
+            console.log('Updating transfer button - Godown:', selectedGodownId, 'Bin:', selectedBinId); // Debug log
             const transferBtn = document.getElementById('transferBtn');
-            const selectedGodavan = data.godavans.find(g => g.id === selectedGodavanId);
+            const selectedGodown = data.Godowns.find(g => g.id === selectedGodownId);
             const selectedBin = data.bins.find(b => b.id === selectedBinId);
 
-            if (selectedGodavan && selectedBin) {
+            if (selectedGodown && selectedBin) {
                 const maxTransfer = Math.min(
-                    selectedGodavan.stock,
+                    selectedGodown.stock,
                     selectedBin.capacity - selectedBin.current
                 );
                 const transferAmountInput = document.getElementById('transferAmount');
@@ -803,28 +803,28 @@
                 console.log('Transfer enabled, max amount:', maxTransfer); // Debug log
             } else {
                 transferBtn.disabled = true;
-                transferBtn.textContent = 'Select Godavan and Bin First';
+                transferBtn.textContent = 'Select Godown and Bin First';
                 console.log('Transfer disabled - missing selection'); // Debug log
             }
         }
 
-        function updateGodavanDisplays() {
+        function updateGodownDisplays() {
             // Update total stock
-            data.totalGodavanStock = data.godavans.reduce((sum, g) => sum + g.stock, 0);
+            data.totalGodownStock = data.Godowns.reduce((sum, g) => sum + g.stock, 0);
         }
 
         function updateStatus() {
             const statusDiv = document.getElementById('statusInfo');
             let alerts = [];
 
-            if (data.totalGodavanStock < 50) { // 50 tons
-                alerts.push('<div class="alert alert-warning">Low total Godavan stock - consider replenishment</div>');
+            if (data.totalGodownStock < 50) { // 50 tons
+                alerts.push('<div class="alert alert-warning">Low total Godown stock - consider replenishment</div>');
             }
 
-            // Check individual Godavan stocks
-            data.godavans.forEach(godavan => {
-                if (godavan.stock < 25) { // Less than 25 tons
-                    alerts.push(`<div class="alert alert-warning">${godavan.name} Godavan low stock (${godavan.stock.toFixed(1)}t remaining)</div>`);
+            // Check individual Godown stocks
+            data.Godowns.forEach(Godown => {
+                if (Godown.stock < 25) { // Less than 25 tons
+                    alerts.push(`<div class="alert alert-warning">${Godown.name} Godown low stock (${Godown.stock.toFixed(1)}t remaining)</div>`);
                 }
             });
 
@@ -849,7 +849,7 @@
                 transferTable.innerHTML = data.transfers.slice(-10).reverse().map(transfer => `
                     <tr>
                         <td>${new Date(transfer.time).toLocaleString()}</td>
-                        <td>${transfer.fromGodavan}</td>
+                        <td>${transfer.fromGodown}</td>
                         <td>${transfer.toBin}</td>
                         <td>${transfer.amount.toFixed(2)}t</td>
                         <td>${transfer.operator}</td>
@@ -983,18 +983,18 @@
         document.getElementById('transferForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            if (!selectedGodavanId || !selectedBinId) {
-                alert('Please select both a Godavan and a Bin first!');
+            if (!selectedGodownId || !selectedBinId) {
+                alert('Please select both a Godown and a Bin first!');
                 return;
             }
 
             const amount = parseFloat(document.getElementById('transferAmount').value);
             const operator = document.getElementById('transferOperator').value;
-            const selectedGodavan = data.godavans.find(g => g.id === selectedGodavanId);
+            const selectedGodown = data.Godowns.find(g => g.id === selectedGodownId);
             const selectedBin = data.bins.find(b => b.id === selectedBinId);
 
-            if (amount > selectedGodavan.stock) {
-                alert('Transfer amount exceeds available Godavan stock!');
+            if (amount > selectedGodown.stock) {
+                alert('Transfer amount exceeds available Godown stock!');
                 return;
             }
 
@@ -1005,8 +1005,8 @@
 
             const transfer = {
                 time: new Date(),
-                fromGodavanId: selectedGodavanId,
-                fromGodavan: selectedGodavan.name,
+                fromGodownId: selectedGodownId,
+                fromGodown: selectedGodown.name,
                 toBinId: selectedBinId,
                 toBin: selectedBin.name,
                 amount: amount,
@@ -1014,21 +1014,21 @@
             };
 
             data.transfers.push(transfer);
-            selectedGodavan.stock -= amount;
+            selectedGodown.stock -= amount;
             selectedBin.current += amount;
             data.transferredToday += amount;
 
             // Reset form and selection
             this.reset();
-            selectedGodavanId = null;
+            selectedGodownId = null;
             selectedBinId = null;
-            document.getElementById('selectedGodavanDisplay').value = '';
+            document.getElementById('selectedGodownDisplay').value = '';
             document.getElementById('selectedBinDisplay').value = '';
             document.getElementById('transferBtn').disabled = true;
-            document.getElementById('transferBtn').textContent = 'Select Godavan and Bin First';
+            document.getElementById('transferBtn').textContent = 'Select Godown and Bin First';
 
             updateDisplays();
-            alert(`Transfer of ${amount.toFixed(2)}t from ${selectedGodavan.name} to ${selectedBin.name} recorded successfully!`);
+            alert(`Transfer of ${amount.toFixed(2)}t from ${selectedGodown.name} to ${selectedBin.name} recorded successfully!`);
         });
 
         document.getElementById('cleaningForm').addEventListener('submit', function(e) {
@@ -1138,7 +1138,7 @@
             if (dayTransfers.length > 0) {
                 report += `TRANSFERS:\n`;
                 dayTransfers.forEach(transfer => {
-                    report += `- ${new Date(transfer.time).toLocaleTimeString()}: ${transfer.amount.toFixed(2)}t from ${transfer.fromGodavan} to ${transfer.toBin} by ${transfer.operator}\n`;
+                    report += `- ${new Date(transfer.time).toLocaleTimeString()}: ${transfer.amount.toFixed(2)}t from ${transfer.fromGodown} to ${transfer.toBin} by ${transfer.operator}\n`;
                 });
                 report += `\n`;
             }
