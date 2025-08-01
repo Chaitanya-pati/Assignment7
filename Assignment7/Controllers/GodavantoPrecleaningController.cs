@@ -2,9 +2,9 @@
 
 namespace Assignment7.Controllers
 {
-    public class GodowntoPrecleaningController : Controller
+    public class GodavantoPrecleaningController : Controller
     {
-        public IActionResult GodowntoPrecleaning()
+        public IActionResult GodavantoPrecleaning()
         {
             return View();
         }
