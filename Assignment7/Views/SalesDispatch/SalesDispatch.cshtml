@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wheat Flour Management System - Enhanced</title>
+    <title>Enhanced Wheat Flour Management System</title>
     <style>
         * {
             margin: 0;
@@ -32,18 +32,18 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-            .header h1 {
-                color: #2c3e50;
-                text-align: center;
-                font-size: 2.5rem;
-                margin-bottom: 10px;
-            }
+        .header h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-            .header p {
-                text-align: center;
-                color: #7f8c8d;
-                font-size: 1.1rem;
-            }
+        .header p {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
 
         .nav-tabs {
             display: flex;
@@ -64,16 +64,16 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-            .nav-tab:hover {
-                background: #3498db;
-                color: white;
-                transform: translateY(-2px);
-            }
+        .nav-tab:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
 
-            .nav-tab.active {
-                background: #e74c3c;
-                color: white;
-            }
+        .nav-tab.active {
+            background: #e74c3c;
+            color: white;
+        }
 
         .tab-content {
             display: none;
@@ -84,37 +84,33 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-            .tab-content.active {
-                display: block;
-                animation: fadeIn 0.5s ease;
-            }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
 
         @@keyframes fadeIn {
-            from
-
-        {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .form-section {
             margin-bottom: 30px;
         }
 
-            .form-section h3 {
-                color: #2c3e50;
-                margin-bottom: 20px;
-                font-size: 1.4rem;
-                border-bottom: 2px solid #3498db;
-                padding-bottom: 10px;
-            }
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
 
         .form-grid {
             display: grid;
@@ -128,29 +124,29 @@
             flex-direction: column;
         }
 
-            .form-group label {
-                margin-bottom: 8px;
-                font-weight: 600;
-                color: #2c3e50;
-            }
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
 
-            .form-group input,
-            .form-group select,
-            .form-group textarea {
-                padding: 12px;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 1rem;
-                transition: border-color 0.3s ease;
-            }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
 
-                .form-group input:focus,
-                .form-group select:focus,
-                .form-group textarea:focus {
-                    outline: none;
-                    border-color: #3498db;
-                    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
-                }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
 
         .btn {
             background: linear-gradient(135deg, #3498db, #2980b9);
@@ -165,10 +161,10 @@
             margin: 5px;
         }
 
-            .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
         .btn-success {
             background: linear-gradient(135deg, #27ae60, #229954);
@@ -182,6 +178,11 @@
             background: linear-gradient(135deg, #f39c12, #e67e22);
         }
 
+        .btn-blocked {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -192,22 +193,22 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-            .data-table th,
-            .data-table td {
-                padding: 15px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-            .data-table th {
-                background: linear-gradient(135deg, #34495e, #2c3e50);
-                color: white;
-                font-weight: 600;
-            }
+        .data-table th {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            font-weight: 600;
+        }
 
-            .data-table tr:hover {
-                background: #f8f9fa;
-            }
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
 
         .status-badge {
             padding: 5px 12px;
@@ -236,6 +237,21 @@
             color: #00695c;
         }
 
+        .status-partial {
+            background: #ffeaa7;
+            color: #b7791f;
+        }
+
+        .status-pod-missing {
+            background: #fab1a0;
+            color: #e17055;
+        }
+
+        .status-blocked {
+            background: #ddd;
+            color: #636e72;
+        }
+
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -253,19 +269,19 @@
             transition: transform 0.3s ease;
         }
 
-            .dashboard-card:hover {
-                transform: translateY(-5px);
-            }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
 
-            .dashboard-card h3 {
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
+        .dashboard-card h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
 
-            .dashboard-card p {
-                font-size: 1.1rem;
-                opacity: 0.9;
-            }
+        .dashboard-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
         .alert {
             padding: 15px;
@@ -286,16 +302,19 @@
             border-left: 4px solid #dc3545;
         }
 
-        /* Order Items Specific Styles */
-        .order-items-container {
-            background: #f8f9fa;
-            border: 2px dashed #3498db;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
         }
 
-        .order-item {
+        .vehicle-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 10px;
+        }
+
+        .dispatch-item {
             background: white;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -304,98 +323,68 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-            .order-item:last-child {
-                margin-bottom: 0;
-            }
+        .partial-dispatch-form {
+            background: #e8f4fd;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
 
-        .item-grid {
+        .filter-section {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-bottom: 15px;
         }
 
-        .order-summary {
-            background: #e8f4fd;
-            border: 1px solid #3498db;
+        .pod-upload {
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .driver-blocked {
+            background: #ffebee !important;
+            border: 2px solid #f44336 !important;
+        }
+
+        .vehicle-tracking {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
             border-radius: 8px;
             padding: 15px;
-            margin-top: 20px;
+            margin: 15px 0;
         }
-
-            .order-summary h4 {
-                color: #2c3e50;
-                margin-bottom: 15px;
-            }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .total-row {
-            border-top: 2px solid #3498db;
-            padding-top: 8px;
-            font-size: 1.1rem;
-            color: #e74c3c;
-        }
-
-        .collapsible-order {
-            cursor: pointer;
-            background: #f1f2f6;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-            .collapsible-order:hover {
-                background: #ddd;
-            }
-
-        .order-details {
-            display: none;
-            padding: 15px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-            .order-details.active {
-                display: block;
-            }
 
         @@media (max-width: 768px) {
-            .container
-
-        {
-            padding: 10px;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-        }
-
-        .nav-tabs {
-            justify-content: center;
-        }
-
-        .nav-tab {
-            padding: 10px 15px;
-            font-size: 0.9rem;
-        }
-
-        .form-grid,
-        .item-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .dashboard-cards {
-            grid-template-columns: 1fr;
-        }
-
+            .container {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .nav-tabs {
+                justify-content: center;
+            }
+            .nav-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            .form-grid,
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -403,21 +392,21 @@
     <div class="container">
         <div class="header">
             <h1>🌾 Enhanced Wheat Flour Management System</h1>
-            <p>Complete Sales Order to Dispatch Management - With Multiple Items Support</p>
+            <p>Complete Sales Order to Dispatch Management - With Advanced Tracking & POD</p>
         </div>
 
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
             <button class="nav-tab" onclick="showTab('customers')">👥 Customer Management</button>
             <button class="nav-tab" onclick="showTab('orders')">📝 Sales Orders</button>
-            <button class="nav-tab" onclick="showTab('production')">🏭 Production Planning</button>
             <button class="nav-tab" onclick="showTab('dispatch')">🚚 Dispatch Management</button>
-            <button class="nav-tab" onclick="showTab('delivery')">📦 Delivery Tracking</button>
-            <button class="nav-tab" onclick="showTab('financial')">💰 Financial Management</button>
-            <button class="nav-tab" onclick="showTab('reports')">📈 Reports</button>
+            <button class="nav-tab" onclick="showTab('tracking')">🚛 Vehicle Tracking</button>
+            <button class="nav-tab" onclick="showTab('delivery')">📦 Delivery & POD</button>
+            <button class="nav-tab" onclick="showTab('drivers')">👷 Driver Management</button>
+            <button class="nav-tab" onclick="showTab('reports')">📈 Advanced Reports</button>
         </div>
 
-        <!-- Dashboard Tab -->
+        <!-- Enhanced Dashboard Tab -->
         <div id="dashboard" class="tab-content active">
             <div class="dashboard-cards">
                 <div class="dashboard-card">
@@ -429,13 +418,26 @@
                     <p>Total Customers</p>
                 </div>
                 <div class="dashboard-card">
-                    <h3 id="pendingOrders">0</h3>
-                    <p>Pending Orders</p>
+                    <h3 id="pendingDispatches">0</h3>
+                    <p>Pending Dispatches</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3 id="podMissing">0</h3>
+                    <p>POD Missing</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3 id="blockedDrivers">0</h3>
+                    <p>Blocked Drivers</p>
                 </div>
                 <div class="dashboard-card">
                     <h3 id="totalRevenue">₹0</h3>
                     <p>Total Revenue</p>
                 </div>
+            </div>
+
+            <div class="form-section">
+                <h3>⚠️ Critical Alerts</h3>
+                <div id="criticalAlerts"></div>
             </div>
 
             <div class="form-section">
@@ -448,21 +450,15 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody id="recentActivities">
-                        <tr>
-                            <td>10:30 AM</td>
-                            <td>New order created for Customer ABC</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="recentActivities"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Customer Management Tab -->
+        <!-- Enhanced Customer Management Tab -->
         <div id="customers" class="tab-content">
             <div class="form-section">
-                <h3>👥 Add New Customer</h3>
+                <h3>👥 Add New Customer - Complete Address Details</h3>
                 <form id="customerForm">
                     <div class="form-grid">
                         <div class="form-group">
@@ -478,8 +474,16 @@
                             <input type="email" id="customerEmail">
                         </div>
                         <div class="form-group">
+                            <label for="contactPerson">Contact Person Name *</label>
+                            <input type="text" id="contactPerson" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMobile">Contact Person Mobile *</label>
+                            <input type="tel" id="contactMobile" required>
+                        </div>
+                        <div class="form-group">
                             <label for="customerGST">GST Number</label>
-                            <input type="text" id="customerGST">
+                            <input type="text" id="customerGST" placeholder="22AAAAA0000A1Z5">
                         </div>
                         <div class="form-group">
                             <label for="customerCategory">Category *</label>
@@ -492,10 +496,63 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="customerAddress">Address *</label>
-                        <textarea id="customerAddress" rows="3" required></textarea>
+                    
+                    <h4>📍 Address Details</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="streetAddress">Street Address *</label>
+                            <textarea id="streetAddress" rows="2" required placeholder="Building, Street, Area"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="landmark">Landmark</label>
+                            <input type="text" id="landmark" placeholder="Near XYZ Mall">
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <select id="state" required>
+                                <option value="">Select State</option>
+                                <option value="AP">Andhra Pradesh</option>
+                                <option value="AR">Arunachal Pradesh</option>
+                                <option value="AS">Assam</option>
+                                <option value="BR">Bihar</option>
+                                <option value="CG">Chhattisgarh</option>
+                                <option value="GA">Goa</option>
+                                <option value="GJ">Gujarat</option>
+                                <option value="HR">Haryana</option>
+                                <option value="HP">Himachal Pradesh</option>
+                                <option value="JK">Jammu and Kashmir</option>
+                                <option value="JH">Jharkhand</option>
+                                <option value="KA">Karnataka</option>
+                                <option value="KL">Kerala</option>
+                                <option value="MP">Madhya Pradesh</option>
+                                <option value="MH">Maharashtra</option>
+                                <option value="MN">Manipur</option>
+                                <option value="ML">Meghalaya</option>
+                                <option value="MZ">Mizoram</option>
+                                <option value="NL">Nagaland</option>
+                                <option value="OD">Odisha</option>
+                                <option value="PB">Punjab</option>
+                                <option value="RJ">Rajasthan</option>
+                                <option value="SK">Sikkim</option>
+                                <option value="TN">Tamil Nadu</option>
+                                <option value="TG">Telangana</option>
+                                <option value="TR">Tripura</option>
+                                <option value="UP">Uttar Pradesh</option>
+                                <option value="UT">Uttarakhand</option>
+                                <option value="WB">West Bengal</option>
+                                <option value="DL">Delhi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pincode">PIN Code *</label>
+                            <input type="text" id="pincode" required pattern="[0-9]{6}" maxlength="6" placeholder="560001">
+                        </div>
                     </div>
+                    
                     <button type="submit" class="btn btn-success">Add Customer</button>
                 </form>
             </div>
@@ -506,7 +563,9 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Contact Person</th>
                             <th>Phone</th>
+                            <th>City, State</th>
                             <th>Category</th>
                             <th>GST</th>
                             <th>Total Orders</th>
@@ -518,7 +577,7 @@
             </div>
         </div>
 
-        <!-- Enhanced Sales Orders Tab -->
+        <!-- Sales Orders Tab (keeping existing functionality) -->
         <div id="orders" class="tab-content">
             <div class="form-section">
                 <h3>📝 Create New Order with Multiple Items</h3>
@@ -538,13 +597,21 @@
                             <label for="deliveryDate">Expected Delivery Date *</label>
                             <input type="date" id="deliveryDate" required>
                         </div>
+                        <div class="form-group">
+                            <label for="salesman">Salesman *</label>
+                            <select id="salesman" required>
+                                <option value="">Select Salesman</option>
+                                <option value="Raj Kumar">Raj Kumar</option>
+                                <option value="Priya Singh">Priya Singh</option>
+                                <option value="Amit Sharma">Amit Sharma</option>
+                                <option value="Sneha Patel">Sneha Patel</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="order-items-container">
                         <h4>📦 Order Items</h4>
-                        <div id="orderItems">
-                            <!-- Order items will be added here dynamically -->
-                        </div>
+                        <div id="orderItems"></div>
                         <button type="button" class="btn btn-success" onclick="addOrderItem()">+ Add Item</button>
                     </div>
 
@@ -570,7 +637,8 @@
                         <tr>
                             <th>Order ID</th>
                             <th>Customer</th>
-                            <th>Items Count</th>
+                            <th>Salesman</th>
+                            <th>Items</th>
                             <th>Total Amount</th>
                             <th>Order Date</th>
                             <th>Status</th>
@@ -580,361 +648,439 @@
                     <tbody id="orderList"></tbody>
                 </table>
             </div>
-
-            <div class="form-section">
-                <h3>📋 Detailed Order View</h3>
-                <div id="detailedOrders"></div>
-            </div>
         </div>
 
-        <!-- Production Planning Tab -->
-        <div id="production" class="tab-content">
-            <div class="form-section">
-                <h3>🏭 Production Planning</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="batchNumber">Batch Number</label>
-                        <input type="text" id="batchNumber" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="productionDate">Production Date</label>
-                        <input type="date" id="productionDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="rawMaterialReq">Raw Material Required (kg)</label>
-                        <input type="number" id="rawMaterialReq" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h3>📋 Production Batches</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Batch ID</th>
-                            <th>Production Date</th>
-                            <th>Flour Type</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productionList">
-                        <tr>
-                            <td>BATCH001</td>
-                            <td>2025-01-15</td>
-                            <td>Whole Wheat</td>
-                            <td>500kg</td>
-                            <td><span class="status-badge status-approved">In Production</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Dispatch Management Tab -->
+        <!-- Enhanced Dispatch Management Tab -->
         <div id="dispatch" class="tab-content">
             <div class="form-section">
-                <h3>🚚 Dispatch Planning</h3>
+                <h3>🚚 Partial Dispatch Management</h3>
                 <form id="dispatchForm">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="dispatchOrder">Select Order *</label>
-                            <select id="dispatchOrder" required>
+                            <select id="dispatchOrder" required onchange="loadOrderItemsForDispatch()">
                                 <option value="">Select Order for Dispatch</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="vehicleNumber">Vehicle Number *</label>
-                            <input type="text" id="vehicleNumber" required>
+                            <label for="vehicleStateCode">Vehicle State Code *</label>
+                            <select id="vehicleStateCode" required>
+                                <option value="">Select State</option>
+                                <option value="KA">KA - Karnataka</option>
+                                <option value="MH">MH - Maharashtra</option>
+                                <option value="TN">TN - Tamil Nadu</option>
+                                <option value="AP">AP - Andhra Pradesh</option>
+                                <option value="TG">TG - Telangana</option>
+                                <option value="GJ">GJ - Gujarat</option>
+                                <option value="UP">UP - Uttar Pradesh</option>
+                                <option value="DL">DL - Delhi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleCityCode">City Code *</label>
+                            <input type="text" id="vehicleCityCode" required placeholder="01, 09, etc." maxlength="2">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleSeriesNumber">Series & Number *</label>
+                            <input type="text" id="vehicleSeriesNumber" required placeholder="AB 1234" maxlength="7">
                         </div>
                         <div class="form-group">
                             <label for="driverName">Driver Name *</label>
-                            <input type="text" id="driverName" required>
+                            <select id="driverName" required>
+                                <option value="">Select Driver</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="driverPhone">Driver Phone *</label>
-                            <input type="tel" id="driverPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dispatchDate">Dispatch Date *</label>
-                            <input type="datetime-local" id="dispatchDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="estimatedDelivery">Estimated Delivery Time</label>
-                            <input type="datetime-local" id="estimatedDelivery">
+                            <label for="warehousePerson">Warehouse Person/Loader *</label>
+                            <input type="text" id="warehousePerson" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success">Schedule Dispatch</button>
+
+                    <div class="partial-dispatch-form">
+                        <h4>📦 Items to Dispatch</h4>
+                        <div id="dispatchItemsList"></div>
+                    </div>
+
+                    <div class="vehicle-tracking">
+                        <h4>🚛 Vehicle Status - Before Loading</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="vehicleArrivalTime">Vehicle Arrival Time *</label>
+                                <input type="datetime-local" id="vehicleArrivalTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gpsCoordinates">GPS Coordinates (Optional)</label>
+                                <input type="text" id="gpsCoordinates" placeholder="12.9716, 77.5946">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Create Dispatch</button>
                 </form>
             </div>
 
             <div class="form-section">
                 <h3>📋 Dispatch List</h3>
+                <div class="filter-section">
+                    <h4>🔍 Filters</h4>
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="filterState">Vehicle State</label>
+                            <select id="filterState" onchange="filterDispatches()">
+                                <option value="">All States</option>
+                                <option value="KA">Karnataka</option>
+                                <option value="MH">Maharashtra</option>
+                                <option value="TN">Tamil Nadu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterStatus">Status</label>
+                            <select id="filterStatus" onchange="filterDispatches()">
+                                <option value="">All Status</option>
+                                <option value="Dispatched">Dispatched</option>
+                                <option value="In Transit">In Transit</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="POD Missing">POD Missing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterFromDate">From Date</label>
+                            <input type="date" id="filterFromDate" onchange="filterDispatches()">
+                        </div>
+                        <div class="form-group">
+                            <label for="filterToDate">To Date</label>
+                            <input type="date" id="filterToDate" onchange="filterDispatches()">
+                        </div>
+                    </div>
+                </div>
+                
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Vehicle</th>
+                            <th>Dispatch ID</th>
+                            <th>Vehicle Number</th>
                             <th>Driver</th>
-                            <th>Dispatch Time</th>
+                            <th>Current Location</th>
+                            <th>Departure Time</th>
+                            <th>Est. Delivery</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trackingList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Delivery & POD Tab -->
+        <div id="delivery" class="tab-content">
+            <div class="form-section">
+                <h3>📦 Proof of Delivery (POD) - MANDATORY</h3>
+                <form id="podForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="podDispatch">Select Dispatch for Delivery *</label>
+                            <select id="podDispatch" required onchange="loadDeliveryDetails()">
+                                <option value="">Select Dispatch</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliveryTime">Actual Delivery Time *</label>
+                            <input type="datetime-local" id="deliveryTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerSignature">Customer Signature/Name *</label>
+                            <input type="text" id="customerSignature" required placeholder="Customer signature or full name">
+                        </div>
+                    </div>
+
+                    <div class="pod-upload">
+                        <h4>📸 Upload Proof of Delivery (MANDATORY)</h4>
+                        <input type="file" id="deliveryPhoto" accept="image/*,application/pdf" required>
+                        <p>Upload delivery photo, invoice copy, or signed document</p>
+                        <div id="uploadPreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryRemarks">Delivery Remarks</label>
+                        <textarea id="deliveryRemarks" rows="3" placeholder="Any special remarks about delivery"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Confirm Delivery & Submit POD</button>
+                </form>
+            </div>
+
+            <div class="form-section">
+                <h3>⚠️ POD Missing - Critical Alert</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Dispatch ID</th>
+                            <th>Driver Name</th>
+                            <th>Vehicle Number</th>
+                            <th>Delivery Due</th>
+                            <th>Days Overdue</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="dispatchList"></tbody>
+                    <tbody id="podMissingList"></tbody>
                 </table>
             </div>
-        </div>
-
-        <!-- Delivery Tracking Tab -->
-        <div id="delivery" class="tab-content">
-            <div class="form-section">
-                <h3>📦 Delivery Tracking</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="trackingOrder">Select Order to Track</label>
-                        <select id="trackingOrder">
-                            <option value="">Select Order</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="currentLocation">Current Location</label>
-                        <input type="text" id="currentLocation" readonly value="En route to delivery address">
-                    </div>
-                    <div class="form-group">
-                        <label for="estimatedArrival">Estimated Arrival</label>
-                        <input type="text" id="estimatedArrival" readonly value="2 hours">
-                    </div>
-                </div>
-            </div>
 
             <div class="form-section">
-                <h3>📋 Proof of Delivery</h3>
-                <form id="podForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="podOrder">Select Delivered Order</label>
-                            <select id="podOrder">
-                                <option value="">Select Order</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="deliveryPhoto">Upload Delivery Photo</label>
-                            <input type="file" id="deliveryPhoto" accept="image/*">
-                        </div>
-                        <div class="form-group">
-                            <label for="customerSignature">Customer Signature</label>
-                            <input type="text" id="customerSignature" placeholder="Digital signature or name">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="deliveryRemarks">Delivery Remarks</label>
-                        <textarea id="deliveryRemarks" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">Confirm Delivery</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Financial Management Tab -->
-        <div id="financial" class="tab-content">
-            <div class="form-section">
-                <h3>💰 Payment Management</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="paymentOrder">Select Order for Payment</label>
-                        <select id="paymentOrder">
-                            <option value="">Select Order</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentMethod">Payment Method</label>
-                        <select id="paymentMethod">
-                            <option value="">Select Method</option>
-                            <option value="UPI">UPI</option>
-                            <option value="Credit Card">Credit Card</option>
-                            <option value="Debit Card">Debit Card</option>
-                            <option value="Net Banking">Net Banking</option>
-                            <option value="Cash">Cash</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentAmount">Payment Amount (₹)</label>
-                        <input type="number" id="paymentAmount" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="paymentDate">Payment Date</label>
-                        <input type="date" id="paymentDate">
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success" onclick="processPayment()">Process Payment</button>
-            </div>
-
-            <div class="form-section">
-                <h3>📋 Payment History</h3>
+                <h3>✅ Completed Deliveries</h3>
                 <table class="data-table">
                     <thead>
                         <tr>
+                            <th>Dispatch ID</th>
                             <th>Order ID</th>
                             <th>Customer</th>
-                            <th>Amount</th>
-                            <th>Method</th>
-                            <th>Date</th>
-                            <th>Status</th>
+                            <th>Driver</th>
+                            <th>Delivery Time</th>
+                            <th>POD Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="paymentList">
-                        <tr>
-                            <td>ORD001</td>
-                            <td>ABC Traders</td>
-                            <td>₹5,000</td>
-                            <td>UPI</td>
-                            <td>2025-01-15</td>
-                            <td><span class="status-badge status-approved">Paid</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="completedDeliveries"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Reports Tab -->
+        <!-- Driver Management Tab -->
+        <div id="drivers" class="tab-content">
+            <div class="form-section">
+                <h3>👷 Driver Management & Blocking System</h3>
+                <form id="driverForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="driverFullName">Driver Full Name *</label>
+                            <input type="text" id="driverFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="driverPhone">Phone Number *</label>
+                            <input type="tel" id="driverPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="driverLicense">License Number *</label>
+                            <input type="text" id="driverLicense" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="driverAddress">Address</label>
+                            <textarea id="driverAddress" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="driverExperience">Experience (Years)</label>
+                            <input type="number" id="driverExperience" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="driverStatus">Status</label>
+                            <select id="driverStatus">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Driver</button>
+                </form>
+            </div>
+
+            <div class="form-section">
+                <h3>👷 Driver List & Status</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>License</th>
+                            <th>Total Trips</th>
+                            <th>POD Missing</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="driverList"></tbody>
+                </table>
+            </div>
+
+            <div class="form-section">
+                <h3>🚫 Blocked Drivers Management</h3>
+                <div class="alert alert-warning">
+                    <strong>Auto-Block Policy:</strong> Drivers are automatically blocked when they have dispatches without POD submission. 
+                    Admin can manually unblock after verification.
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Driver Name</th>
+                            <th>Phone</th>
+                            <th>Blocked Date</th>
+                            <th>Reason</th>
+                            <th>Missing PODs</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blockedDriversList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Advanced Reports Tab -->
         <div id="reports" class="tab-content">
             <div class="form-section">
-                <h3>📈 Business Reports</h3>
+                <h3>📈 Advanced Business Reports & Analytics</h3>
 
                 <div class="dashboard-cards">
                     <div class="dashboard-card">
-                        <h3 id="monthlyOrders">15</h3>
+                        <h3 id="monthlyOrders">0</h3>
                         <p>Orders This Month</p>
                     </div>
                     <div class="dashboard-card">
-                        <h3 id="monthlyRevenue">₹75,000</h3>
+                        <h3 id="monthlyRevenue">₹0</h3>
                         <p>Monthly Revenue</p>
                     </div>
                     <div class="dashboard-card">
-                        <h3 id="monthlyDeliveries">12</h3>
+                        <h3 id="monthlyDeliveries">0</h3>
                         <p>Deliveries Completed</p>
                     </div>
                     <div class="dashboard-card">
-                        <h3>95%</h3>
-                        <p>Customer Satisfaction</p>
+                        <h3 id="avgDeliveryTime">0</h3>
+                        <p>Avg Delivery Time (Days)</p>
                     </div>
                 </div>
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="reportType">Report Type</label>
-                        <select id="reportType">
-                            <option value="">Select Report</option>
-                            <option value="sales">Sales Report</option>
-                            <option value="dispatch">Dispatch Report</option>
-                            <option value="customer">Customer Report</option>
-                            <option value="financial">Financial Report</option>
-                        </select>
+                <div class="filter-section">
+                    <h4>📊 Report Generation Filters</h4>
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="reportType">Report Type *</label>
+                            <select id="reportType" onchange="updateReportFilters()">
+                                <option value="">Select Report Type</option>
+                                <option value="order-wise">Order-wise Report</option>
+                                <option value="customer-wise">Customer-wise Report</option>
+                                <option value="salesman-wise">Salesman-wise Report</option>
+                                <option value="item-wise">Item-wise Dispatch Report</option>
+                                <option value="vehicle-wise">Vehicle-wise Report</option>
+                                <option value="driver-wise">Driver Performance Report</option>
+                                <option value="date-wise">Date-wise Dispatch Summary</option>
+                                <option value="pending-dispatch">Pending Dispatch Only</option>
+                                <option value="pod-missing">Dispatched but No POD</option>
+                                <option value="city-state">City/State Analysis</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportFromDate">From Date *</label>
+                            <input type="date" id="reportFromDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportToDate">To Date *</label>
+                            <input type="date" id="reportToDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportCustomer">Specific Customer</label>
+                            <select id="reportCustomer">
+                                <option value="">All Customers</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportSalesman">Specific Salesman</label>
+                            <select id="reportSalesman">
+                                <option value="">All Salesmen</option>
+                                <option value="Raj Kumar">Raj Kumar</option>
+                                <option value="Priya Singh">Priya Singh</option>
+                                <option value="Amit Sharma">Amit Sharma</option>
+                                <option value="Sneha Patel">Sneha Patel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportDriver">Specific Driver</label>
+                            <select id="reportDriver">
+                                <option value="">All Drivers</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportState">State Filter</label>
+                            <select id="reportState">
+                                <option value="">All States</option>
+                                <option value="KA">Karnataka</option>
+                                <option value="MH">Maharashtra</option>
+                                <option value="TN">Tamil Nadu</option>
+                                <option value="AP">Andhra Pradesh</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportCity">City Filter</label>
+                            <input type="text" id="reportCity" placeholder="Enter city name">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="reportFrom">From Date</label>
-                        <input type="date" id="reportFrom">
-                    </div>
-                    <div class="form-group">
-                        <label for="reportTo">To Date</label>
-                        <input type="date" id="reportTo">
+                    
+                    <div style="margin-top: 20px">
+                        <button type="button" class="btn btn-success" onclick="generateAdvancedReport()">Generate Report</button>
+                        <button type="button" class="btn btn-warning" onclick="exportToExcel()">Export to Excel</button>
+                        <button type="button" class="btn" onclick="clearReportFilters()">Clear Filters</button>
                     </div>
                 </div>
-                <button type="button" class="btn btn-success" onclick="generateReport()">Generate Report</button>
-                <button type="button" class="btn" onclick="exportReport()">Export to Excel</button>
+
+                <div class="form-section">
+                    <h3>📋 Generated Report Results</h3>
+                    <div id="reportResults"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize localStorage with demo data if empty
-        if (!localStorage.getItem('orders')) {
-            localStorage.setItem('orders', JSON.stringify([
-                {
-                    id: 'ORD001',
-                    customerId: 1,
-                    customerName: 'ABC Traders',
-                    orderDate: '2025-01-15',
-                    deliveryDate: '2025-01-20',
-                    status: 'Pending',
-                    specialInstructions: 'Handle with care',
-                    items: [
-                        {
-                            flourType: 'Whole Wheat',
-                            packaging: '25kg',
-                            quantity: 10,
-                            rate: 500,
-                            total: 5000
-                        },
-                        {
-                            flourType: 'Refined',
-                            packaging: '10kg',
-                            quantity: 5,
-                            rate: 450,
-                            total: 2250
-                        }
-                    ],
-                    totalAmount: 7250
-                },
-                {
-                    id: 'ORD002',
-                    customerId: 2,
-                    customerName: 'XYZ Store',
-                    orderDate: '2025-01-16',
-                    deliveryDate: '2025-01-22',
-                    status: 'Approved',
-                    specialInstructions: 'Morning delivery preferred',
-                    items: [
-                        {
-                            flourType: 'Semolina',
-                            packaging: '5kg',
-                            quantity: 15,
-                            rate: 350,
-                            total: 5250
-                        }
-                    ],
-                    totalAmount: 5250
-                }
-            ]));
-        }
-
-        if (!localStorage.getItem('dispatches')) {
-            localStorage.setItem('dispatches', JSON.stringify([]));
-        }
-
-        if (!localStorage.getItem('payments')) {
-            localStorage.setItem('payments', JSON.stringify([
-                {
-                    id: 1,
-                    orderId: 'ORD001',
-                    customerName: 'ABC Traders',
-                    amount: 7250,
-                    method: 'UPI',
-                    date: '2025-01-15',
-                    status: 'Paid'
-                }
-            ]));
-        }
-
-        // Global variables with data validation and migration
+        // Enhanced global variables with new data structures
         let customers = JSON.parse(localStorage.getItem('customers')) || [];
         let orders = JSON.parse(localStorage.getItem('orders')) || [];
         let dispatches = JSON.parse(localStorage.getItem('dispatches')) || [];
-        let payments = JSON.parse(localStorage.getItem('payments')) || [];
+        let drivers = JSON.parse(localStorage.getItem('drivers')) || [];
+        let vehicleTracking = JSON.parse(localStorage.getItem('vehicleTracking')) || [];
+        let deliveries = JSON.parse(localStorage.getItem('deliveries')) || [];
         let currentOrderItems = [];
-        let itemCounter = 0; // Keep track of unique item IDs
+        let itemCounter = 0;
 
-        // Data migration function to ensure all orders have proper structure
+        // Initialize demo data if empty
+        if (drivers.length === 0) {
+            drivers = [
+                {
+                    id: 1,
+                    name: 'Ramesh Kumar',
+                    phone: '9876543210',
+                    license: 'KA0120190001234',
+                    address: 'Bangalore, Karnataka',
+                    experience: 5,
+                    status: 'Active',
+                    totalTrips: 45,
+                    podMissing: 0,
+                    isBlocked: false,
+                    blockedDate: null,
+                    blockReason: null
+                },
+                {
+                    id: 2,
+                    name: 'Suresh Patil',
+                    phone: '9876543211',
+                    license: 'MH0220190001235',
+                    address: 'Mumbai, Maharashtra',
+                    experience: 8,
+                    status: 'Active',
+                    totalTrips: 67,
+                    podMissing: 2,
+                    isBlocked: true,
+                    blockedDate: '2025-01-20',
+                    blockReason: 'POD Missing for 2 dispatches'
+                }
+            ];
+            localStorage.setItem('drivers', JSON.stringify(drivers));
+        }
+
+        // Enhanced data migration function
         function migrateOrderData() {
             let needsUpdate = false;
 
             orders = orders.map(order => {
-                // If order doesn't have items array, create it from old structure
                 if (!order.items || !Array.isArray(order.items)) {
                     needsUpdate = true;
-                    // Try to reconstruct from old single-item structure
                     if (order.flourType && order.packaging && order.quantity && order.rate) {
                         order.items = [{
                             flourType: order.flourType,
@@ -943,83 +1089,196 @@
                             rate: order.rate,
                             total: order.quantity * order.rate
                         }];
-                        // Clean up old properties
                         delete order.flourType;
                         delete order.packaging;
                         delete order.quantity;
                         delete order.rate;
                     } else {
-                        // Create empty items array as fallback
                         order.items = [];
                     }
                 }
 
-                // Ensure totalAmount exists
                 if (!order.totalAmount && order.items.length > 0) {
                     order.totalAmount = order.items.reduce((sum, item) => sum + (item.total || 0), 0);
+                    needsUpdate = true;
+                }
+
+                // Add salesman if missing
+                if (!order.salesman) {
+                    order.salesman = 'Raj Kumar';
+                    needsUpdate = true;
+                }
+
+                // Add remaining quantities for partial dispatch
+                if (!order.remainingItems) {
+                    order.remainingItems = JSON.parse(JSON.stringify(order.items));
                     needsUpdate = true;
                 }
 
                 return order;
             });
 
-            // Update localStorage if migration was needed
             if (needsUpdate) {
                 localStorage.setItem('orders', JSON.stringify(orders));
-                console.log('Order data migrated successfully');
             }
         }
 
         // Tab functionality
         function showTab(tabName) {
-            // Hide all tab contents
             const tabContents = document.querySelectorAll('.tab-content');
             tabContents.forEach(tab => tab.classList.remove('active'));
 
-            // Remove active class from all nav tabs
             const navTabs = document.querySelectorAll('.nav-tab');
             navTabs.forEach(tab => tab.classList.remove('active'));
 
-            // Show selected tab content
             document.getElementById(tabName).classList.add('active');
-
-            // Add active class to clicked nav tab
             event.target.classList.add('active');
 
             // Load data for specific tabs
-            if (tabName === 'customers') {
-                loadCustomers();
-                loadCustomerOptions();
-            } else if (tabName === 'orders') {
-                loadOrders();
-                loadDetailedOrders();
-                loadCustomerOptions();
-            } else if (tabName === 'dispatch') {
-                loadDispatches();
-                loadOrderOptions();
-            } else if (tabName === 'delivery') {
-                loadOrderOptions();
-            } else if (tabName === 'financial') {
-                loadPayments();
-                loadOrderOptions();
-            } else if (tabName === 'dashboard') {
-                updateDashboard();
+            switch(tabName) {
+                case 'customers':
+                    loadCustomers();
+                    loadCustomerOptions();
+                    break;
+                case 'orders':
+                    loadOrders();
+                    loadCustomerOptions();
+                    break;
+                case 'dispatch':
+                    loadDispatches();
+                    loadOrderOptions();
+                    loadDriverOptions();
+                    break;
+                case 'tracking':
+                    loadVehicleTracking();
+                    loadDispatchOptions();
+                    break;
+                case 'delivery':
+                    loadDeliveries();
+                    loadPODMissingList();
+                    loadDispatchOptions();
+                    break;
+                case 'drivers':
+                    loadDrivers();
+                    loadBlockedDrivers();
+                    break;
+                case 'reports':
+                    loadReportOptions();
+                    updateMonthlyStats();
+                    break;
+                case 'dashboard':
+                    updateDashboard();
+                    break;
             }
         }
 
-        // Dashboard functions with safe data handling
+        // Enhanced Dashboard with critical alerts
         function updateDashboard() {
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('totalCustomers').textContent = customers.length;
-            document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'Pending').length;
 
-            const totalRevenue = orders.reduce((sum, order) => {
-                return sum + (order.totalAmount || 0);
-            }, 0);
+            const pendingDispatches = calculatePendingDispatches();
+            document.getElementById('pendingDispatches').textContent = pendingDispatches;
+
+            const podMissing = calculatePODMissing();
+            document.getElementById('podMissing').textContent = podMissing;
+
+            const blockedDriversCount = drivers.filter(d => d.isBlocked).length;
+            document.getElementById('blockedDrivers').textContent = blockedDriversCount;
+
+            const totalRevenue = orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
             document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toLocaleString()}`;
+
+            // Load critical alerts
+            loadCriticalAlerts();
+            loadRecentActivities();
         }
 
-        // Customer Management
+        function calculatePendingDispatches() {
+            return orders.reduce((count, order) => {
+                if (order.remainingItems && order.remainingItems.length > 0) {
+                    const hasRemaining = order.remainingItems.some(item => item.quantity > 0);
+                    if (hasRemaining) count++;
+                }
+                return count;
+            }, 0);
+        }
+
+        function calculatePODMissing() {
+            return dispatches.filter(dispatch => {
+                const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                return !delivery && dispatch.status === 'Dispatched';
+            }).length;
+        }
+
+        function loadCriticalAlerts() {
+            const alertsContainer = document.getElementById('criticalAlerts');
+            let alertsHTML = '';
+
+            const podMissing = calculatePODMissing();
+            const blockedDrivers = drivers.filter(d => d.isBlocked).length;
+            const overdueDeliveries = calculateOverdueDeliveries();
+
+            if (podMissing > 0) {
+                alertsHTML += `<div class="alert alert-error">⚠️ ${podMissing} dispatches are missing Proof of Delivery (POD)</div>`;
+            }
+
+            if (blockedDrivers > 0) {
+                alertsHTML += `<div class="alert alert-warning">🚫 ${blockedDrivers} drivers are currently blocked due to missing PODs</div>`;
+            }
+
+            if (overdueDeliveries > 0) {
+                alertsHTML += `<div class="alert alert-error">⏰ ${overdueDeliveries} deliveries are overdue</div>`;
+            }
+
+            if (alertsHTML === '') {
+                alertsHTML = '<div class="alert alert-success">✅ All systems operating normally</div>';
+            }
+
+            alertsContainer.innerHTML = alertsHTML;
+        }
+
+        function calculateOverdueDeliveries() {
+            const today = new Date();
+            return dispatches.filter(dispatch => {
+                const estimatedDelivery = new Date(dispatch.estimatedDelivery);
+                const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                return !delivery && estimatedDelivery < today;
+            }).length;
+        }
+
+        function loadRecentActivities() {
+            const tbody = document.getElementById('recentActivities');
+            const activities = [];
+
+            // Recent orders
+            orders.slice(-5).forEach(order => {
+                activities.push({
+                    time: new Date(order.orderDate).toLocaleTimeString(),
+                    activity: `New order ${order.id} created for ${order.customerName}`,
+                    status: order.status
+                });
+            });
+
+            // Recent dispatches
+            dispatches.slice(-3).forEach(dispatch => {
+                activities.push({
+                    time: new Date(dispatch.dispatchDate).toLocaleTimeString(),
+                    activity: `Order ${dispatch.orderId} dispatched via ${dispatch.vehicleNumber}`,
+                    status: dispatch.status
+                });
+            });
+
+            tbody.innerHTML = activities.map(activity => `
+                <tr>
+                    <td>${activity.time}</td>
+                    <td>${activity.activity}</td>
+                    <td><span class="status-badge ${getStatusClass(activity.status)}">${activity.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Enhanced Customer Management with complete address
         document.getElementById('customerForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -1028,15 +1287,23 @@
                 name: document.getElementById('customerName').value,
                 phone: document.getElementById('customerPhone').value,
                 email: document.getElementById('customerEmail').value,
+                contactPerson: document.getElementById('contactPerson').value,
+                contactMobile: document.getElementById('contactMobile').value,
                 gst: document.getElementById('customerGST').value,
                 category: document.getElementById('customerCategory').value,
-                address: document.getElementById('customerAddress').value
+                address: {
+                    street: document.getElementById('streetAddress').value,
+                    landmark: document.getElementById('landmark').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    pincode: document.getElementById('pincode').value
+                }
             };
 
             customers.push(newCustomer);
             localStorage.setItem('customers', JSON.stringify(customers));
 
-            showAlert('Customer added successfully!', 'success');
+            showAlert('Customer added successfully with complete address details!', 'success');
             this.reset();
             loadCustomers();
             loadCustomerOptions();
@@ -1048,15 +1315,20 @@
 
             customers.forEach(customer => {
                 const customerOrders = orders.filter(o => o.customerId === customer.id);
+                const addressDisplay = customer.address ? 
+                    `${customer.address.city}, ${customer.address.state}` : 'Address not available';
+                
                 const row = `
                     <tr>
                         <td>${customer.name}</td>
+                        <td>${customer.contactPerson || 'N/A'}</td>
                         <td>${customer.phone}</td>
+                        <td>${addressDisplay}</td>
                         <td>${customer.category}</td>
                         <td>${customer.gst || 'N/A'}</td>
                         <td>${customerOrders.length}</td>
                         <td>
-                            <button class="btn btn-warning" onclick="viewCustomerOrders(${customer.id})">View Orders</button>
+                            <button class="btn" onclick="viewCustomerDetails(${customer.id})">Details</button>
                             <button class="btn btn-danger" onclick="deleteCustomer(${customer.id})">Delete</button>
                         </td>
                     </tr>
@@ -1065,52 +1337,33 @@
             });
         }
 
-        function viewCustomerOrders(customerId) {
+        function viewCustomerDetails(customerId) {
             const customer = customers.find(c => c.id === customerId);
             const customerOrders = orders.filter(o => o.customerId === customerId);
 
-            let orderDetails = `<h4>Orders for ${customer.name}</h4>`;
-            customerOrders.forEach(order => {
-                orderDetails += `
-                    <div class="order-item">
-                        <strong>Order ${order.id}</strong> - ${order.orderDate} - ₹${order.totalAmount.toLocaleString()}
-                        <br>Status: <span class="status-badge ${getStatusClass(order.status)}">${order.status}</span>
-                    </div>
-                `;
-            });
-
-            if (customerOrders.length === 0) {
-                orderDetails += '<p>No orders found for this customer.</p>';
+            let details = `<h4>Complete Customer Details</h4>`;
+            details += `<p><strong>Name:</strong> ${customer.name}</p>`;
+            details += `<p><strong>Contact Person:</strong> ${customer.contactPerson || 'N/A'}</p>`;
+            details += `<p><strong>Phone:</strong> ${customer.phone}</p>`;
+            details += `<p><strong>Mobile:</strong> ${customer.contactMobile || 'N/A'}</p>`;
+            details += `<p><strong>Email:</strong> ${customer.email || 'N/A'}</p>`;
+            details += `<p><strong>GST:</strong> ${customer.gst || 'N/A'}</p>`;
+            
+            if (customer.address) {
+                details += `<p><strong>Address:</strong><br>`;
+                details += `${customer.address.street}<br>`;
+                if (customer.address.landmark) details += `Landmark: ${customer.address.landmark}<br>`;
+                details += `${customer.address.city}, ${customer.address.state} - ${customer.address.pincode}</p>`;
             }
 
-            showAlert(orderDetails, 'success');
+            details += `<p><strong>Total Orders:</strong> ${customerOrders.length}</p>`;
+            
+            showAlert(details, 'success');
         }
 
-        function loadCustomerOptions() {
-            const selects = ['orderCustomer', 'paymentOrder'];
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    select.innerHTML = '<option value="">Select Customer</option>';
-                    customers.forEach(customer => {
-                        select.innerHTML += `<option value="${customer.id}">${customer.name}</option>`;
-                    });
-                }
-            });
-        }
-
-        function deleteCustomer(id) {
-            if (confirm('Are you sure you want to delete this customer?')) {
-                customers = customers.filter(c => c.id !== id);
-                localStorage.setItem('customers', JSON.stringify(customers));
-                loadCustomers();
-                showAlert('Customer deleted successfully!', 'success');
-            }
-        }
-
-        // Enhanced Order Management with Multiple Items - FIXED VERSION
+        // Enhanced Order Management (keeping existing functionality)
         function addOrderItem() {
-            const uniqueId = itemCounter++; // Use a unique counter instead of array length
+            const uniqueId = itemCounter++;
             const itemHtml = `
                 <div class="order-item" id="orderItem${uniqueId}" data-item-id="${uniqueId}">
                     <div class="item-grid">
@@ -1169,7 +1422,6 @@
             let totalAmount = 0;
             let validItems = 0;
 
-            // Clear the current order items array and rebuild it
             currentOrderItems = [];
 
             items.forEach((item) => {
@@ -1217,7 +1469,7 @@
         function clearOrder() {
             document.getElementById('orderItems').innerHTML = '';
             currentOrderItems = [];
-            itemCounter = 0; // Reset the counter
+            itemCounter = 0;
             document.getElementById('orderSummary').style.display = 'none';
             document.getElementById('orderForm').reset();
         }
@@ -1234,7 +1486,6 @@
                 return;
             }
 
-            // Filter out empty items
             const validItems = currentOrderItems.filter(item =>
                 item.flourType && item.packaging && item.quantity > 0 && item.rate > 0
             );
@@ -1252,9 +1503,11 @@
                 customerName: customer.name,
                 orderDate: document.getElementById('orderDate').value,
                 deliveryDate: document.getElementById('deliveryDate').value,
+                salesman: document.getElementById('salesman').value,
                 status: 'Pending',
                 specialInstructions: document.getElementById('specialInstructions').value,
                 items: validItems,
+                remainingItems: JSON.parse(JSON.stringify(validItems)), // For partial dispatch tracking
                 totalAmount: totalAmount
             };
 
@@ -1264,7 +1517,6 @@
             showAlert(`Order created successfully! Order ID: ${newOrder.id}`, 'success');
             clearOrder();
             loadOrders();
-            loadDetailedOrders();
             updateDashboard();
         });
 
@@ -1273,7 +1525,6 @@
             tbody.innerHTML = '';
 
             orders.forEach(order => {
-                // Ensure order has items array (defensive programming)
                 if (!order.items || !Array.isArray(order.items)) {
                     order.items = [];
                 }
@@ -1286,6 +1537,7 @@
                     <tr>
                         <td>${order.id}</td>
                         <td>${order.customerName}</td>
+                        <td>${order.salesman || 'N/A'}</td>
                         <td>${itemCount} item(s)</td>
                         <td>₹${totalAmount.toLocaleString()}</td>
                         <td>${order.orderDate}</td>
@@ -1301,79 +1553,9 @@
             });
         }
 
-        function loadDetailedOrders() {
-            const container = document.getElementById('detailedOrders');
-            container.innerHTML = '';
-
-            orders.forEach(order => {
-                // Ensure order has items array
-                if (!order.items || !Array.isArray(order.items)) {
-                    order.items = [];
-                }
-
-                let itemsHtml = '';
-                if (order.items.length > 0) {
-                    order.items.forEach(item => {
-                        itemsHtml += `
-                            <tr>
-                                <td>${item.flourType || 'N/A'}</td>
-                                <td>${item.packaging || 'N/A'}</td>
-                                <td>${item.quantity || 0}</td>
-                                <td>₹${item.rate || 0}</td>
-                                <td>₹${(item.total || 0).toLocaleString()}</td>
-                            </tr>
-                        `;
-                    });
-                } else {
-                    itemsHtml = '<tr><td colspan="5">No items found</td></tr>';
-                }
-
-                const orderHtml = `
-                    <div class="collapsible-order" onclick="toggleOrderDetails('${order.id}')">
-                        <strong>${order.id}</strong> - ${order.customerName} - ₹${(order.totalAmount || 0).toLocaleString()}
-                        <span class="status-badge ${getStatusClass(order.status)}">${order.status}</span>
-                    </div>
-                    <div class="order-details" id="details-${order.id}">
-                        <p><strong>Order Date:</strong> ${order.orderDate}</p>
-                        <p><strong>Delivery Date:</strong> ${order.deliveryDate}</p>
-                        <p><strong>Special Instructions:</strong> ${order.specialInstructions || 'None'}</p>
-
-                        <h5>Items:</h5>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Flour Type</th>
-                                    <th>Packaging</th>
-                                    <th>Quantity</th>
-                                    <th>Rate</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${itemsHtml}
-                            </tbody>
-                        </table>
-
-                        <div class="summary-row total-row" style="margin-top: 15px;">
-                            <span>Total Order Amount:</span>
-                            <span>₹${(order.totalAmount || 0).toLocaleString()}</span>
-                        </div>
-                    </div>
-                `;
-
-                container.innerHTML += orderHtml;
-            });
-        }
-
-        function toggleOrderDetails(orderId) {
-            const details = document.getElementById(`details-${orderId}`);
-            details.classList.toggle('active');
-        }
-
         function viewOrderDetails(orderId) {
             const order = orders.find(o => o.id === orderId);
             if (order) {
-                // Ensure order has items array
                 if (!order.items || !Array.isArray(order.items)) {
                     order.items = [];
                 }
@@ -1396,26 +1578,12 @@
             }
         }
 
-        function loadOrderOptions() {
-            const selects = ['dispatchOrder', 'trackingOrder', 'podOrder', 'paymentOrder'];
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    select.innerHTML = '<option value="">Select Order</option>';
-                    orders.forEach(order => {
-                        select.innerHTML += `<option value="${order.id}">${order.id} - ${order.customerName} (₹${order.totalAmount.toLocaleString()})</option>`;
-                    });
-                }
-            });
-        }
-
         function updateOrderStatus(orderId, newStatus) {
             const orderIndex = orders.findIndex(o => o.id === orderId);
             if (orderIndex !== -1) {
                 orders[orderIndex].status = newStatus;
                 localStorage.setItem('orders', JSON.stringify(orders));
                 loadOrders();
-                loadDetailedOrders();
                 updateDashboard();
                 showAlert(`Order ${orderId} status updated to ${newStatus}!`, 'success');
             }
@@ -1426,46 +1594,145 @@
                 orders = orders.filter(o => o.id !== orderId);
                 localStorage.setItem('orders', JSON.stringify(orders));
                 loadOrders();
-                loadDetailedOrders();
                 updateDashboard();
                 showAlert('Order deleted successfully!', 'success');
             }
         }
 
-        function getStatusClass(status) {
-            switch (status.toLowerCase()) {
-                case 'pending': return 'status-pending';
-                case 'approved': return 'status-approved';
-                case 'dispatched': return 'status-dispatched';
-                case 'delivered': return 'status-delivered';
-                default: return 'status-pending';
+        // Enhanced Dispatch Management with Partial Dispatch
+        function loadOrderItemsForDispatch() {
+            const orderId = document.getElementById('dispatchOrder').value;
+            const order = orders.find(o => o.id === orderId);
+            const container = document.getElementById('dispatchItemsList');
+            
+            if (!order || !order.remainingItems) {
+                container.innerHTML = '<p>Please select an order first.</p>';
+                return;
+            }
+
+            let itemsHTML = '';
+            order.remainingItems.forEach((item, index) => {
+                if (item.quantity > 0) {
+                    itemsHTML += `
+                        <div class="dispatch-item">
+                            <h5>${item.flourType} - ${item.packaging}</h5>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Available Quantity</label>
+                                    <input type="number" value="${item.quantity}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dispatch Quantity *</label>
+                                    <input type="number" id="dispatchQty${index}" min="1" max="${item.quantity}" 
+                                           value="${item.quantity}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Rate per Unit</label>
+                                    <input type="number" value="₹${item.rate}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (itemsHTML === '') {
+                container.innerHTML = '<p>All items from this order have been dispatched.</p>';
+            } else {
+                container.innerHTML = itemsHTML;
             }
         }
 
-        // Dispatch Management
         document.getElementById('dispatchForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const orderId = document.getElementById('dispatchOrder').value;
+            const order = orders.find(o => o.id === orderId);
+            const driverName = document.getElementById('driverName').value;
+            
+            // Check if driver is blocked
+            const driver = drivers.find(d => d.name === driverName);
+            if (driver && driver.isBlocked) {
+                showAlert('This driver is blocked due to missing PODs. Please select another driver or unblock first.', 'error');
+                return;
+            }
+
+            const stateCode = document.getElementById('vehicleStateCode').value;
+            const cityCode = document.getElementById('vehicleCityCode').value;
+            const seriesNumber = document.getElementById('vehicleSeriesNumber').value;
+            const vehicleNumber = `${stateCode}-${cityCode}-${seriesNumber}`;
+
+            // Collect dispatch quantities
+            const dispatchItems = [];
+            order.remainingItems.forEach((item, index) => {
+                const dispatchQtyInput = document.getElementById(`dispatchQty${index}`);
+                if (dispatchQtyInput) {
+                    const dispatchQty = parseInt(dispatchQtyInput.value) || 0;
+                    if (dispatchQty > 0) {
+                        dispatchItems.push({
+                            ...item,
+                            dispatchedQuantity: dispatchQty,
+                            remainingAfterDispatch: item.quantity - dispatchQty
+                        });
+                    }
+                }
+            });
+
+            if (dispatchItems.length === 0) {
+                showAlert('Please specify quantities to dispatch!', 'error');
+                return;
+            }
+
             const newDispatch = {
-                id: Date.now(),
+                id: 'DISP' + Date.now(),
                 orderId: orderId,
-                vehicleNumber: document.getElementById('vehicleNumber').value,
-                driverName: document.getElementById('driverName').value,
-                driverPhone: document.getElementById('driverPhone').value,
-                dispatchDate: document.getElementById('dispatchDate').value,
-                estimatedDelivery: document.getElementById('estimatedDelivery').value,
-                status: 'Dispatched'
+                customerName: order.customerName,
+                vehicleNumber: vehicleNumber,
+                vehicleState: stateCode,
+                vehicleCity: cityCode,
+                driverName: driverName,
+                warehousePerson: document.getElementById('warehousePerson').value,
+                dispatchDate: new Date().toISOString(),
+                vehicleArrivalTime: document.getElementById('vehicleArrivalTime').value,
+                gpsCoordinates: document.getElementById('gpsCoordinates').value,
+                items: dispatchItems,
+                status: 'Dispatched',
+                estimatedDelivery: null,
+                departureTime: null
             };
 
             dispatches.push(newDispatch);
             localStorage.setItem('dispatches', JSON.stringify(dispatches));
 
-            updateOrderStatus(orderId, 'Dispatched');
+            // Update remaining items in order
+            order.remainingItems.forEach((item, index) => {
+                const dispatchedItem = dispatchItems.find(di => di.flourType === item.flourType && di.packaging === item.packaging);
+                if (dispatchedItem) {
+                    item.quantity = dispatchedItem.remainingAfterDispatch;
+                }
+            });
 
-            showAlert('Dispatch scheduled successfully!', 'success');
+            // Update order status
+            const allDispatched = order.remainingItems.every(item => item.quantity === 0);
+            if (allDispatched) {
+                order.status = 'Fully Dispatched';
+            } else {
+                order.status = 'Partially Dispatched';
+            }
+
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Update driver trip count
+            if (driver) {
+                driver.totalTrips = (driver.totalTrips || 0) + 1;
+                localStorage.setItem('drivers', JSON.stringify(drivers));
+            }
+
+            showAlert(`Dispatch created successfully! Dispatch ID: ${newDispatch.id}`, 'success');
             this.reset();
+            document.getElementById('dispatchItemsList').innerHTML = '';
             loadDispatches();
+            updateDashboard();
         });
 
         function loadDispatches() {
@@ -1473,15 +1740,22 @@
             tbody.innerHTML = '';
 
             dispatches.forEach(dispatch => {
+                const itemsCount = dispatch.items ? dispatch.items.length : 0;
+                const itemsSummary = dispatch.items ? 
+                    dispatch.items.map(item => `${item.flourType}(${item.dispatchedQuantity})`).join(', ') : 'N/A';
+
                 const row = `
                     <tr>
+                        <td>${dispatch.id}</td>
                         <td>${dispatch.orderId}</td>
                         <td>${dispatch.vehicleNumber}</td>
                         <td>${dispatch.driverName}</td>
+                        <td title="${itemsSummary}">${itemsCount} item(s)</td>
                         <td>${new Date(dispatch.dispatchDate).toLocaleString()}</td>
-                        <td><span class="status-badge status-dispatched">${dispatch.status}</span></td>
+                        <td><span class="status-badge ${getStatusClass(dispatch.status)}">${dispatch.status}</span></td>
                         <td>
-                            <button class="btn" onclick="markDelivered('${dispatch.orderId}')">Mark Delivered</button>
+                            <button class="btn" onclick="viewDispatchDetails('${dispatch.id}')">Details</button>
+                            <button class="btn btn-warning" onclick="markInTransit('${dispatch.id}')">In Transit</button>
                         </td>
                     </tr>
                 `;
@@ -1489,102 +1763,1196 @@
             });
         }
 
-        function markDelivered(orderId) {
-            updateOrderStatus(orderId, 'Delivered');
-            const dispatchIndex = dispatches.findIndex(d => d.orderId === orderId);
+        function viewDispatchDetails(dispatchId) {
+            const dispatch = dispatches.find(d => d.id === dispatchId);
+            if (dispatch) {
+                let details = `<h4>Dispatch Details - ${dispatch.id}</h4>`;
+                details += `<p><strong>Order ID:</strong> ${dispatch.orderId}</p>`;
+                details += `<p><strong>Customer:</strong> ${dispatch.customerName}</p>`;
+                details += `<p><strong>Vehicle:</strong> ${dispatch.vehicleNumber} (${dispatch.vehicleState})</p>`;
+                details += `<p><strong>Driver:</strong> ${dispatch.driverName}</p>`;
+                details += `<p><strong>Warehouse Person:</strong> ${dispatch.warehousePerson}</p>`;
+                details += `<p><strong>Arrival Time:</strong> ${new Date(dispatch.vehicleArrivalTime).toLocaleString()}</p>`;
+                
+                if (dispatch.items && dispatch.items.length > 0) {
+                    details += '<h5>Dispatched Items:</h5>';
+                    dispatch.items.forEach(item => {
+                        details += `<p>• ${item.flourType} - ${item.packaging}: ${item.dispatchedQuantity} units</p>`;
+                    });
+                }
+
+                showAlert(details, 'success');
+            }
+        }
+
+        function markInTransit(dispatchId) {
+            const dispatchIndex = dispatches.findIndex(d => d.id === dispatchId);
             if (dispatchIndex !== -1) {
-                dispatches[dispatchIndex].status = 'Delivered';
+                dispatches[dispatchIndex].status = 'In Transit';
+                dispatches[dispatchIndex].departureTime = new Date().toISOString();
                 localStorage.setItem('dispatches', JSON.stringify(dispatches));
                 loadDispatches();
+                showAlert('Dispatch marked as In Transit!', 'success');
             }
-            showAlert(`Order ${orderId} marked as delivered!`, 'success');
         }
 
-        // POD (Proof of Delivery) Form
-        document.getElementById('podForm').addEventListener('submit', function(e) {
+        function filterDispatches() {
+            // Implementation for filtering dispatches
+            loadDispatches(); // For now, reload all
+        }
+
+        // Vehicle Tracking Management
+        function loadDispatchOptions() {
+            const selects = ['trackingDispatch', 'podDispatch'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    select.innerHTML = '<option value="">Select Dispatch</option>';
+                    dispatches.forEach(dispatch => {
+                        if (dispatch.status === 'Dispatched' || dispatch.status === 'In Transit') {
+                            select.innerHTML += `<option value="${dispatch.id}">${dispatch.id} - ${dispatch.vehicleNumber} - ${dispatch.customerName}</option>`;
+                        }
+                    });
+                }
+            });
+        }
+
+        function loadDispatchDetails() {
+            const dispatchId = document.getElementById('trackingDispatch').value;
+            const dispatch = dispatches.find(d => d.id === dispatchId);
+            
+            if (dispatch && dispatch.items) {
+                const summary = dispatch.items.map(item => 
+                    `${item.flourType} - ${item.packaging}: ${item.dispatchedQuantity} units`
+                ).join('\n');
+                document.getElementById('loadingSummary').value = summary;
+            }
+        }
+
+        document.getElementById('vehicleTrackingForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const orderId = document.getElementById('podOrder').value;
-            updateOrderStatus(orderId, 'Delivered');
-            showAlert('Proof of delivery submitted successfully!', 'success');
-            this.reset();
+            const dispatchId = document.getElementById('trackingDispatch').value;
+            const dispatchIndex = dispatches.findIndex(d => d.id === dispatchId);
+
+            if (dispatchIndex !== -1) {
+                dispatches[dispatchIndex].departureTime = document.getElementById('departureTime').value;
+                dispatches[dispatchIndex].estimatedDelivery = document.getElementById('estimatedDelivery').value;
+                dispatches[dispatchIndex].currentLocation = document.getElementById('currentLocation').value;
+                dispatches[dispatchIndex].status = 'In Transit';
+
+                localStorage.setItem('dispatches', JSON.stringify(dispatches));
+
+                showAlert('Vehicle tracking updated successfully!', 'success');
+                this.reset();
+                loadVehicleTracking();
+            }
         });
 
-        // Payment Management
-        function processPayment() {
-            const orderId = document.getElementById('paymentOrder').value;
-            const method = document.getElementById('paymentMethod').value;
-            const amount = parseFloat(document.getElementById('paymentAmount').value);
-            const date = document.getElementById('paymentDate').value;
-
-            if (!orderId || !method || !amount || !date) {
-                showAlert('Please fill all payment details!', 'error');
-                return;
-            }
-
-            const order = orders.find(o => o.id === orderId);
-            const newPayment = {
-                id: Date.now(),
-                orderId: orderId,
-                customerName: order.customerName,
-                amount: amount,
-                method: method,
-                date: date,
-                status: 'Paid'
-            };
-
-            if (!payments) payments = [];
-            payments.push(newPayment);
-            localStorage.setItem('payments', JSON.stringify(payments));
-
-            showAlert('Payment processed successfully!', 'success');
-            loadPayments();
-
-            // Clear form
-            document.getElementById('paymentOrder').value = '';
-            document.getElementById('paymentMethod').value = '';
-            document.getElementById('paymentAmount').value = '';
-            document.getElementById('paymentDate').value = '';
-        }
-
-        function loadPayments() {
-            const tbody = document.getElementById('paymentList');
+        function loadVehicleTracking() {
+            const tbody = document.getElementById('trackingList');
             tbody.innerHTML = '';
 
-            payments.forEach(payment => {
+            const inTransitDispatches = dispatches.filter(d => d.status === 'In Transit');
+            
+            inTransitDispatches.forEach(dispatch => {
                 const row = `
                     <tr>
-                        <td>${payment.orderId}</td>
-                        <td>${payment.customerName}</td>
-                        <td>₹${payment.amount.toLocaleString()}</td>
-                        <td>${payment.method}</td>
-                        <td>${payment.date}</td>
-                        <td><span class="status-badge status-approved">${payment.status}</span></td>
+                        <td>${dispatch.id}</td>
+                        <td>${dispatch.vehicleNumber}</td>
+                        <td>${dispatch.driverName}</td>
+                        <td>${dispatch.currentLocation || 'Not updated'}</td>
+                        <td>${dispatch.departureTime ? new Date(dispatch.departureTime).toLocaleString() : 'N/A'}</td>
+                        <td>${dispatch.estimatedDelivery ? new Date(dispatch.estimatedDelivery).toLocaleString() : 'N/A'}</td>
+                        <td><span class="status-badge status-dispatched">${dispatch.status}</span></td>
                     </tr>
                 `;
                 tbody.innerHTML += row;
             });
         }
 
-        // Reports
-        function generateReport() {
-            const reportType = document.getElementById('reportType').value;
-            const fromDate = document.getElementById('reportFrom').value;
-            const toDate = document.getElementById('reportTo').value;
+        // Delivery and POD Management
+        function loadDeliveryDetails() {
+            const dispatchId = document.getElementById('podDispatch').value;
+            const dispatch = dispatches.find(d => d.id === dispatchId);
+            
+            if (dispatch) {
+                // Auto-fill current time
+                const now = new Date();
+                document.getElementById('deliveryTime').value = now.toISOString().slice(0, 16);
+            }
+        }
 
-            if (!reportType) {
-                showAlert('Please select a report type!', 'error');
+        document.getElementById('podForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const dispatchId = document.getElementById('podDispatch').value;
+            const dispatch = dispatches.find(d => d.id === dispatchId);
+            const photoFile = document.getElementById('deliveryPhoto').files[0];
+
+            if (!photoFile) {
+                showAlert('POD photo/document upload is mandatory!', 'error');
                 return;
             }
 
-            showAlert(`${reportType} report generated successfully for ${fromDate} to ${toDate}!`, 'success');
+            // Create delivery record
+            const newDelivery = {
+                id: Date.now(),
+                dispatchId: dispatchId,
+                orderId: dispatch.orderId,
+                customerName: dispatch.customerName,
+                driverName: dispatch.driverName,
+                deliveryTime: document.getElementById('deliveryTime').value,
+                customerSignature: document.getElementById('customerSignature').value,
+                deliveryRemarks: document.getElementById('deliveryRemarks').value,
+                podFileName: photoFile.name,
+                podFileSize: photoFile.size,
+                submissionTime: new Date().toISOString()
+            };
+
+            deliveries.push(newDelivery);
+            localStorage.setItem('deliveries', JSON.stringify(deliveries));
+
+            // Update dispatch status
+            const dispatchIndex = dispatches.findIndex(d => d.id === dispatchId);
+            if (dispatchIndex !== -1) {
+                dispatches[dispatchIndex].status = 'Delivered';
+                dispatches[dispatchIndex].actualDeliveryTime = newDelivery.deliveryTime;
+                localStorage.setItem('dispatches', JSON.stringify(dispatches));
+            }
+
+            // Update order status
+            const order = orders.find(o => o.id === dispatch.orderId);
+            if (order) {
+                const allOrderDispatches = dispatches.filter(d => d.orderId === dispatch.orderId);
+                const allDelivered = allOrderDispatches.every(d => d.status === 'Delivered');
+                if (allDelivered) {
+                    order.status = 'Delivered';
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                }
+            }
+
+            showAlert('Delivery confirmed and POD submitted successfully!', 'success');
+            this.reset();
+            document.getElementById('uploadPreview').innerHTML = '';
+            loadDeliveries();
+            loadPODMissingList();
+            updateDashboard();
+
+            // Check if driver should be unblocked
+            checkAndUnblockDriver(dispatch.driverName);
+        });
+
+        function loadDeliveries() {
+            const tbody = document.getElementById('completedDeliveries');
+            tbody.innerHTML = '';
+
+            deliveries.forEach(delivery => {
+                const row = `
+                    <tr>
+                        <td>${delivery.dispatchId}</td>
+                        <td>${delivery.orderId}</td>
+                        <td>${delivery.customerName}</td>
+                        <td>${delivery.driverName}</td>
+                        <td>${new Date(delivery.deliveryTime).toLocaleString()}</td>
+                        <td><span class="status-badge status-delivered">POD Submitted</span></td>
+                        <td>
+                            <button class="btn" onclick="viewPODDetails('${delivery.id}')">View POD</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
         }
 
-        function exportReport() {
-            showAlert('Report exported to Excel successfully!', 'success');
+        function loadPODMissingList() {
+            const tbody = document.getElementById('podMissingList');
+            tbody.innerHTML = '';
+
+            const podMissingDispatches = dispatches.filter(dispatch => {
+                const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                return !delivery && (dispatch.status === 'Dispatched' || dispatch.status === 'In Transit');
+            });
+
+            podMissingDispatches.forEach(dispatch => {
+                const estimatedDelivery = new Date(dispatch.estimatedDelivery || dispatch.dispatchDate);
+                const today = new Date();
+                const overdueDays = Math.max(0, Math.floor((today - estimatedDelivery) / (1000 * 60 * 60 * 24)));
+
+                const row = `
+                    <tr class="${overdueDays > 0 ? 'driver-blocked' : ''}">
+                        <td>${dispatch.id}</td>
+                        <td>${dispatch.driverName}</td>
+                        <td>${dispatch.vehicleNumber}</td>
+                        <td>${estimatedDelivery.toLocaleDateString()}</td>
+                        <td>${overdueDays}</td>
+                        <td><span class="status-badge status-pod-missing">POD Missing</span></td>
+                        <td>
+                            <button class="btn btn-warning" onclick="remindDriver('${dispatch.id}')">Remind Driver</button>
+                            <button class="btn btn-danger" onclick="blockDriver('${dispatch.driverName}')">Block Driver</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function viewPODDetails(deliveryId) {
+            const delivery = deliveries.find(d => d.id === deliveryId);
+            if (delivery) {
+                let details = `<h4>Proof of Delivery Details</h4>`;
+                details += `<p><strong>Dispatch ID:</strong> ${delivery.dispatchId}</p>`;
+                details += `<p><strong>Order ID:</strong> ${delivery.orderId}</p>`;
+                details += `<p><strong>Customer:</strong> ${delivery.customerName}</p>`;
+                details += `<p><strong>Driver:</strong> ${delivery.driverName}</p>`;
+                details += `<p><strong>Delivery Time:</strong> ${new Date(delivery.deliveryTime).toLocaleString()}</p>`;
+                details += `<p><strong>Customer Signature:</strong> ${delivery.customerSignature}</p>`;
+                details += `<p><strong>POD File:</strong> ${delivery.podFileName} (${(delivery.podFileSize/1024).toFixed(2)} KB)</p>`;
+                details += `<p><strong>Remarks:</strong> ${delivery.deliveryRemarks || 'None'}</p>`;
+                showAlert(details, 'success');
+            }
+        }
+
+        function remindDriver(dispatchId) {
+            const dispatch = dispatches.find(d => d.id === dispatchId);
+            showAlert(`Reminder sent to driver ${dispatch.driverName} for POD submission of dispatch ${dispatchId}`, 'success');
+        }
+
+        // Driver Management System
+        document.getElementById('driverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newDriver = {
+                id: Date.now(),
+                name: document.getElementById('driverFullName').value,
+                phone: document.getElementById('driverPhone').value,
+                license: document.getElementById('driverLicense').value,
+                address: document.getElementById('driverAddress').value,
+                experience: parseInt(document.getElementById('driverExperience').value) || 0,
+                status: document.getElementById('driverStatus').value,
+                totalTrips: 0,
+                podMissing: 0,
+                isBlocked: false,
+                blockedDate: null,
+                blockReason: null
+            };
+
+            drivers.push(newDriver);
+            localStorage.setItem('drivers', JSON.stringify(drivers));
+
+            showAlert('Driver added successfully!', 'success');
+            this.reset();
+            loadDrivers();
+            loadDriverOptions();
+        });
+
+        function loadDrivers() {
+            const tbody = document.getElementById('driverList');
+            tbody.innerHTML = '';
+
+            drivers.forEach(driver => {
+                const statusClass = driver.isBlocked ? 'status-blocked' : (driver.status === 'Active' ? 'status-approved' : 'status-pending');
+                
+                const row = `
+                    <tr class="${driver.isBlocked ? 'driver-blocked' : ''}">
+                        <td>${driver.name}</td>
+                        <td>${driver.phone}</td>
+                        <td>${driver.license}</td>
+                        <td>${driver.totalTrips || 0}</td>
+                        <td>${driver.podMissing || 0}</td>
+                        <td><span class="status-badge ${statusClass}">${driver.isBlocked ? 'Blocked' : driver.status}</span></td>
+                        <td>
+                            <button class="btn" onclick="viewDriverDetails(${driver.id})">Details</button>
+                            ${driver.isBlocked ? 
+                                `<button class="btn btn-success" onclick="unblockDriver(${driver.id})">Unblock</button>` :
+                                `<button class="btn btn-danger" onclick="blockDriver('${driver.name}')">Block</button>`
+                            }
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function loadBlockedDrivers() {
+            const tbody = document.getElementById('blockedDriversList');
+            tbody.innerHTML = '';
+
+            const blockedDrivers = drivers.filter(d => d.isBlocked);
+
+            blockedDrivers.forEach(driver => {
+                const row = `
+                    <tr>
+                        <td>${driver.name}</td>
+                        <td>${driver.phone}</td>
+                        <td>${driver.blockedDate ? new Date(driver.blockedDate).toLocaleDateString() : 'N/A'}</td>
+                        <td>${driver.blockReason || 'Manual block'}</td>
+                        <td>${driver.podMissing || 0}</td>
+                        <td>
+                            <button class="btn btn-success" onclick="unblockDriver(${driver.id})">Unblock Driver</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function blockDriver(driverName) {
+            const driverIndex = drivers.findIndex(d => d.name === driverName);
+            if (driverIndex !== -1) {
+                const podMissingCount = dispatches.filter(dispatch => {
+                    const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                    return dispatch.driverName === driverName && !delivery;
+                }).length;
+
+                drivers[driverIndex].isBlocked = true;
+                drivers[driverIndex].blockedDate = new Date().toISOString();
+                drivers[driverIndex].blockReason = `POD Missing for ${podMissingCount} dispatches`;
+                drivers[driverIndex].podMissing = podMissingCount;
+
+                localStorage.setItem('drivers', JSON.stringify(drivers));
+
+                showAlert(`Driver ${driverName} has been blocked due to missing PODs!`, 'warning');
+                loadDrivers();
+                loadBlockedDrivers();
+                updateDashboard();
+            }
+        }
+
+        function unblockDriver(driverId) {
+            const driverIndex = drivers.findIndex(d => d.id === driverId);
+            if (driverIndex !== -1) {
+                drivers[driverIndex].isBlocked = false;
+                drivers[driverIndex].blockedDate = null;
+                drivers[driverIndex].blockReason = null;
+
+                localStorage.setItem('drivers', JSON.stringify(drivers));
+
+                showAlert(`Driver ${drivers[driverIndex].name} has been unblocked!`, 'success');
+                loadDrivers();
+                loadBlockedDrivers();
+                updateDashboard();
+            }
+        }
+
+        function checkAndUnblockDriver(driverName) {
+            const driver = drivers.find(d => d.name === driverName);
+            if (driver && driver.isBlocked) {
+                const podMissingCount = dispatches.filter(dispatch => {
+                    const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                    return dispatch.driverName === driverName && !delivery;
+                }).length;
+
+                if (podMissingCount === 0) {
+                    unblockDriver(driver.id);
+                    showAlert(`Driver ${driverName} has been automatically unblocked - all PODs submitted!`, 'success');
+                }
+            }
+        }
+
+        function viewDriverDetails(driverId) {
+            const driver = drivers.find(d => d.id === driverId);
+            if (driver) {
+                let details = `<h4>Driver Details - ${driver.name}</h4>`;
+                details += `<p><strong>Phone:</strong> ${driver.phone}</p>`;
+                details += `<p><strong>License:</strong> ${driver.license}</p>`;
+                details += `<p><strong>Address:</strong> ${driver.address || 'N/A'}</p>`;
+                details += `<p><strong>Experience:</strong> ${driver.experience || 0} years</p>`;
+                details += `<p><strong>Total Trips:</strong> ${driver.totalTrips || 0}</p>`;
+                details += `<p><strong>POD Missing:</strong> ${driver.podMissing || 0}</p>`;
+                details += `<p><strong>Status:</strong> ${driver.isBlocked ? 'Blocked' : driver.status}</p>`;
+                
+                if (driver.isBlocked) {
+                    details += `<p><strong>Blocked Date:</strong> ${new Date(driver.blockedDate).toLocaleDateString()}</p>`;
+                    details += `<p><strong>Block Reason:</strong> ${driver.blockReason}</p>`;
+                }
+
+                showAlert(details, 'success');
+            }
+        }
+
+        function loadDriverOptions() {
+            const select = document.getElementById('driverName');
+            if (select) {
+                select.innerHTML = '<option value="">Select Driver</option>';
+                const activeDrivers = drivers.filter(d => d.status === 'Active' && !d.isBlocked);
+                activeDrivers.forEach(driver => {
+                    select.innerHTML += `<option value="${driver.name}">${driver.name} - ${driver.phone}</option>`;
+                });
+            }
+        }
+
+        function loadCustomerOptions() {
+            const selects = ['orderCustomer', 'reportCustomer'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    const currentHTML = select.innerHTML;
+                    if (!currentHTML.includes('option')) {
+                        select.innerHTML = '<option value="">Select Customer</option>';
+                    }
+                    customers.forEach(customer => {
+                        if (!currentHTML.includes(`value="${customer.id}"`)) {
+                            select.innerHTML += `<option value="${customer.id}">${customer.name}</option>`;
+                        }
+                    });
+                }
+            });
+        }
+
+        function loadOrderOptions() {
+            const select = document.getElementById('dispatchOrder');
+            if (select) {
+                select.innerHTML = '<option value="">Select Order for Dispatch</option>';
+                const dispatchableOrders = orders.filter(order => {
+                    if (!order.remainingItems) return false;
+                    return order.remainingItems.some(item => item.quantity > 0);
+                });
+                
+                dispatchableOrders.forEach(order => {
+                    select.innerHTML += `<option value="${order.id}">${order.id} - ${order.customerName} (Pending Items)</option>`;
+                });
+            }
+        }
+
+        // Advanced Reports System
+        function loadReportOptions() {
+            // Load customer options for reports
+            const customerSelect = document.getElementById('reportCustomer');
+            if (customerSelect) {
+                customerSelect.innerHTML = '<option value="">All Customers</option>';
+                customers.forEach(customer => {
+                    customerSelect.innerHTML += `<option value="${customer.id}">${customer.name}</option>`;
+                });
+            }
+
+            // Load driver options for reports
+            const driverSelect = document.getElementById('reportDriver');
+            if (driverSelect) {
+                driverSelect.innerHTML = '<option value="">All Drivers</option>';
+                drivers.forEach(driver => {
+                    driverSelect.innerHTML += `<option value="${driver.name}">${driver.name}</option>`;
+                });
+            }
+        }
+
+        function updateReportFilters() {
+            const reportType = document.getElementById('reportType').value;
+            // You can add specific filters based on report type here
+        }
+
+        function generateAdvancedReport() {
+            const reportType = document.getElementById('reportType').value;
+            const fromDate = document.getElementById('reportFromDate').value;
+            const toDate = document.getElementById('reportToDate').value;
+            const customer = document.getElementById('reportCustomer').value;
+            const salesman = document.getElementById('reportSalesman').value;
+            const driver = document.getElementById('reportDriver').value;
+            const state = document.getElementById('reportState').value;
+            const city = document.getElementById('reportCity').value;
+
+            if (!reportType || !fromDate || !toDate) {
+                showAlert('Please select report type and date range!', 'error');
+                return;
+            }
+
+            let reportData = [];
+            let reportHTML = '';
+
+            switch (reportType) {
+                case 'order-wise':
+                    reportData = generateOrderWiseReport(fromDate, toDate, customer, salesman);
+                    reportHTML = formatOrderWiseReport(reportData);
+                    break;
+                case 'customer-wise':
+                    reportData = generateCustomerWiseReport(fromDate, toDate, customer);
+                    reportHTML = formatCustomerWiseReport(reportData);
+                    break;
+                case 'salesman-wise':
+                    reportData = generateSalesmanWiseReport(fromDate, toDate, salesman);
+                    reportHTML = formatSalesmanWiseReport(reportData);
+                    break;
+                case 'item-wise':
+                    reportData = generateItemWiseReport(fromDate, toDate);
+                    reportHTML = formatItemWiseReport(reportData);
+                    break;
+                case 'vehicle-wise':
+                    reportData = generateVehicleWiseReport(fromDate, toDate, state);
+                    reportHTML = formatVehicleWiseReport(reportData);
+                    break;
+                case 'driver-wise':
+                    reportData = generateDriverWiseReport(fromDate, toDate, driver);
+                    reportHTML = formatDriverWiseReport(reportData);
+                    break;
+                case 'date-wise':
+                    reportData = generateDateWiseReport(fromDate, toDate);
+                    reportHTML = formatDateWiseReport(reportData);
+                    break;
+                case 'pending-dispatch':
+                    reportData = generatePendingDispatchReport();
+                    reportHTML = formatPendingDispatchReport(reportData);
+                    break;
+                case 'pod-missing':
+                    reportData = generatePODMissingReport();
+                    reportHTML = formatPODMissingReport(reportData);
+                    break;
+                case 'city-state':
+                    reportData = generateCityStateReport(fromDate, toDate, state, city);
+                    reportHTML = formatCityStateReport(reportData);
+                    break;
+                default:
+                    showAlert('Please select a valid report type!', 'error');
+                    return;
+            }
+
+            document.getElementById('reportResults').innerHTML = reportHTML;
+            showAlert('Report generated successfully!', 'success');
+        }
+
+        function generateOrderWiseReport(fromDate, toDate, customerId, salesman) {
+            return orders.filter(order => {
+                const orderDate = new Date(order.orderDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = orderDate >= from && orderDate <= to;
+                if (customerId) matches = matches && order.customerId == customerId;
+                if (salesman) matches = matches && order.salesman === salesman;
+                
+                return matches;
+            });
+        }
+
+        function formatOrderWiseReport(data) {
+            if (data.length === 0) return '<p>No orders found for the selected criteria.</p>';
+
+            let html = '<h4>Order-wise Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Order ID</th><th>Customer</th><th>Salesman</th><th>Order Date</th><th>Items</th><th>Amount</th><th>Status</th>';
+            html += '</tr></thead><tbody>';
+
+            let totalAmount = 0;
+            data.forEach(order => {
+                totalAmount += order.totalAmount || 0;
+                html += `<tr>
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.salesman || 'N/A'}</td>
+                    <td>${order.orderDate}</td>
+                    <td>${order.items?.length || 0}</td>
+                    <td>₹${(order.totalAmount || 0).toLocaleString()}</td>
+                    <td><span class="status-badge ${getStatusClass(order.status)}">${order.status}</span></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Orders: ${data.length} | Total Amount: ₹${totalAmount.toLocaleString()}</strong></div>`;
+            return html;
+        }
+
+        function generateCustomerWiseReport(fromDate, toDate, customerId) {
+            const customerStats = {};
+            
+            orders.filter(order => {
+                const orderDate = new Date(order.orderDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = orderDate >= from && orderDate <= to;
+                if (customerId) matches = matches && order.customerId == customerId;
+                
+                return matches;
+            }).forEach(order => {
+                const customerId = order.customerId;
+                if (!customerStats[customerId]) {
+                    customerStats[customerId] = {
+                        customerName: order.customerName,
+                        totalOrders: 0,
+                        totalAmount: 0,
+                        totalItems: 0
+                    };
+                }
+                customerStats[customerId].totalOrders++;
+                customerStats[customerId].totalAmount += order.totalAmount || 0;
+                customerStats[customerId].totalItems += order.items?.length || 0;
+            });
+
+            return Object.values(customerStats);
+        }
+
+        function formatCustomerWiseReport(data) {
+            if (data.length === 0) return '<p>No customer data found for the selected criteria.</p>';
+
+            let html = '<h4>Customer-wise Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Customer Name</th><th>Total Orders</th><th>Total Items</th><th>Total Amount</th><th>Avg Order Value</th>';
+            html += '</tr></thead><tbody>';
+
+            let grandTotal = 0;
+            data.forEach(customer => {
+                grandTotal += customer.totalAmount;
+                const avgOrderValue = customer.totalOrders > 0 ? customer.totalAmount / customer.totalOrders : 0;
+                html += `<tr>
+                    <td>${customer.customerName}</td>
+                    <td>${customer.totalOrders}</td>
+                    <td>${customer.totalItems}</td>
+                    <td>₹${customer.totalAmount.toLocaleString()}</td>
+                    <td>₹${avgOrderValue.toLocaleString()}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Customers: ${data.length} | Grand Total: ₹${grandTotal.toLocaleString()}</strong></div>`;
+            return html;
+        }
+
+        function generateSalesmanWiseReport(fromDate, toDate, salesman) {
+            const salesmanStats = {};
+            
+            orders.filter(order => {
+                const orderDate = new Date(order.orderDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = orderDate >= from && orderDate <= to;
+                if (salesman) matches = matches && order.salesman === salesman;
+                
+                return matches;
+            }).forEach(order => {
+                const salesmanName = order.salesman || 'Unknown';
+                if (!salesmanStats[salesmanName]) {
+                    salesmanStats[salesmanName] = {
+                        salesmanName: salesmanName,
+                        totalOrders: 0,
+                        totalAmount: 0,
+                        customers: new Set()
+                    };
+                }
+                salesmanStats[salesmanName].totalOrders++;
+                salesmanStats[salesmanName].totalAmount += order.totalAmount || 0;
+                salesmanStats[salesmanName].customers.add(order.customerName);
+            });
+
+            return Object.values(salesmanStats).map(stat => ({
+                ...stat,
+                uniqueCustomers: stat.customers.size
+            }));
+        }
+
+        function formatSalesmanWiseReport(data) {
+            if (data.length === 0) return '<p>No salesman data found for the selected criteria.</p>';
+
+            let html = '<h4>Salesman-wise Performance Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Salesman</th><th>Total Orders</th><th>Unique Customers</th><th>Total Amount</th><th>Avg Order Value</th>';
+            html += '</tr></thead><tbody>';
+
+            let grandTotal = 0;
+            data.forEach(salesman => {
+                grandTotal += salesman.totalAmount;
+                const avgOrderValue = salesman.totalOrders > 0 ? salesman.totalAmount / salesman.totalOrders : 0;
+                html += `<tr>
+                    <td>${salesman.salesmanName}</td>
+                    <td>${salesman.totalOrders}</td>
+                    <td>${salesman.uniqueCustomers}</td>
+                    <td>₹${salesman.totalAmount.toLocaleString()}</td>
+                    <td>₹${avgOrderValue.toLocaleString()}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Salesmen: ${data.length} | Grand Total: ₹${grandTotal.toLocaleString()}</strong></div>`;
+            return html;
+        }
+
+        function generateItemWiseReport(fromDate, toDate) {
+            const itemStats = {};
+            
+            dispatches.filter(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                return dispatchDate >= from && dispatchDate <= to;
+            }).forEach(dispatch => {
+                if (dispatch.items) {
+                    dispatch.items.forEach(item => {
+                        const key = `${item.flourType}-${item.packaging}`;
+                        if (!itemStats[key]) {
+                            itemStats[key] = {
+                                flourType: item.flourType,
+                                packaging: item.packaging,
+                                totalQuantity: 0,
+                                totalDispatches: 0
+                            };
+                        }
+                        itemStats[key].totalQuantity += item.dispatchedQuantity || 0;
+                        itemStats[key].totalDispatches++;
+                    });
+                }
+            });
+
+            return Object.values(itemStats);
+        }
+
+        function formatItemWiseReport(data) {
+            if (data.length === 0) return '<p>No item dispatch data found for the selected period.</p>';
+
+            let html = '<h4>Item-wise Dispatch Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Flour Type</th><th>Packaging</th><th>Total Quantity Dispatched</th><th>Number of Dispatches</th>';
+            html += '</tr></thead><tbody>';
+
+            let totalQuantity = 0;
+            data.forEach(item => {
+                totalQuantity += item.totalQuantity;
+                html += `<tr>
+                    <td>${item.flourType}</td>
+                    <td>${item.packaging}</td>
+                    <td>${item.totalQuantity.toLocaleString()}</td>
+                    <td>${item.totalDispatches}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Items: ${data.length} | Total Quantity: ${totalQuantity.toLocaleString()}</strong></div>`;
+            return html;
+        }
+
+        function generateVehicleWiseReport(fromDate, toDate, state) {
+            const vehicleStats = {};
+            
+            dispatches.filter(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = dispatchDate >= from && dispatchDate <= to;
+                if (state) matches = matches && dispatch.vehicleState === state;
+                
+                return matches;
+            }).forEach(dispatch => {
+                const vehicleNumber = dispatch.vehicleNumber;
+                if (!vehicleStats[vehicleNumber]) {
+                    vehicleStats[vehicleNumber] = {
+                        vehicleNumber: vehicleNumber,
+                        vehicleState: dispatch.vehicleState,
+                        driverName: dispatch.driverName,
+                        totalTrips: 0,
+                        totalItems: 0,
+                        deliveredCount: 0,
+                        podMissing: 0
+                    };
+                }
+                vehicleStats[vehicleNumber].totalTrips++;
+                vehicleStats[vehicleNumber].totalItems += dispatch.items?.length || 0;
+                
+                if (dispatch.status === 'Delivered') {
+                    vehicleStats[vehicleNumber].deliveredCount++;
+                } else if (dispatch.status === 'Dispatched' || dispatch.status === 'In Transit') {
+                    const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                    if (!delivery) vehicleStats[vehicleNumber].podMissing++;
+                }
+            });
+
+            return Object.values(vehicleStats);
+        }
+
+        function formatVehicleWiseReport(data) {
+            if (data.length === 0) return '<p>No vehicle data found for the selected criteria.</p>';
+
+            let html = '<h4>Vehicle-wise Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Vehicle Number</th><th>State</th><th>Driver</th><th>Total Trips</th><th>Delivered</th><th>POD Missing</th><th>Success Rate</th>';
+            html += '</tr></thead><tbody>';
+
+            data.forEach(vehicle => {
+                const successRate = vehicle.totalTrips > 0 ? 
+                    ((vehicle.deliveredCount / vehicle.totalTrips) * 100).toFixed(1) : 0;
+                html += `<tr>
+                    <td>${vehicle.vehicleNumber}</td>
+                    <td>${vehicle.vehicleState}</td>
+                    <td>${vehicle.driverName}</td>
+                    <td>${vehicle.totalTrips}</td>
+                    <td>${vehicle.deliveredCount}</td>
+                    <td>${vehicle.podMissing}</td>
+                    <td>${successRate}%</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Vehicles: ${data.length}</strong></div>`;
+            return html;
+        }
+
+        function generateDriverWiseReport(fromDate, toDate, driverName) {
+            const driverStats = {};
+            
+            dispatches.filter(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = dispatchDate >= from && dispatchDate <= to;
+                if (driverName) matches = matches && dispatch.driverName === driverName;
+                
+                return matches;
+            }).forEach(dispatch => {
+                const driver = dispatch.driverName;
+                if (!driverStats[driver]) {
+                    driverStats[driver] = {
+                        driverName: driver,
+                        totalTrips: 0,
+                        deliveredCount: 0,
+                        podMissing: 0,
+                        onTimeDeliveries: 0,
+                        vehicles: new Set()
+                    };
+                }
+                driverStats[driver].totalTrips++;
+                driverStats[driver].vehicles.add(dispatch.vehicleNumber);
+                
+                if (dispatch.status === 'Delivered') {
+                    driverStats[driver].deliveredCount++;
+                    
+                    // Check if delivery was on time
+                    const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                    if (delivery && dispatch.estimatedDelivery) {
+                        const estimatedTime = new Date(dispatch.estimatedDelivery);
+                        const actualTime = new Date(delivery.deliveryTime);
+                        if (actualTime <= estimatedTime) {
+                            driverStats[driver].onTimeDeliveries++;
+                        }
+                    }
+                } else if (dispatch.status === 'Dispatched' || dispatch.status === 'In Transit') {
+                    const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                    if (!delivery) driverStats[driver].podMissing++;
+                }
+            });
+
+            return Object.values(driverStats).map(stat => ({
+                ...stat,
+                uniqueVehicles: stat.vehicles.size
+            }));
+        }
+
+        function formatDriverWiseReport(data) {
+            if (data.length === 0) return '<p>No driver performance data found for the selected criteria.</p>';
+
+            let html = '<h4>Driver Performance Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Driver Name</th><th>Total Trips</th><th>Delivered</th><th>POD Missing</th><th>On-Time Deliveries</th><th>Success Rate</th><th>Vehicles Used</th>';
+            html += '</tr></thead><tbody>';
+
+            data.forEach(driver => {
+                const successRate = driver.totalTrips > 0 ? 
+                    ((driver.deliveredCount / driver.totalTrips) * 100).toFixed(1) : 0;
+                const onTimeRate = driver.deliveredCount > 0 ? 
+                    ((driver.onTimeDeliveries / driver.deliveredCount) * 100).toFixed(1) : 0;
+                    
+                html += `<tr class="${driver.podMissing > 0 ? 'driver-blocked' : ''}">
+                    <td>${driver.driverName}</td>
+                    <td>${driver.totalTrips}</td>
+                    <td>${driver.deliveredCount}</td>
+                    <td>${driver.podMissing}</td>
+                    <td>${driver.onTimeDeliveries} (${onTimeRate}%)</td>
+                    <td>${successRate}%</td>
+                    <td>${driver.uniqueVehicles}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Drivers: ${data.length}</strong></div>`;
+            return html;
+        }
+
+        function generateDateWiseReport(fromDate, toDate) {
+            const dateStats = {};
+            
+            dispatches.filter(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                return dispatchDate >= from && dispatchDate <= to;
+            }).forEach(dispatch => {
+                const dateKey = new Date(dispatch.dispatchDate).toLocaleDateString();
+                if (!dateStats[dateKey]) {
+                    dateStats[dateKey] = {
+                        date: dateKey,
+                        totalDispatches: 0,
+                        totalItems: 0,
+                        vehicles: new Set(),
+                        drivers: new Set()
+                    };
+                }
+                dateStats[dateKey].totalDispatches++;
+                dateStats[dateKey].totalItems += dispatch.items?.length || 0;
+                dateStats[dateKey].vehicles.add(dispatch.vehicleNumber);
+                dateStats[dateKey].drivers.add(dispatch.driverName);
+            });
+
+            return Object.values(dateStats).map(stat => ({
+                ...stat,
+                uniqueVehicles: stat.vehicles.size,
+                uniqueDrivers: stat.drivers.size
+            }));
+        }
+
+        function formatDateWiseReport(data) {
+            if (data.length === 0) return '<p>No dispatch data found for the selected period.</p>';
+
+            let html = '<h4>Date-wise Dispatch Summary</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Date</th><th>Total Dispatches</th><th>Total Items</th><th>Unique Vehicles</th><th>Unique Drivers</th>';
+            html += '</tr></thead><tbody>';
+
+            let totalDispatches = 0;
+            data.forEach(day => {
+                totalDispatches += day.totalDispatches;
+                html += `<tr>
+                    <td>${day.date}</td>
+                    <td>${day.totalDispatches}</td>
+                    <td>${day.totalItems}</td>
+                    <td>${day.uniqueVehicles}</td>
+                    <td>${day.uniqueDrivers}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Days: ${data.length} | Total Dispatches: ${totalDispatches}</strong></div>`;
+            return html;
+        }
+
+        function generatePendingDispatchReport() {
+            return orders.filter(order => {
+                if (!order.remainingItems) return false;
+                return order.remainingItems.some(item => item.quantity > 0);
+            });
+        }
+
+        function formatPendingDispatchReport(data) {
+            if (data.length === 0) return '<p>No pending dispatches found.</p>';
+
+            let html = '<h4>Pending Dispatch Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Order ID</th><th>Customer</th><th>Order Date</th><th>Expected Delivery</th><th>Remaining Items</th><th>Priority</th>';
+            html += '</tr></thead><tbody>';
+
+            data.forEach(order => {
+                const remainingCount = order.remainingItems.reduce((sum, item) => sum + item.quantity, 0);
+                const orderDate = new Date(order.orderDate);
+                const deliveryDate = new Date(order.deliveryDate);
+                const today = new Date();
+                const isOverdue = deliveryDate < today;
+                
+                html += `<tr class="${isOverdue ? 'driver-blocked' : ''}">
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.orderDate}</td>
+                    <td>${order.deliveryDate}</td>
+                    <td>${remainingCount} items</td>
+                    <td><span class="status-badge ${isOverdue ? 'status-pod-missing' : 'status-pending'}">${isOverdue ? 'OVERDUE' : 'Normal'}</span></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Pending Orders: ${data.length}</strong></div>`;
+            return html;
+        }
+
+        function generatePODMissingReport() {
+            return dispatches.filter(dispatch => {
+                const delivery = deliveries.find(d => d.dispatchId === dispatch.id);
+                return !delivery && (dispatch.status === 'Dispatched' || dispatch.status === 'In Transit');
+            });
+        }
+
+        function formatPODMissingReport(data) {
+            if (data.length === 0) return '<p>All dispatches have POD submitted. Great job!</p>';
+
+            let html = '<h4>Dispatched but No POD Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Dispatch ID</th><th>Order ID</th><th>Driver</th><th>Vehicle</th><th>Dispatch Date</th><th>Days Overdue</th><th>Action Required</th>';
+            html += '</tr></thead><tbody>';
+
+            data.forEach(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const today = new Date();
+                const daysOverdue = Math.floor((today - dispatchDate) / (1000 * 60 * 60 * 24));
+                
+                html += `<tr class="driver-blocked">
+                    <td>${dispatch.id}</td>
+                    <td>${dispatch.orderId}</td>
+                    <td>${dispatch.driverName}</td>
+                    <td>${dispatch.vehicleNumber}</td>
+                    <td>${dispatchDate.toLocaleDateString()}</td>
+                    <td>${daysOverdue} days</td>
+                    <td><span class="status-badge status-pod-missing">Block Driver</span></td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Critical: ${data.length} PODs Missing</strong></div>`;
+            return html;
+        }
+
+        function generateCityStateReport(fromDate, toDate, state, city) {
+            const locationStats = {};
+            
+            dispatches.filter(dispatch => {
+                const dispatchDate = new Date(dispatch.dispatchDate);
+                const from = new Date(fromDate);
+                const to = new Date(toDate);
+                
+                let matches = dispatchDate >= from && dispatchDate <= to;
+                if (state) matches = matches && dispatch.vehicleState === state;
+                
+                return matches;
+            }).forEach(dispatch => {
+                const order = orders.find(o => o.id === dispatch.orderId);
+                if (order) {
+                    const customer = customers.find(c => c.id === order.customerId);
+                    if (customer && customer.address) {
+                        const locationKey = `${customer.address.city}, ${customer.address.state}`;
+                        
+                        let matches = true;
+                        if (city) matches = matches && customer.address.city.toLowerCase().includes(city.toLowerCase());
+                        
+                        if (matches) {
+                            if (!locationStats[locationKey]) {
+                                locationStats[locationKey] = {
+                                    location: locationKey,
+                                    totalDispatches: 0,
+                                    totalItems: 0,
+                                    customers: new Set(),
+                                    vehicles: new Set()
+                                };
+                            }
+                            locationStats[locationKey].totalDispatches++;
+                            locationStats[locationKey].totalItems += dispatch.items?.length || 0;
+                            locationStats[locationKey].customers.add(customer.name);
+                            locationStats[locationKey].vehicles.add(dispatch.vehicleNumber);
+                        }
+                    }
+                }
+            });
+
+            return Object.values(locationStats).map(stat => ({
+                ...stat,
+                uniqueCustomers: stat.customers.size,
+                uniqueVehicles: stat.vehicles.size
+            }));
+        }
+
+        function formatCityStateReport(data) {
+            if (data.length === 0) return '<p>No location data found for the selected criteria.</p>';
+
+            let html = '<h4>City/State Analysis Report</h4>';
+            html += '<table class="data-table"><thead><tr>';
+            html += '<th>Location</th><th>Total Dispatches</th><th>Total Items</th><th>Unique Customers</th><th>Unique Vehicles</th>';
+            html += '</tr></thead><tbody>';
+
+            let totalDispatches = 0;
+            data.forEach(location => {
+                totalDispatches += location.totalDispatches;
+                html += `<tr>
+                    <td>${location.location}</td>
+                    <td>${location.totalDispatches}</td>
+                    <td>${location.totalItems}</td>
+                    <td>${location.uniqueCustomers}</td>
+                    <td>${location.uniqueVehicles}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            html += `<div class="total-row" style="margin-top: 15px;"><strong>Total Locations: ${data.length} | Total Dispatches: ${totalDispatches}</strong></div>`;
+            return html;
+        }
+
+        function updateMonthlyStats() {
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            const monthlyOrders = orders.filter(order => {
+                const orderDate = new Date(order.orderDate);
+                return orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear;
+            }).length;
+
+            const monthlyRevenue = orders.filter(order => {
+                const orderDate = new Date(order.orderDate);
+                return orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear;
+            }).reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+
+            const monthlyDeliveries = deliveries.filter(delivery => {
+                const deliveryDate = new Date(delivery.deliveryTime);
+                return deliveryDate.getMonth() === currentMonth && deliveryDate.getFullYear() === currentYear;
+            }).length;
+
+            // Calculate average delivery time
+            const completedDeliveries = deliveries.filter(delivery => {
+                const dispatch = dispatches.find(d => d.id === delivery.dispatchId);
+                return dispatch;
+            });
+
+            let totalDeliveryTime = 0;
+            completedDeliveries.forEach(delivery => {
+                const dispatch = dispatches.find(d => d.id === delivery.dispatchId);
+                if (dispatch) {
+                    const dispatchDate = new Date(dispatch.dispatchDate);
+                    const deliveryDate = new Date(delivery.deliveryTime);
+                    const diffTime = Math.abs(deliveryDate - dispatchDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    totalDeliveryTime += diffDays;
+                }
+            });
+
+            const avgDeliveryTime = completedDeliveries.length > 0 ? 
+                Math.round(totalDeliveryTime / completedDeliveries.length) : 0;
+
+            document.getElementById('monthlyOrders').textContent = monthlyOrders;
+            document.getElementById('monthlyRevenue').textContent = `₹${monthlyRevenue.toLocaleString()}`;
+            document.getElementById('monthlyDeliveries').textContent = monthlyDeliveries;
+            document.getElementById('avgDeliveryTime').textContent = avgDeliveryTime;
+        }
+
+        function clearReportFilters() {
+            document.getElementById('reportType').value = '';
+            document.getElementById('reportFromDate').value = '';
+            document.getElementById('reportToDate').value = '';
+            document.getElementById('reportCustomer').value = '';
+            document.getElementById('reportSalesman').value = '';
+            document.getElementById('reportDriver').value = '';
+            document.getElementById('reportState').value = '';
+            document.getElementById('reportCity').value = '';
+            document.getElementById('reportResults').innerHTML = '';
+        }
+
+        function exportToExcel() {
+            const reportResults = document.getElementById('reportResults').innerHTML;
+            if (!reportResults) {
+                showAlert('Please generate a report first before exporting!', 'error');
+                return;
+            }
+
+            // Simple CSV export simulation
+            showAlert('Report exported to Excel successfully! (Feature simulated)', 'success');
         }
 
         // Utility functions
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'pending': return 'status-pending';
+                case 'approved': return 'status-approved';
+                case 'dispatched': return 'status-dispatched';
+                case 'in transit': return 'status-dispatched';
+                case 'delivered': return 'status-delivered';
+                case 'partially dispatched': return 'status-partial';
+                case 'fully dispatched': return 'status-approved';
+                case 'pod missing': return 'status-pod-missing';
+                case 'blocked': return 'status-blocked';
+                default: return 'status-pending';
+            }
+        }
+
         function showAlert(message, type) {
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
@@ -1595,23 +2963,57 @@
 
             setTimeout(() => {
                 alertDiv.remove();
-            }, 5000);
+            }, 8000);
         }
 
-        function generateBatchNumber() {
-            const now = new Date();
-            const batch = 'BATCH' + now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + String(Date.now()).slice(-3);
-            document.getElementById('batchNumber').value = batch;
+        function deleteCustomer(id) {
+            if (confirm('Are you sure you want to delete this customer?')) {
+                customers = customers.filter(c => c.id !== id);
+                localStorage.setItem('customers', JSON.stringify(customers));
+                loadCustomers();
+                showAlert('Customer deleted successfully!', 'success');
+            }
         }
 
+        // File upload preview for POD
+        document.getElementById('deliveryPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('uploadPreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (file.type.startsWith('image/')) {
+                        preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; max-height: 200px; margin-top: 10px;">`;
+                    } else {
+                        preview.innerHTML = `<p style="margin-top: 10px;">File selected: ${file.name} (${(file.size/1024).toFixed(2)} KB)</p>`;
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.innerHTML = '';
+            }
+        });
+
+        // Auto-set today's date for various date inputs
         function setDefaultDates() {
-            const today = new Date().toISOString().split('T')[0];
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0];
+            const dateTimeString = today.toISOString().slice(0, 16);
+            
+            // Set default dates
             const dateInputs = document.querySelectorAll('input[type="date"]');
             dateInputs.forEach(input => {
-                if (!input.value) {
-                    input.value = today;
+                if (!input.value && input.id !== 'deliveryDate') {
+                    input.value = todayString;
                 }
             });
+
+            // Set default datetime for vehicle arrival
+            const vehicleArrival = document.getElementById('vehicleArrivalTime');
+            if (vehicleArrival && !vehicleArrival.value) {
+                vehicleArrival.value = dateTimeString;
+            }
         }
 
         // Initialize the application
@@ -1619,28 +3021,174 @@
             // Run data migration first
             migrateOrderData();
 
+            // Initialize dashboard
             updateDashboard();
+            
+            // Load initial data
             loadCustomers();
             loadCustomerOptions();
-            generateBatchNumber();
+            loadDriverOptions();
             setDefaultDates();
 
             // Add first item by default when orders tab is opened
-            addOrderItem();
+            if (document.getElementById('orderItems').children.length === 0) {
+                addOrderItem();
+            }
 
-            // Calculate raw material requirement based on orders (with safe handling)
-            const totalQuantity = orders.reduce((sum, order) => {
-                if (order.items && Array.isArray(order.items)) {
-                    return sum + order.items.reduce((itemSum, item) => itemSum + (item.quantity || 0), 0);
+            // Auto-refresh dashboard every 30 seconds
+            setInterval(() => {
+                if (document.getElementById('dashboard').classList.contains('active')) {
+                    updateDashboard();
                 }
-                return sum;
-            }, 0);
-            document.getElementById('rawMaterialReq').value = totalQuantity * 1.1;
+            }, 30000);
+
+            // Show demo data alert
+            setTimeout(() => {
+                showAlert('🎉 Enhanced Wheat Flour Management System loaded successfully! All features including partial dispatch, POD enforcement, and advanced reporting are now active.', 'success');
+            }, 1000);
         });
 
-        setInterval(() => {
-            updateDashboard();
-        }, 30000);
+        // Add some demo data for better demonstration
+        function addDemoData() {
+            if (customers.length === 0) {
+                const demoCustomers = [
+                    {
+                        id: 1,
+                        name: 'ABC Traders',
+                        phone: '9876543210',
+                        email: 'abc@traders.com',
+                        contactPerson: 'Rajesh Kumar',
+                        contactMobile: '9876543210',
+                        gst: '29ABCDE1234F1Z5',
+                        category: 'Wholesaler',
+                        address: {
+                            street: '123 Main Street, Commercial Complex',
+                            landmark: 'Near City Mall',
+                            city: 'Bangalore',
+                            state: 'KA',
+                            pincode: '560001'
+                        }
+                    },
+                    {
+                        id: 2,
+                        name: 'XYZ Retail Store',
+                        phone: '9876543211',
+                        email: 'xyz@retail.com',
+                        contactPerson: 'Priya Sharma',
+                        contactMobile: '9876543211',
+                        gst: '27XYZAB5678G2H9',
+                        category: 'Retailer',
+                        address: {
+                            street: '456 Market Road',
+                            landmark: 'Opposite Bus Stand',
+                            city: 'Mumbai',
+                            state: 'MH',
+                            pincode: '400001'
+                        }
+                    }
+                ];
+                
+                customers = demoCustomers;
+                localStorage.setItem('customers', JSON.stringify(customers));
+            }
+
+            // Add demo orders if none exist
+            if (orders.length === 0) {
+                const demoOrders = [
+                    {
+                        id: 'ORD001',
+                        customerId: 1,
+                        customerName: 'ABC Traders',
+                        orderDate: '2025-01-15',
+                        deliveryDate: '2025-01-20',
+                        salesman: 'Raj Kumar',
+                        status: 'Approved',
+                        specialInstructions: 'Handle with care',
+                        items: [
+                            {
+                                flourType: 'Whole Wheat',
+                                packaging: '25kg',
+                                quantity: 50,
+                                rate: 500,
+                                total: 25000
+                            },
+                            {
+                                flourType: 'Refined',
+                                packaging: '10kg',
+                                quantity: 30,
+                                rate: 450,
+                                total: 13500
+                            }
+                        ],
+                        remainingItems: [
+                            {
+                                flourType: 'Whole Wheat',
+                                packaging: '25kg',
+                                quantity: 50,
+                                rate: 500,
+                                total: 25000
+                            },
+                            {
+                                flourType: 'Refined',
+                                packaging: '10kg',
+                                quantity: 30,
+                                rate: 450,
+                                total: 13500
+                            }
+                        ],
+                        totalAmount: 38500
+                    }
+                ];
+                
+                orders = demoOrders;
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+        }
+
+        // Call demo data function
+        addDemoData();
+
+        // Vehicle number auto-formatting
+        document.getElementById('vehicleSeriesNumber').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase();
+            // Auto-format as AB 1234
+            if (value.length === 2 && !value.includes(' ')) {
+                value += ' ';
+            }
+            e.target.value = value;
+        });
+
+        // PIN code validation
+        document.getElementById('pincode').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+        });
+
+        // Phone number validation
+        document.querySelectorAll('input[type="tel"]').forEach(input => {
+            input.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+            });
+        });
+
+        // GPS coordinates auto-detection (simulated)
+        document.getElementById('gpsCoordinates').addEventListener('focus', function() {
+            if (navigator.geolocation && !this.value) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const coords = `${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`;
+                    document.getElementById('gpsCoordinates').value = coords;
+                });
+            }
+        });
+
+        console.log('Enhanced Wheat Flour Management System initialized successfully!');
+        console.log('Features loaded:');
+        console.log('✅ Complete customer address management');
+        console.log('✅ Vehicle number splitting (State-City-Series)');
+        console.log('✅ Partial dispatch handling');
+        console.log('✅ Vehicle tracking before & after loading');
+        console.log('✅ Mandatory POD upload with driver blocking');
+        console.log('✅ Advanced multi-level reports & filters');
+        console.log('✅ Driver management & auto-blocking system');
     </script>
 </body>
 </html>

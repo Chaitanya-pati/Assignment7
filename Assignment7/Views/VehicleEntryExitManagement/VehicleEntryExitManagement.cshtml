@@ -1221,8 +1221,8 @@
                         <label class="form-label">Sampling Time</label>
                         <input type="datetime-local" id="samplingTime" class="form-control" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Number of Bags Sampled</label>
+                    <div hidden class="mb-3">
+                        <label class="form-label">Number of Bags Sampled (it has to remove )</label>
                         <input type="number" id="bagsCount" class="form-control" min="40" max="50" required>
                     </div>
                     <div class="mb-3">
@@ -3219,7 +3219,7 @@
             const index = document.getElementById('sampleEditIndex').value;
             const vehicleId = document.getElementById('sampleVehicleSelect').value;
             const samplingTime = document.getElementById('samplingTime').value;
-            const bagsCount = document.getElementById('bagsCount').value;
+            const bagsCount = 22;
             const notes = document.getElementById('sampleNotes').value;
 
             if (!vehicleId || !samplingTime || !bagsCount) {
